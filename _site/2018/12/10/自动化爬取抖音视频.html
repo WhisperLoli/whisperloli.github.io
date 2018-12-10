@@ -1,0 +1,527 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="data,spark,python,spider,linux" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_default.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>爬取抖音视频</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(255,90,90) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(255,90,90);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">爬取抖音视频</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(255,90,90);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(255,90,90)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(255,90,90);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">爬取抖音视频</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2018/05/17/welcome-to-jekyll.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(255,90,90)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(255,90,90);"><sapn class="main">Welcome to Jekyll!</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(255,90,90);border-bottom: 2px solid rgb(255,90,90);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2018/05/17/welcome-to-jekyll.html" class="rightchange" style="border-left: 1px solid rgb(255,90,90);border-bottom: 2px solid rgb(255,90,90);"><span>下一篇<br><br>Welcome to Jekyll!</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(255,90,90); border-right: 8px solid rgb(255,90,90)">
+        mitmproxy+appium+python实现自动化爬虫
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <p>先介绍一下环境与工具</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>操作系统：MacOS 
+手机操作系统：Android
+手机型号：荣耀8
+mitmproxy: 中间人代理【man-in-the-middle proxy】，对手机端的请求进行拦截
+Appium:自动化测试工具
+</code></pre></div></div>
+
+<p>环境搭建</p>
+
+<ol>
+  <li>
+    <p>在电脑上安装mitmproxy，使用如下命令安装即可</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> brew install mitmproxy
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启用代理</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mitmproxy -p 8080 #在命令行中运行,8080为代理端口
+</code></pre></div>    </div>
+
+    <p>代理服务器启动后，再配置手机端连接到代理服务器，注意，手机需要与电脑处于同一个局域网下，手机连接WIFI时，点击显示高级选项，配置代理，不同的手机配置代理的地方可能不同，如下图所示：</p>
+
+    <p><img src="/blog/blog_spider_douyin/mobileconfigproxy.jpeg" width="390px" height="690px" /></p>
+
+    <p>服务器主机名填写电脑的IP地址，查看电脑IP命令如下：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ifconfig #查看电脑IP地址
+</code></pre></div>    </div>
+
+    <p>服务器端口填写在电脑上启动mitmproxy时设置的端口，然后连接WIFI，接下来需要在手机端安装证书</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cd ~/.mitmproxy
+
+ ls	 #会显示该文件夹下的所有证书
+</code></pre></div>    </div>
+
+    <p>将mitmproxy-ca-cert.cer文件发送到手机上，修改后缀名为crt，然后点击安装，会弹出如下所示的界面，凭据用途选择VPN和应用</p>
+
+    <p><img src="/blog/blog_spider_douyin/certificate.jpeg" width="390px" height="690px" /></p>
+
+    <p>在手机上打开抖音，刷视频，在电脑上就会出现如下界面，可以抓包看到所有请求，在图中，我们可以看到视频请求返回类型是video/mp4，通过返回类型，我们可以知道哪些URL是用于请求短视频，可以看到短视频请求的域名与其他请求的域名是不同的，一级域名为xigua.com</p>
+
+    <p><img src="/blog/blog_spider_douyin/requests.jpg" alt="image" /></p>
+  </li>
+  <li>
+    <p>配置android环境</p>
+
+    <p>因为手机的操作系统是Android，所以还需要安装android sdk，<a href="https://note.youdao.com/">点击下载</a>，下载完后解压安装，进入到解压目录，再进入到tools目录，执行如下命令</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./android 
+</code></pre></div>    </div>
+
+    <p>会弹出如下窗口</p>
+
+    <p><img src="/blog/blog_spider_douyin/sdkmanager.jpg" alt="image" /></p>
+
+    <p>玩过安卓开发的同学肯定都很熟悉了，先查看自己手机的安卓系统版本，然后下载Tools和Android 8.0.0(我的手机安卓版本是8.0.0)，之后需要配置环境变量，安卓环境变量与jdk环境变量，</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> vi ~/.bash_profile #在该文件中添加环境变量
+	
+ export ANDROID_HOME="/Users/admin/software/android-sdk-macosx" #配置自己的android sdk解压目录
+ export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
+	
+ export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home" #配置自己的jdk安装目录
+ export PATH="$JAVA_HOME/bin:$PATH"
+	
+ source ~/.bash_profile #使环境变量生效
+	
+ env #查看当前环境变量
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>adb调试</p>
+
+    <p>手机连接到电脑后，在终端输入命令</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> adb devices #会显示当前的连接设备	
+</code></pre></div>    </div>
+
+    <p>如果连接设备为空，则需要进行一些其他操作，以下是我的解决方案</p>
+
+    <p>4.1 生成adb_usb.ini文件</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cd ~/.android
+</code></pre></div>    </div>
+
+    <p>查看有无adb_usb.ini文件，没有的话则执行下面的命令</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> android update adb #会生成adb_usb.ini文件
+</code></pre></div>    </div>
+
+    <p>再输入如下命令</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> system_profiler SPUSBDataType #查看Mac系统所有已连接USB设备信息
+</code></pre></div>    </div>
+
+    <p><img src="/blog/blog_spider_douyin/vendorid.jpg" alt="image" /></p>
+
+    <p>找到Vendor ID的值，将值0x8086添加到adb_usb.ini文件中</p>
+
+    <p>4.2 进入手机设置，【设置】-&gt;【系统】-&gt;【关于手机】-&gt; 连续点击7次【版本号】，则会开启开发者模式</p>
+
+    <p>4.3 【设置】-&gt;【系统】-&gt;【开发人员选项】，开启【usb调试】，找到【usb配置】后，随意切换一个，再切换成【MTP】</p>
+
+    <p><img src="/blog/blog_spider_douyin/startusb.jpeg" width="390px" height="690px" /></p>
+
+    <p><img src="/blog/blog_spider_douyin/configusb.jpeg" width="390px" height="690px" /></p>
+
+    <p>4.4 解决未授权</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> adb devices #显示连接设备
+</code></pre></div>    </div>
+
+    <p><img src="/blog/blog_spider_douyin/listdevices.jpg" alt="image" /></p>
+
+    <p>如果上图红框处出现的是unauthorized，则需要在手机【开发人员选项】下点击【撤销USB调试授权】，然后找到【usb配置】，随意切换一个，再切换成【MTP】</p>
+
+    <p>连接设备成功的界面如上图所示</p>
+  </li>
+  <li>
+    <p>配置appium</p>
+
+    <p>在电脑上安装appium，下载dmg安装包安装或者使用命令行安装都行。
+ 打开appium，在configurations中配置JAVA_HOME与ANDROID_HOME，完成后点击Start Server</p>
+
+    <p><img src="/blog/blog_spider_douyin/appiumui.jpg" alt="image" /></p>
+
+    <p>再点击上图中红色框中的按钮</p>
+
+    <p><img src="/blog/blog_spider_douyin/appiumconfig.jpg" alt="image" /></p>
+
+    <p>参数讲解</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> platformName:平台名称，一般是Android或iOS
+ deviceName:设备名称，手机的具体类型，可以随便给
+ appPackage:App程序包名
+ appActivity:入口Activity名，通常以.开头
+	
+ adb logcat&gt; ~/appium.log  #并且在手机打开抖音app，在生成的appium.log中查找appPackage，appActivity的值，之后Start Session，查看是否能够控制手机，参数有无问题
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>编写程序</p>
+
+<p>mitmproxy事件里面有3个事件是比较重要的，<a href="https://docs.mitmproxy.org/stable/">mitmproxy官方文档</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>start 启动的时候被调用，会替换当前的插件，可以用此事件注册过滤器.
+request(flow) 当发送请求时，被调用.
+response(flow) 当接收到回复时被调用.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="c"># 文件路径</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s">'/Users/admin/Desktop/vedios/'</span>
+<span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span><span class="c">#打印的日志级别</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="s">'mitmproxy.log'</span><span class="p">,</span> <span class="c">#日志文件名</span>
+                    <span class="n">filemode</span><span class="o">=</span><span class="s">'a'</span><span class="p">,</span><span class="c">#模式，有w和a，w就是写模式，每次都会重新写日志，覆盖之前的日志，a是追加模式，默认如果不写的话，就是追加模式</span>
+                    <span class="n">format</span><span class="o">=</span><span class="s">'</span><span class="si">%(asctime)</span><span class="s">s - </span><span class="si">%(pathname)</span><span class="s">s[line:</span><span class="si">%(lineno)</span><span class="s">d] - </span><span class="si">%(levelname)</span><span class="s">s: </span><span class="si">%(message)</span><span class="s">s'</span> <span class="c">#日志格式</span>
+                   <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">response</span><span class="p">(</span><span class="n">flow</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">num</span>
+    <span class="k">if</span> <span class="s">".ixigua.com/"</span> <span class="ow">in</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">:</span> <span class="c"># 过滤掉不需要的url</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span> <span class="c">#记录url信息</span>
+        <span class="c"># 设置视频名</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">+</span> <span class="s">'.mp4'</span>
+        <span class="c"># 使用request获取视频url的内容</span>
+        <span class="c"># stream=True作用是推迟下载响应体直到访问Response.content属性</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c"># 将视频写入文件夹</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'ab'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>将上述代码保存成pymobile.py文件，运行mitmproxy命令时使用如下命令</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mitmproxy <span class="nt">-p</span> 8080 <span class="nt">-s</span> pymobile.py 		<span class="c">#启动时运行该脚本</span>
+</code></pre></div></div>
+
+<p>在IDE中编写如下代码，文件名为simulation.py</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">appium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="c"># 报错No module named 'appium',原因：没有安装appium client, 解决方案pip install appium-python-client</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="k">class</span> <span class="nc">Action</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># 初始化配置，设置Desired Capabilities参数，使用上面在appium中测试的参数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_caps</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">"platformName"</span><span class="p">:</span> <span class="s">"Android"</span><span class="p">,</span>
+            <span class="s">"deviceName"</span><span class="p">:</span> <span class="s">"device"</span><span class="p">,</span>
+            <span class="s">"appPackage"</span><span class="p">:</span> <span class="s">"com.ss.android.ugc.aweme"</span><span class="p">,</span>
+            <span class="s">"appActivity"</span><span class="p">:</span> <span class="s">".main.MainActivity"</span>
+        <span class="p">}</span>
+        <span class="c"># 指定Appium Server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="s">'http://localhost:4723/wd/hub'</span>
+        <span class="c"># 新建一个Session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Remote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">desired_caps</span><span class="p">)</span>
+        <span class="c"># 设置滑动初始坐标和滑动距离</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_x</span> <span class="o">=</span> <span class="mi">500</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_y</span> <span class="o">=</span> <span class="mi">1500</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="mi">1300</span>
+        
+    <span class="k">def</span> <span class="nf">comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># 无限滑动</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="c"># 模拟滑动</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">swipe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_x</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">start_y</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">)</span>
+            <span class="c"># 设置延时等待</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="p">()</span> <span class="c">#开启会先睡眠10s，手机上需要给app授权</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span><span class="p">()</span> <span class="c">#滑动屏幕</span>
+        
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">Action</span><span class="p">()</span>
+    <span class="n">action</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>至此，所有工作已完成</p>
+
+<p>自动化爬取视频操作步骤：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 启动代理mitmproxy
+	mitmproxy -p 8080 -s pymobile.py
+2. 手机配置代理
+3. 打开appium，start server
+4. 运行simulation.py文件
+</code></pre></div></div>
+
+<p>运行时，可以使用如下命令查看到代码中设置的日志在不断的打印</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f mitmproxy.log
+</code></pre></div></div>
+
+<p>爬取的视频如下，爬取到的视频是不带有抖音水印的噢！</p>
+
+<p><img src="/blog/blog_spider_douyin/video.jpg" alt="image" /></p>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+    <section class="post-footer-item comment">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDI2OS8xMDgwNg=="></div>
+    </section>
+
+    <!-- 来必力City版安装代码 -->
+    <script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+
+           if (typeof LivereTower === 'function') { return; }
+
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    <!-- City版安装代码已完成 -->
+
+
+
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有livere评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+  2018
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
