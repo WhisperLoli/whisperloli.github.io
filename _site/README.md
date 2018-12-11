@@ -4,7 +4,7 @@
 
 ### Preview
 
-[在线预览 view demo →](http://xseven.me/)
+[在线预览 view demo →](https://whisperloli.github.io/)
 
 ![1](/screenshot/1.png)
 
