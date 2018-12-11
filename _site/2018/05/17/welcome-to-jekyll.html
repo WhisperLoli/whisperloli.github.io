@@ -213,29 +213,26 @@ var _hmt = _hmt || [];
 
 
 
-    <section class="post-footer-item comment">
-      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDI2OS8xMDgwNg=="></div>
-    </section>
-
-    <!-- 来必力City版安装代码 -->
-    <script type="text/javascript">
-       (function(d, s) {
-           var j, e = d.getElementsByTagName(s)[0];
-
-           if (typeof LivereTower === 'function') { return; }
-
-           j = d.createElement(s);
-           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-           j.async = true;
-
-           e.parentNode.insertBefore(j, e);
-       })(document, 'script');
-    </script>
-    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
-    <!-- City版安装代码已完成 -->
 
 
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
 
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2018/05/17/welcome-to-jekyll', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+gitment.render('container')
+</script>
 
 
 <!-- 引入goto模块 -->
@@ -245,7 +242,7 @@ var _hmt = _hmt || [];
         Top
     </div>
   </a>
-  <a title="底部有livere评论哦" class="gotobottom" href="#htmldown" target="_self">
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
     <div class="box" style="font-family:'ffad_matroregular';">
         Foot
     </div>
