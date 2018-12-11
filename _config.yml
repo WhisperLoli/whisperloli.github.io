@@ -84,8 +84,8 @@ social-share-items: ['qq', 'wechat', 'weibo', 'twitter', 'facebook']
 baidu: true
 baidu-url: 'a3a737f6c3f0813c837b666de10dbaa2'
 # 谷歌分析 在google-ID里填写自己在谷歌分析获得的追踪ID
-google: false
-google-ID: ''
+google: true
+google-ID: 'UA-130813381-1'
 
 # Night mode
 nightMode: true
