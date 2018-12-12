@@ -26,7 +26,7 @@
 <link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
 <!-- Android Lolipop Theme Color -->
 <!-- <meta name="theme-color" content="#1464FB"> -->
-<title>爬取抖音视频</title>
+<title>爬取抖音APP视频</title>
 <!-- 百度统计 -->
 
 <script>
@@ -110,7 +110,7 @@ var _hmt = _hmt || [];
 <!-- 引入博文顶部样式 -->
 <!-- 版本一 垃圾 -->
 <!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
-    <span class="wow fadeInUp" data-wow-delay="0.2s">爬取抖音视频</span>
+    <span class="wow fadeInUp" data-wow-delay="0.2s">爬取抖音APP视频</span>
     <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
     <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
     <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
@@ -127,7 +127,7 @@ var _hmt = _hmt || [];
     
   </div>
   <div class="post-titlearea">
-    <span class="wow fadeInUp" data-wow-delay="0.2s">爬取抖音视频</span>
+    <span class="wow fadeInUp" data-wow-delay="0.2s">爬取抖音APP视频</span>
     <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
     <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
     <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
   
     
       <div class="postpage-subtitle" style="border-left: 8px solid rgb(255,90,90); border-right: 8px solid rgb(255,90,90)">
-        mitmproxy+appium+python实现自动化爬虫
+        mitmproxy+appium+python爬取抖音APP
       </div>
     
   
@@ -361,7 +361,8 @@ response(flow) 当接收到回复时被调用.
             <span class="s">"platformName"</span><span class="p">:</span> <span class="s">"Android"</span><span class="p">,</span>
             <span class="s">"deviceName"</span><span class="p">:</span> <span class="s">"device"</span><span class="p">,</span>
             <span class="s">"appPackage"</span><span class="p">:</span> <span class="s">"com.ss.android.ugc.aweme"</span><span class="p">,</span>
-            <span class="s">"appActivity"</span><span class="p">:</span> <span class="s">".main.MainActivity"</span>
+            <span class="s">"appActivity"</span><span class="p">:</span> <span class="s">".main.MainActivity"</span><span class="p">,</span>
+	    <span class="s">"noReset"</span><span class="p">:</span> <span class="bp">True</span> <span class="c"># 默认为False，打开APP后之前的登录会被注销，且需要重新对APP进行授权，进入初始化状态（类似于刚下载的APP）,所以使用True</span>
         <span class="p">}</span>
         <span class="c"># 指定Appium Server</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="s">'http://localhost:4723/wd/hub'</span>
@@ -384,7 +385,7 @@ response(flow) 当接收到回复时被调用.
             <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="p">()</span> <span class="c">#开启会先睡眠10s，手机上需要给app授权</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="p">()</span> <span class="c">#开启会先睡眠10s</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span><span class="p">()</span> <span class="c">#滑动屏幕</span>
         
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
@@ -408,7 +409,7 @@ response(flow) 当接收到回复时被调用.
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f mitmproxy.log
 </code></pre></div></div>
 
-<p>爬取的视频如下，爬取到的视频是不带有抖音水印的噢！</p>
+<p>爬取的视频如下，是不带有抖音水印的噢！</p>
 
 <p><img src="/blog/blog_spider_douyin/video.jpg" alt="image" /></p>
 
