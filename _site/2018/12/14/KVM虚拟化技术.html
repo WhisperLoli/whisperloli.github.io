@@ -1,0 +1,457 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_default.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>KVM虚拟化技术</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(255,210,32) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(255,210,32);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">KVM虚拟化技术</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(255,210,32);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(255,210,32)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(255,210,32);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">KVM虚拟化技术</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2018/12/13/python%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E8%87%B3%E6%9C%AC%E5%9C%B0%E5%BA%93.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(255,210,32)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(255,210,32);"><sapn class="main">python程序打包</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(255,210,32);border-bottom: 2px solid rgb(255,210,32);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2018/12/13/python%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E8%87%B3%E6%9C%AC%E5%9C%B0%E5%BA%93.html" class="rightchange" style="border-left: 1px solid rgb(255,210,32);border-bottom: 2px solid rgb(255,210,32);"><span>下一篇<br><br>python程序打包</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(255,210,32); border-right: 8px solid rgb(255,210,32)">
+        KVM搭建虚拟机
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <p>宿主机平台是Centos和Ubuntu搭建虚拟机会有一些区别，所以对二者都进行介绍一下</p>
+
+<p>宿主机：Centos7</p>
+
+<p>查看宿主机IP，如果没有ifconfig命令则需要安装网络插件包：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>net-tools
+</code></pre></div></div>
+
+<p>安装KVM</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> <span class="nb">install </span>kvm
+yum <span class="nt">-y</span> <span class="nb">install </span>qemu-kvm python-virtinst libvirt libvirt-python virt-manager libguestfs-tools bridge-utils virt-install
+</code></pre></div></div>
+
+<p>检测是否安装成功</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsmod | grep kvm
+</code></pre></div></div>
+
+<p>如果安装成功则显示如下，关键是前面的kvm_intel和kvm</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kvm_intel  162153  0
+kvm        525259  1 kvm_intel
+</code></pre></div></div>
+
+<p>开启kvm服务</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start libvirtd.service
+</code></pre></div></div>
+
+<p>创建虚拟网桥连接</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /etc/sysconfig/network-scripts/
+
+vi ifcfg-br0
+
+<span class="c">#在文件中输入如下内容</span>
+<span class="nv">BOOTPROTO</span><span class="o">=</span>static
+<span class="nv">ONBOOT</span><span class="o">=</span>YES
+<span class="nv">DEVICE</span><span class="o">=</span>br0
+<span class="nv">NAME</span><span class="o">=</span>br0
+<span class="nv">TYPE</span><span class="o">=</span>Bridge
+<span class="nv">IPADDR</span><span class="o">=</span>192.168.1.95
+<span class="nv">NETMASK</span><span class="o">=</span>255.255.255.0
+<span class="nv">GATEWAY</span><span class="o">=</span>192.168.1.254
+<span class="nv">DNS1</span><span class="o">=</span>114.114.114.114
+</code></pre></div></div>
+<p>将刚创建的网桥连接添加到当前网卡配置中</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>示例在eth0/em1中添加BRIDGE=br0(注意：BRIDGE要大写)，保留name,device,onboot属性即可，其他的可以注释掉
+</code></pre></div></div>
+
+<p>或者使用如下配置网桥</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 查看当前宿主机网络配置所使用的网卡，选择需要桥接的网卡。转去宿主机的/etc/sysconfig/network-scripts目录下。 
+2. 假如当前配置的物理网卡为eth0，我们将eth0的ip地址桥接出去。cp -a ifcfg-eth0 ifcfg-br0 
+3. 将ifcfg-eth0文件中配置的ip地址、掩码、网关、DNS等信息统统删掉，并增加一行BRIDGE=br0 
+4. 将ifcfg-br0文件中的UUID IPV6的信息统统删掉，将TYPE修改为Bridge，NAME和DEVICE修改为br0. 修改完毕之后的内容示例如下。 
+5. 将网络服务重新启动或者将宿主机重新启动使得配置生效。使用ifconfig命令查看ip地址信息。
+</code></pre></div></div>
+
+<p>修改完如下图所示
+<img src="/blog/blog_kvm/ifcfg-em1.jpg" alt="image" /></p>
+
+<p>重启网络</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart network
+</code></pre></div></div>
+
+<p>查看虚拟网卡</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brctl show
+</code></pre></div></div>
+
+<p>创建虚拟机</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo virt-install --name test --ram 4096 --disk path=/var/lib/libvirt/images/test.img,size=200 --vcpus 2 --os-type linux --network bridge=br0 --graphics none --virt-type kvm --location /tmp/CentOS-7-x86_64-DVD-1804.iso --os-variant none --extra-args='console=ttyS0' 
+</code></pre></div></div>
+
+<p>使用命令之后会出现下图界面，然后需要在命令行中配置虚拟机信息
+<img src="/blog/blog_kvm/process.jpg" alt="image" />
+<img src="/blog/blog_kvm/install.jpg" alt="image" /></p>
+
+<p>宿主机：Ubuntu16.04</p>
+
+<p>安装kvm</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo apt-get install qemu-kvm qemu-system libvirt-bin  bridge-utils virt-manager
+</code></pre></div></div>
+
+<p>创建虚拟网卡：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/network/interfaces
+   
+auto lo
+iface lo inet loopback
+
+auto br0
+iface br0 inet static
+address 10.0.101.10
+netmask 255.255.255.0
+gateway 10.0.101.254
+dns-nameservers 114.114.114.114
+bridge_ports eno1
+bridge_stp on
+bridge_fd 0
+bridge_maxwait 0
+</code></pre></div></div>
+
+<p>Ubuntu创建虚拟网卡后需要重启系统才会生效</p>
+
+<p>使用图形化界面virt-manager安装方式，之后在界面上配置虚拟机信息</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo virt-manager
+</code></pre></div></div>
+
+<p>命令行创建：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>virt-install <span class="nt">--virt-type</span><span class="o">=</span>kvm <span class="nt">--name</span><span class="o">=</span>vm1 <span class="nt">--vcpus</span><span class="o">=</span>2 <span class="nt">--memory</span><span class="o">=</span>65536 <span class="nt">--location</span><span class="o">=</span>/tmp/CentOS-7-x86_64-DVD-1804.iso <span class="nt">--disk</span> <span class="nv">path</span><span class="o">=</span>/var/lib/libvirt/images/shebao.qcow2,size<span class="o">=</span>200,format<span class="o">=</span>qcow2 <span class="nt">--network</span> <span class="nv">bridge</span><span class="o">=</span>br0 <span class="nt">--graphics</span> none <span class="nt">--extra-args</span><span class="o">=</span><span class="s1">'console=ttyS0'</span> <span class="nt">--force</span>   
+</code></pre></div></div>
+
+<p>kvm常用命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virsh list              #查看在运行的虚拟机
+virsh list --all        #查看所有虚拟机（关闭的也在内）
+virsh start  test	    #启动该虚拟机，test是创建时设置的虚拟机名字
+virsh reboot test       #重启虚拟机
+virsh destroy test	    #强制关闭该虚拟机，但并非真的销毁该虚拟机，只是关闭而已    
+virsh undefine test     #移除虚拟机,被该指令删除后不能启动
+virsh console + 域名（虚拟机的名称） #连接虚拟机
+virsh autostart + 域名  #虚拟机随宿主机启动
+virsh auotstart --disable +域名 #取消自启动
+</code></pre></div></div>
+
+<p>彻底删除虚拟机</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virsh destroy <span class="nb">test
+</span>virsh undefine <span class="nb">test</span> <span class="nt">--remove-all-storage</span>
+</code></pre></div></div>
+
+<p>修改虚拟机CPU，内存，磁盘，修改完后需要重启虚拟机生效</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virsh edit test.xml
+</code></pre></div></div>
+
+<p>ubuntu虚拟机（在宿主机上安装的虚拟机系统为Ubuntu）开启virsh console支持，可以在宿主机上使用virsh console test连接到虚拟机test上</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl enable serial-getty@ttyS0.service
+sudo systemctl start serial-getty@ttyS0.service
+</code></pre></div></div>
+
+<p>kvm虚拟机静态迁移</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 确定虚拟机处于关闭状态
+2. 查看虚拟机的磁盘配置文件
+    virsh domblklist test
+3. 导入虚拟机的配置文件
+    virsh dumpxml test &gt; /tmp/test.xml
+4. 拷贝配置文件到目标主机上
+5. 拷贝虚拟机的磁盘文件到目标主机上
+6. 再目标主机上定义注册虚拟主机
+    virsh define /etc/libvirt/qemu/test.xml 
+7. 开启虚拟机
+    virsh start test
+</code></pre></div></div>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2018/12/14/KVM虚拟化技术', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+  2018
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
