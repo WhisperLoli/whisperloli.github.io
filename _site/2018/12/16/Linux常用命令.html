@@ -1,0 +1,593 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_default.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Linux常用命令</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(111, 168, 220) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(111, 168, 220);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Linux常用命令</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(111, 168, 220);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(111, 168, 220)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(111, 168, 220);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Linux常用命令</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(111, 168, 220)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(111, 168, 220);"><sapn class="main">KVM虚拟化技术</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(111, 168, 220);border-bottom: 2px solid rgb(111, 168, 220);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html" class="rightchange" style="border-left: 1px solid rgb(111, 168, 220);border-bottom: 2px solid rgb(111, 168, 220);"><span>下一篇<br><br>KVM虚拟化技术</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(111, 168, 220); border-right: 8px solid rgb(111, 168, 220)">
+        Linux常用命令
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <p>查看当前所在的工作目录的全路径</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pwd
+</code></pre></div></div>
+
+<p>查看当前系统的时间</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>date
+date +%Y-%m-%d   # 按后面的格式显示当前时间，2018-12-16
+</code></pre></div></div>
+
+<p>查看当前有谁在线（在当前的服务器上）</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>who 或者 w
+</code></pre></div></div>
+
+<p>查看最近的登陆历史记录</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>last
+</code></pre></div></div>
+
+<p>关机/重启</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>关机（必须用root用户）
+shutdown -h now  # 立刻关机
+shutdown -h +10  #  10分钟以后关机
+shutdown -h 12:00:00  #12点整的时候关机
+
+重启
+shutdown -r now
+reboot   # 等于立刻重启
+</code></pre></div></div>
+
+<p>清屏</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clear 或者 ctrl + l
+</code></pre></div></div>
+
+<p>挂起当前进程</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ctrl+z   # 进程会挂起到后台
+bg jobid  # 让进程在后台继续执行
+fg jobid   # 让进程回到前台
+</code></pre></div></div>
+
+<p>切换工作目录</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~     # 切换到用户主目录（家目录）
+cd -     #  回退到上次所在的目录
+cd  什么路径都不带，则回到用户的主目录
+</code></pre></div></div>
+
+<p>创建文件夹</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir hello #创建文件夹
+mkdir -p  aaa/bbb/ccc   # 级联创建文件夹
+</code></pre></div></div>
+
+<p>删除文件夹</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rmdir  aaa   # 可以删除空文件夹
+rm  -r  aaa   # 可以把aaa整个文件夹及其中的所有子文件及文件夹全部删除
+rm  -rf  aaa   # 强制删除aaa及其子文件夹、文件
+</code></pre></div></div>
+
+<p>修改文件夹名称</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mv aaa boy   #mv本质上是移动
+</code></pre></div></div>
+
+<p>创建文件</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch somefile.1   # 创建一个空文件somefile.1
+echo "hi,boy" &gt; somefile.2    ## 利用重定向“&gt;”的功能，将一条指令的输出结果写入到一个文件中，会覆盖原文件内容，如果指定的文件不存在，则会创建出来
+vi somefile.3   #编辑文件，编辑完后保存，如果不存在则会创建新的文件
+</code></pre></div></div>
+
+<p>拷贝</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp somefile.1 /home/hadoop/
+</code></pre></div></div>
+
+<p>查看文件内容</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat somefile      #一次性将文件内容全部输出（控制台）
+cat file -n   #显示文件内容及行号
+more somefile     # 可以翻页查看, 下翻一页(空格)    上翻一页（b）   退出（q）
+less somefile      #可以翻页查看,下翻一页(空格)    上翻一页（b），上翻一行(↑)  下翻一行（↓）  可以搜索关键字（/keyword）
+tail -10 install.log  查看文件尾部的10行
+head -10 install.log   查看文件头部的10行
+</code></pre></div></div>
+
+<p>压缩与解压</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1、gzip压缩，压缩后a.txt会不存在，生成压缩文件a.txt.gz
+    gzip a.txt
+2、解压
+    gunzip a.txt.gz
+    gzip -d a.txt.gz
+    
+3、bzip2压缩，压缩后a.txt不存在，会生成压缩文件a.txt.bz2
+    bzip2 a.txt
+4、解压
+    bunzip2 a.bz2
+    bzip2 -d a.bz2
+    
+5、打包并压缩
+    tar -zcvf a.tar.gz  aaa/   #会打包aaa文件夹并压缩
+8、解包并解压缩
+    tar  -zxvf  a.tar.gz
+    解压到/usr下
+    tar  -zxvf  a.tar.gz  -C  /usr
+</code></pre></div></div>
+
+<p>常用查找命令的使用</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1、查找可执行的命令所在的路径：
+which     # which ls 查看ls命令所在的路径
+
+2、查找可执行的命令的位置：
+whereis  # whereis ls 查看ls命令所在的路径
+
+3、从某个文件夹开始查找文件
+find / -name "hadoop*" #在根目录下查找文件名以hadoop为前缀的文件
+find / -name "hadoop*" -ls
+
+4、查找并删除
+find / -name "hadoop*" -ok rm {} \;
+find / -name "hadoop*" -exec rm {} \;
+
+5、查找用户为hadoop的文件
+find  /usr  -user  hadoop  -ls
+
+6、查找用户为hadoop的文件夹
+find /home -user hadoop -type d -ls  # -type指定文件类型，d代表目录
+
+7、查找权限为777的文件夹
+find / -perm -777 -type d -ls
+
+8、查看当前目录下文件个数
+find ./ | wc -l
+
+9、显示命令历史
+history
+</code></pre></div></div>
+
+<p>文件权限的操作</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>drwxr-xr-x      （也可以用二进制表示  111 101 101  --&gt;  755）
+
+d：标识节点类型（d：文件夹   -：文件  l:链接）
+r：可读   w：可写    x：可执行 
+第一组rwx：  # 表示这个文件的拥有者对它的权限：可读可写可执行
+第二组r-x：  # 表示这个文件的所属组用户对它的权限：可读，不可写，可执行
+第三组r-x：  # 表示这个文件的其他用户（相对于上面两类用户）对它的权限：可读，不可写，可执行
+
+chmod g-rw haha.dat		 # 表示将haha.dat对所属组的rw权限取消
+chmod o-rw haha.dat		 # 表示将haha.dat对其他人的rw权限取消
+chmod u+x haha.dat		 # 表示将haha.dat对所属用户的权限增加x
+chmod a-x haha.dat       # 表示将haha.dat对所用户取消x权限
+
+
+也可以用数字的方式来修改权限
+chmod 664 haha.dat   
+
+如果要将一个文件夹的所有内容权限统一修改，则可以-R参数
+chmod -R 770 aaa/
+</code></pre></div></div>
+
+<p>修改文件所有权</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;只有root权限能执行&gt;
+chown angela  aaa		## 改变所属用户
+chown :angela  aaa		## 改变所属组
+chown angela:angela aaa/	## 同时修改所属用户和所属组
+</code></pre></div></div>
+
+<p>基本用户管理</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>添加一个用户：
+useradd spark
+passwd  spark     #根据提示设置密码即可
+
+删除一个用户：
+userdel -r spark     #加一个-r就表示把用户及用户的主目录都删除
+</code></pre></div></div>
+
+<p>为用户配置sudo权限</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>用root编辑 vi /etc/sudoers
+在文件的如下位置，为hadoop添加一行即可
+root    ALL=(ALL)       ALL     
+hadoop  ALL=(ALL)       ALL
+</code></pre></div></div>
+
+<p>统计文件或文件夹的大小</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -sh  /mnt/cdrom/packages  #查看文件夹大小
+df -h    #查看磁盘的空间
+</code></pre></div></div>
+
+<p>查看内存大小</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>free -h
+</code></pre></div></div>
+
+<p>修改IP</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(重启后永久生效)centos
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+(重启后无效)
+ifconfig eth0 192.168.12.22
+</code></pre></div></div>
+
+<p>关闭防火墙</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>centos7
+    systemctl stop firewalld   #关闭防火墙
+    systemctl disable firewalld #设置开机禁止自启动
+    
+ubuntu 
+    ufw stop #关闭防火墙
+    ufw disable #设置开机禁止自启动
+</code></pre></div></div>
+
+<p>上传下载</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp a.txt root@192.168.0.10:~          #上传a.txt到root用户的主目录下
+
+scp root@192.168.0.10:~/a.txt .        #下载a.txt到当前目录
+</code></pre></div></div>
+
+<p>查看cpu核数</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lscpu
+</code></pre></div></div>
+
+<p>查看程序的binary文件所在路径</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>示例：which python
+</code></pre></div></div>
+
+<p>查看程序的搜索路径</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>示例：whereis python
+当系统中安装了同一软件的多个版本时，不确定使用的是哪个版本时，这个命令就能派上用场
+</code></pre></div></div>
+
+<p>按时间排序，以列表的方式显示目录项</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -lrt
+</code></pre></div></div>
+
+<p>创建符号链接/硬链接</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ln cc ccAgain :硬连接；删除一个，将仍能找到；
+ln -s cc ccTo :符号链接(软链接)；删除源，另一个无法使用；（后面一个ccTo 为新建的文件）
+</code></pre></div></div>
+
+<p>列出所有端口 (包括监听和未监听的)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netstat -a
+</code></pre></div></div>
+
+<p>列出所有有监听的服务状态</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netstat -l
+
+显示进程ID
+netstat -p
+
+如果显示不出来，则可以使用lsof -i:port
+</code></pre></div></div>
+
+<p>列出所有 tcp 端口</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netstat -at
+</code></pre></div></div>
+
+<p>查看cpu信息</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lscpu 或者 cat /proc/cpuinfo
+
+查看核数
+    lscpu中CPUS信息  
+    或者
+    cat /proc/cpuinfo | grep processor | wc -l
+</code></pre></div></div>
+
+<p>查看cpu状态</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>top
+按CPU使用率排序 P
+按内存RES使用率排序 M
+显示程序全路径 c
+</code></pre></div></div>
+
+<p>查看特定端口被哪个进程使用</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsof -i:port
+</code></pre></div></div>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2018/12/16/Linux常用命令', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+  2018
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

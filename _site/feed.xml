@@ -1,4 +1,305 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-12-14T21:45:28+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">KVM虚拟化技术</title><link href="http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html" rel="alternate" type="text/html" title="KVM虚拟化技术" /><published>2018-12-14T00:00:00+08:00</published><updated>2018-12-14T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF</id><content type="html" xml:base="http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html">&lt;p&gt;宿主机平台是Centos和Ubuntu搭建虚拟机会有一些区别，所以对二者都进行介绍一下&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-12-16T14:04:10+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Linux常用命令</title><link href="http://localhost:4000/2018/12/16/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html" rel="alternate" type="text/html" title="Linux常用命令" /><published>2018-12-16T00:00:00+08:00</published><updated>2018-12-16T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/16/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</id><content type="html" xml:base="http://localhost:4000/2018/12/16/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html">&lt;p&gt;查看当前所在的工作目录的全路径&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pwd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看当前系统的时间&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;date
+date +%Y-%m-%d   # 按后面的格式显示当前时间，2018-12-16
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看当前有谁在线（在当前的服务器上）&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;who 或者 w
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看最近的登陆历史记录&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;last
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;关机/重启&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;关机（必须用root用户）
+shutdown -h now  # 立刻关机
+shutdown -h +10  #  10分钟以后关机
+shutdown -h 12:00:00  #12点整的时候关机
+
+重启
+shutdown -r now
+reboot   # 等于立刻重启
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;清屏&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;clear 或者 ctrl + l
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;挂起当前进程&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ctrl+z   # 进程会挂起到后台
+bg jobid  # 让进程在后台继续执行
+fg jobid   # 让进程回到前台
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;切换工作目录&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~     # 切换到用户主目录（家目录）
+cd -     #  回退到上次所在的目录
+cd  什么路径都不带，则回到用户的主目录
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;创建文件夹&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir hello #创建文件夹
+mkdir -p  aaa/bbb/ccc   # 级联创建文件夹
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;删除文件夹&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rmdir  aaa   # 可以删除空文件夹
+rm  -r  aaa   # 可以把aaa整个文件夹及其中的所有子文件及文件夹全部删除
+rm  -rf  aaa   # 强制删除aaa及其子文件夹、文件
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;修改文件夹名称&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mv aaa boy   #mv本质上是移动
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;创建文件&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;touch somefile.1   # 创建一个空文件somefile.1
+echo &quot;hi,boy&quot; &amp;gt; somefile.2    ## 利用重定向“&amp;gt;”的功能，将一条指令的输出结果写入到一个文件中，会覆盖原文件内容，如果指定的文件不存在，则会创建出来
+vi somefile.3   #编辑文件，编辑完后保存，如果不存在则会创建新的文件
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;拷贝&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cp somefile.1 /home/hadoop/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看文件内容&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat somefile      #一次性将文件内容全部输出（控制台）
+cat file -n   #显示文件内容及行号
+more somefile     # 可以翻页查看, 下翻一页(空格)    上翻一页（b）   退出（q）
+less somefile      #可以翻页查看,下翻一页(空格)    上翻一页（b），上翻一行(↑)  下翻一行（↓）  可以搜索关键字（/keyword）
+tail -10 install.log  查看文件尾部的10行
+head -10 install.log   查看文件头部的10行
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;压缩与解压&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1、gzip压缩，压缩后a.txt会不存在，生成压缩文件a.txt.gz
+    gzip a.txt
+2、解压
+    gunzip a.txt.gz
+    gzip -d a.txt.gz
+    
+3、bzip2压缩，压缩后a.txt不存在，会生成压缩文件a.txt.bz2
+    bzip2 a.txt
+4、解压
+    bunzip2 a.bz2
+    bzip2 -d a.bz2
+    
+5、打包并压缩
+    tar -zcvf a.tar.gz  aaa/   #会打包aaa文件夹并压缩
+8、解包并解压缩
+    tar  -zxvf  a.tar.gz
+    解压到/usr下
+    tar  -zxvf  a.tar.gz  -C  /usr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;常用查找命令的使用&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1、查找可执行的命令所在的路径：
+which     # which ls 查看ls命令所在的路径
+
+2、查找可执行的命令的位置：
+whereis  # whereis ls 查看ls命令所在的路径
+
+3、从某个文件夹开始查找文件
+find / -name &quot;hadoop*&quot; #在根目录下查找文件名以hadoop为前缀的文件
+find / -name &quot;hadoop*&quot; -ls
+
+4、查找并删除
+find / -name &quot;hadoop*&quot; -ok rm {} \;
+find / -name &quot;hadoop*&quot; -exec rm {} \;
+
+5、查找用户为hadoop的文件
+find  /usr  -user  hadoop  -ls
+
+6、查找用户为hadoop的文件夹
+find /home -user hadoop -type d -ls  # -type指定文件类型，d代表目录
+
+7、查找权限为777的文件夹
+find / -perm -777 -type d -ls
+
+8、查看当前目录下文件个数
+find ./ | wc -l
+
+9、显示命令历史
+history
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;文件权限的操作&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x      （也可以用二进制表示  111 101 101  --&amp;gt;  755）
+
+d：标识节点类型（d：文件夹   -：文件  l:链接）
+r：可读   w：可写    x：可执行 
+第一组rwx：  # 表示这个文件的拥有者对它的权限：可读可写可执行
+第二组r-x：  # 表示这个文件的所属组用户对它的权限：可读，不可写，可执行
+第三组r-x：  # 表示这个文件的其他用户（相对于上面两类用户）对它的权限：可读，不可写，可执行
+
+chmod g-rw haha.dat		 # 表示将haha.dat对所属组的rw权限取消
+chmod o-rw haha.dat		 # 表示将haha.dat对其他人的rw权限取消
+chmod u+x haha.dat		 # 表示将haha.dat对所属用户的权限增加x
+chmod a-x haha.dat       # 表示将haha.dat对所用户取消x权限
+
+
+也可以用数字的方式来修改权限
+chmod 664 haha.dat   
+
+如果要将一个文件夹的所有内容权限统一修改，则可以-R参数
+chmod -R 770 aaa/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;修改文件所有权&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;只有root权限能执行&amp;gt;
+chown angela  aaa		## 改变所属用户
+chown :angela  aaa		## 改变所属组
+chown angela:angela aaa/	## 同时修改所属用户和所属组
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;基本用户管理&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;添加一个用户：
+useradd spark
+passwd  spark     #根据提示设置密码即可
+
+删除一个用户：
+userdel -r spark     #加一个-r就表示把用户及用户的主目录都删除
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;为用户配置sudo权限&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;用root编辑 vi /etc/sudoers
+在文件的如下位置，为hadoop添加一行即可
+root    ALL=(ALL)       ALL     
+hadoop  ALL=(ALL)       ALL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;统计文件或文件夹的大小&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -sh  /mnt/cdrom/packages  #查看文件夹大小
+df -h    #查看磁盘的空间
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看内存大小&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;free -h
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;修改IP&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(重启后永久生效)centos
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+(重启后无效)
+ifconfig eth0 192.168.12.22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;关闭防火墙&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;centos7
+    systemctl stop firewalld   #关闭防火墙
+    systemctl disable firewalld #设置开机禁止自启动
+    
+ubuntu 
+    ufw stop #关闭防火墙
+    ufw disable #设置开机禁止自启动
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上传下载&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp a.txt root@192.168.0.10:~          #上传a.txt到root用户的主目录下
+
+scp root@192.168.0.10:~/a.txt .        #下载a.txt到当前目录
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看cpu核数&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lscpu
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看程序的binary文件所在路径&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;示例：which python
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看程序的搜索路径&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;示例：whereis python
+当系统中安装了同一软件的多个版本时，不确定使用的是哪个版本时，这个命令就能派上用场
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;按时间排序，以列表的方式显示目录项&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -lrt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;创建符号链接/硬链接&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ln cc ccAgain :硬连接；删除一个，将仍能找到；
+ln -s cc ccTo :符号链接(软链接)；删除源，另一个无法使用；（后面一个ccTo 为新建的文件）
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;列出所有端口 (包括监听和未监听的)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;netstat -a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;列出所有有监听的服务状态&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;netstat -l
+
+显示进程ID
+netstat -p
+
+如果显示不出来，则可以使用lsof -i:port
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;列出所有 tcp 端口&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;netstat -at
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看cpu信息&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lscpu 或者 cat /proc/cpuinfo
+
+查看核数
+    lscpu中CPUS信息  
+    或者
+    cat /proc/cpuinfo | grep processor | wc -l
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看cpu状态&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;top
+按CPU使用率排序 P
+按内存RES使用率排序 M
+显示程序全路径 c
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看特定端口被哪个进程使用&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsof -i:port
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="Linux" /><summary type="html">查看当前所在的工作目录的全路径 pwd 查看当前系统的时间</summary></entry><entry><title type="html">KVM虚拟化技术</title><link href="http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html" rel="alternate" type="text/html" title="KVM虚拟化技术" /><published>2018-12-14T00:00:00+08:00</published><updated>2018-12-14T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF</id><content type="html" xml:base="http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html">&lt;p&gt;宿主机平台是Centos和Ubuntu搭建虚拟机会有一些区别，所以对二者都进行介绍一下&lt;/p&gt;
 
 &lt;p&gt;宿主机：Centos7&lt;/p&gt;
 
