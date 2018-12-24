@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Elasticsearch自定义分词器实现复杂搜索"
+title:  "Elasticsearch自定义分词器"
 date:   2018-12-23 13:11:01 +0800
 tags:
 - elasticsearch
