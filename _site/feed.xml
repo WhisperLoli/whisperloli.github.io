@@ -1,4 +1,156 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-12-19T21:05:09+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">sbt打包程序</title><link href="http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html" rel="alternate" type="text/html" title="sbt打包程序" /><published>2018-12-19T00:00:00+08:00</published><updated>2018-12-19T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F</id><content type="html" xml:base="http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html">&lt;p&gt;Assembly Jar（组合Jar）与普通Jar的区别就是Assembly Jar会将所有的依赖都打进Jar中，最后生成的包比较大&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-12-24T19:51:49+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Elasticsearch自定义分词器实现复杂搜索</title><link href="http://localhost:4000/2018/12/23/Elasticsearch%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E8%AF%8D%E5%99%A8.html" rel="alternate" type="text/html" title="Elasticsearch自定义分词器实现复杂搜索" /><published>2018-12-23T13:11:01+08:00</published><updated>2018-12-23T13:11:01+08:00</updated><id>http://localhost:4000/2018/12/23/Elasticsearch%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E8%AF%8D%E5%99%A8</id><content type="html" xml:base="http://localhost:4000/2018/12/23/Elasticsearch%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E8%AF%8D%E5%99%A8.html">&lt;p&gt;Elasticsearch默认的分词器会将中文比如”你好”拆分成”你”和”好”这两个字，然后按照倒排索引进行存储，所以默认的分词不好用，大部分时候都会自己更换分词器以达到预期的效果。推荐一个很好用的分词器，众所周知的IK分词器&lt;/p&gt;
+
+&lt;p&gt;简单介绍一下IK分词器中的ik_smart和ik_max_word，两者的区别就是分词粒度不一样&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ik_smart:粗粒度分词
+ik_max_word:细粒度分词，切分出的词尽可能的多
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;ik_smart粗粒度分词效果
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/ik_smart.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ik_max_word细粒度分词效果，可以看到切分出的词非常多，ik_smart切分的词只是ik_max_word分词后的子集
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/ik_max_word.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;安装IK分词器，本人使用的Elasticsearch版本是5.5.3，安装IK需要把下面命令中的5.5.3更换成自己Elasticsearch的版本号，安装完后重启Elasticsearch&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.5.3/elasticsearch-analysis-ik-5.5.3.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;IK分词器详细说明&lt;a href=&quot;https://github.com/medcl/elasticsearch-analysis-ik&quot;&gt;参见github文档&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;既然中文可以搜索，那么拼音也可以进行搜索，用户时常在输入中文的时候输成了拼音，为了提高UE，也应当返回搜索结果，就像百度搜索一样
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/baidu.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;再介绍一下拼音分词插件，本人使用的是elasticsearch-analysis-pin插件，同IK分词插件一样，也是elastic大咖&lt;a href=&quot;https://github.com/medcl&quot;&gt;medcl&lt;/a&gt;的项目，详细使用详情参见&lt;a href=&quot;https://github.com/medcl/elasticsearch-analysis-pinyin&quot;&gt;github&lt;/a&gt;，大咖常年活跃在&lt;a href=&quot;https://elasticsearch.cn/&quot;&gt;elastic中文社区&lt;/a&gt;，很多问题在中文社区都能够得到有效的解决&lt;/p&gt;
+
+&lt;p&gt;安装方式，同样也要更换成Elasticsearch相对应的版本号&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v5.5.3/elasticsearch-analysis-pinyin-5.5.3.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;pinyin索引效果
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/pinyin.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;pinyin分词器存在一个问题就是多音字不好区分，NLP语义理解一直也是比较难的部分，例如下面就没有将“银行”的拼音正确解析
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/pinyin_ polyphone.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;忘记介绍了，本人使用的搜索界面是kibana，是ELK组件中的K，E是Elaisticsearch，L是Logstash，L用于日志收集，界面插件有很多，Kibana还是很好用的，强烈安利一波，Elasticsearch+Kibana环境搭建还是很简单的，在此不做过多赘述&lt;/p&gt;
+
+&lt;p&gt;进入正题，我们想要实现上图中百度搜索这种效果就需要把pinyin和ik进行组合搜索。先自定义分词器&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT demo
+{
+  &quot;index&quot;: {
+      &quot;analysis&quot;: {
+          &quot;filter&quot;: {
+              &quot;index_pinyin&quot;: {
+                    &quot;type&quot;: &quot;pinyin&quot;,
+                    &quot;keep_original&quot;: true,
+                    &quot;keep_first_letter&quot;: true,
+                    &quot;keep_separate_first_letter&quot;: true,
+                    &quot;keep_full_pinyin&quot;: true,
+                    &quot;keep_joined_full_pinyin&quot;: true,
+                    &quot;keep_none_chinese_in_joined_full_pinyin&quot;: false,
+                    &quot;keep_none_chinese_in_first_letter&quot;: false,
+                    &quot;none_chinese_pinyin_tokenize&quot;: false,
+                    &quot;first_letter&quot;: &quot;prefix&quot;,
+                    &quot;padding_char&quot;: &quot; &quot;,
+                    &quot;lowercase&quot; : true,
+                    &quot;remove_duplicated_term&quot; : true
+                },
+                &quot;search_pinyin&quot;: {
+                    &quot;type&quot;: &quot;pinyin&quot;,
+                    &quot;keep_original&quot;: true,
+                    &quot;keep_first_letter&quot;: false,
+                    &quot;keep_separate_first_letter&quot;: false,
+                    &quot;keep_full_pinyin&quot;: false,
+                    &quot;keep_joined_full_pinyin&quot;: true,
+                    &quot;keep_none_chinese_in_joined_full_pinyin&quot;: true,
+                    &quot;keep_none_chinese_in_first_letter&quot;: true,
+                    &quot;none_chinese_pinyin_tokenize&quot;: false,
+                    &quot;first_letter&quot;: &quot;prefix&quot;,
+                    &quot;padding_char&quot;: &quot; &quot;,
+                    &quot;lowercase&quot; : true,
+                    &quot;remove_duplicated_term&quot; : true
+                },
+                &quot;length&quot;:{
+                  &quot;type&quot;: &quot;length&quot;,
+                  &quot;min&quot;:2
+                }
+                
+            },
+            &quot;analyzer&quot;: {
+                &quot;index_ik_pinyin_analyzer&quot;: {
+                    &quot;type&quot;: &quot;custom&quot;,
+                    &quot;tokenizer&quot;: &quot;ik_max_word&quot;,
+                    &quot;filter&quot;: [&quot;index_pinyin&quot;]
+                },
+                &quot;search_ik_pinyin_analyzer&quot;: {
+                    &quot;type&quot;: &quot;custom&quot;,
+                    &quot;tokenizer&quot;: &quot;ik_smart&quot;,
+                    &quot;filter&quot;: [&quot;length&quot;,&quot;search_pinyin&quot;,&quot;length&quot;]
+                }
+            }
+            
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;定义了两个分词器，analyzer中的index_ik_pinyin_analyzer和search_ik_pinyin_analyzer，在filter中定义了3个过滤器，两个是pinyin类型过滤器，还有一个是length过滤器，将分词后的长度最小值设置成2，也就是去掉长度为1的词&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT demo/items/_mapping
+{
+  &quot;properties&quot;: {
+    &quot;name&quot;:{
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;analyzer&quot;: &quot;index_ik_pinyin_analyzer&quot;,
+      &quot;search_analyzer&quot;: &quot;search_ik_pinyin_analyzer&quot;,
+      &quot;fields&quot;: {
+        &quot;keyword&quot;:{
+          &quot;type&quot;: &quot;keyword&quot;,
+          &quot;ignore_above&quot;: 256
+        }
+      }
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;设置mapping，type为items，只设置了一个字段name，index_ik_pinyin_analyzer用于索引，search_ik_pinyin_analyzer用于搜索，在ES中，索引做为名词就是索引的意思，做为动词可以理解成存储的意思&lt;/p&gt;
+
+&lt;p&gt;通过bulk API批量操作数据&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST _bulk
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 1}}
+{&quot;name&quot;: &quot;美国&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 2}}
+{&quot;name&quot;: &quot;英国&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 3}}
+{&quot;name&quot;: &quot;中国&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 4}}
+{&quot;name&quot;: &quot;中华人民共和国&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 5}}
+{&quot;name&quot;: &quot;gongheguo&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 6}}
+{&quot;name&quot;: &quot;刘德华&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 7}}
+{&quot;name&quot;: &quot;刘青云&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 8}}
+{&quot;name&quot;: &quot;陕西省&quot;}
+{&quot;index&quot;:{&quot;_index&quot;:&quot;demo&quot;,&quot;_type&quot;: &quot;items&quot;,&quot;_id&quot;: 9}}
+{&quot;name&quot;: &quot;山西省&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;使用match搜索“中华人民共和国”的全拼音结果如下图
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/search_pinyin.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用match搜索“中华人民共和国”的拼音首字母结果如下图
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/search_first_pinyin.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用match搜索“中华”结果如下图
+&lt;img src=&quot;/blog/blog_elasticsearch_ik_pinyin/search_term.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果对IK分词器的效果不是很满意，可以自己整理语料，放入词库中，自定义词库路径为&quot;config/analysis-ik/custom&quot;，同时需要修改IKAnalyzer.cfg.xml文件，在该文件中配置自定义词库的读取&lt;/p&gt;
+
+&lt;p&gt;推荐一个分词工具，个人认为挺好用的，是由梁斌老师提供的&lt;a href=&quot;http://www.pullword.com/&quot;&gt;基于深度学习的中文在线抽词PullWord&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="elasticsearch" /><category term="搜索引擎" /><summary type="html">Elasticsearch默认的分词器会将中文比如”你好”拆分成”你”和”好”这两个字，然后按照倒排索引进行存储，所以默认的分词不好用，大部分时候都会自己更换分词器以达到预期的效果。推荐一个很好用的分词器，众所周知的IK分词器</summary></entry><entry><title type="html">sbt打包程序</title><link href="http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html" rel="alternate" type="text/html" title="sbt打包程序" /><published>2018-12-19T00:00:00+08:00</published><updated>2018-12-19T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F</id><content type="html" xml:base="http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html">&lt;p&gt;Assembly Jar（组合Jar）与普通Jar的区别就是Assembly Jar会将所有的依赖都打进Jar中，最后生成的包比较大&lt;/p&gt;
 
 &lt;p&gt;打包spark程序步骤如下：&lt;/p&gt;
 
