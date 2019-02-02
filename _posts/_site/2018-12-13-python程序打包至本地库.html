@@ -1,0 +1,72 @@
+<p>有时，自己写的一个工具，复用性很高，当前脚本中需要用到，在其他脚本中也需要使用，这时，就需要将脚本打成可以使用pip install的包，安装到本地库</p>
+
+<p>下面演示案例，目的是把demo下的脚本打成包，demo的结构目录如下图
+<img src="/blog/blog_python_package/catalog.jpg" alt="image" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>解释一下__init__.py文件
+在Python中，一个.py文件就称之为一个模块（Module）
+为了避免模块名冲突，Python又引入了按目录来组织模块的方法，称为包（Package）
+每一个包目录下面都会有一个__init__.py的文件，这个文件是必须存在的，
+否则，Python就把这个目录当成普通目录，而不是一个包。__init__.py可以是空文件，也可以有Python代码
+</code></pre></div></div>
+<p>也就是说hello_world是一个包，hello.py为模块</p>
+
+<p>hello.py文件中的代码如下，只有一个的say_hello方法</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"hello,{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>此时，我们要在demo目录下创建setup.py文件</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">'demo'</span><span class="p">,</span>  <span class="c">#pip安装成功后pip list显示的名字</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s">'0.0.1'</span><span class="p">,</span> <span class="c">#版本号</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">'test package'</span><span class="p">,</span>
+    <span class="n">license</span> <span class="o">=</span> <span class="s">'MIT License'</span><span class="p">,</span>
+
+    <span class="n">author</span> <span class="o">=</span> <span class="s">'Nengjun'</span><span class="p">,</span>
+    <span class="n">author_email</span> <span class="o">=</span> <span class="s">'ahhunengjun@163.com'</span><span class="p">,</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">"https://github.com/WhisperLoli"</span><span class="p">,</span> <span class="c">#项目主页，如果有的话</span>
+    <span class="n">packages</span> <span class="o">=</span> <span class="n">find_packages</span><span class="p">(),</span>
+    <span class="n">platforms</span> <span class="o">=</span> <span class="s">'any'</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>setup.py写完之后，需要检查一下</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python setup.py check <span class="c">#检查一下有无错误，setup中是否缺少参数</span>
+</code></pre></div></div>
+
+<p>打包需要使用到docutils包，所以先安装一下</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install docutils
+</code></pre></div></div>
+
+<p>之后打包代码</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python setup.py sdist
+</code></pre></div></div>
+
+<p><img src="/blog/blog_python_package/package.jpg" alt="image" /></p>
+
+<p>完成后新的目录如下</p>
+
+<p><img src="/blog/blog_python_package/new_catalog.jpg" alt="image" /></p>
+
+<p>会生成一个dist文件夹，进入该文件夹中</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>dist
+pip <span class="nb">install </span>demo-0.0.1.tar.gz <span class="c">#安装打包的文件</span>
+</code></pre></div></div>
+
+<p>安装完成后，可以使用如下命令查看是否安装成功，如果安装成功会显示安装的名字和版本号</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip list | <span class="nb">grep</span> <span class="s2">"demo*"</span>
+</code></pre></div></div>
+
+<p>安装成功即可在代码中使用
+<img src="/blog/blog_python_package/success.jpg" alt="image" /></p>
+

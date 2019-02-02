@@ -1,0 +1,10 @@
+<p>添加JVM参数，在这里未使用身份验证，生产环境建议开启用户名密码验证，端口号为18999，可自行更改，同jstatd方式一样，远程访问需要开放指定的端口</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-Djava</span>.rmi.server.hostname<span class="o">=</span>ip<span class="o">(</span>域名<span class="o">)</span> <span class="nt">-Dcom</span>.sun.management.jmxremote.port<span class="o">=</span>18999 <span class="nt">-Dcom</span>.sun.management.jmxremote.ssl<span class="o">=</span><span class="nb">false</span> <span class="nt">-Dcom</span>.sun.management.jmxremote.authenticate<span class="o">=</span><span class="nb">false</span>
+</code></pre></div></div>
+
+<p><img src="/blog/blog_jvm/success.jpg" alt="image" /></p>
+
+<p>注意：Scala程序做成systemd服务启动，添加JVM参数需要在参数前加-J，如下</p>
+
+<p><img src="/blog/blog_jvm/scala_style.jpg" alt="image" /></p>

@@ -1,0 +1,47 @@
+<p>步骤</p>
+
+<ol>
+  <li>
+    <p>ssh登录服务器</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh root@xxx.xxx.xxx.xxx
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在家目录下创建授权文件</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~
+vi jstatd.all.policy
+<span class="c">#在文件中输入如下内容</span>
+grant codebase <span class="s2">"file:</span><span class="k">${</span><span class="nv">java</span><span class="p">.home</span><span class="k">}</span><span class="s2">/../lib/tools.jar"</span> <span class="o">{</span>
+ permission java.security.AllPermission<span class="p">;</span>
+<span class="o">}</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动jstatd服务，默认连接端口号为1099</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">JAVA_HOME</span><span class="k">}</span>/bin/jstatd <span class="nt">-J-Djava</span>.security.policy<span class="o">=</span>jstatd.all.policy
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>本地连接不上远程解决方案</p>
+
+<ol>
+  <li>
+    <p>服务器上开启了防火墙，需要开放1099端口，或者关闭防火墙，需要注意的是，仅仅开放1099端口可能还是连接不上，因为jstatd服务有两个端口，另一个端口也需要开放
+<img src="/blog/blog_jvm/jstatd_port.jpg" alt="image" />
+如图所示，还有另一个端口37529，经测试，该端口是随机的，每次开启jstatd服务，该端口都会变化，检查端口是否开放，在本地执行如下命令</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>telnet ip port <span class="c">#如果端口未开放，则连接会被拒绝或者卡在尝试连接中</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>如果端口均可以访问，执行如下命令启动服务</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">JAVA_HOME</span><span class="k">}</span>/bin/jstatd <span class="nt">-J-Djava</span>.security.policy<span class="o">=</span>jstatd.all.policy <span class="nt">-J-Djava</span>.rmi.server.hostname<span class="o">=</span>域名<span class="o">(</span>IP<span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
