@@ -1,4 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-02-02T23:44:46+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">引入sbt错误</title><link href="http://localhost:4000/2019/02/02/sbt_error-conclusion.html" rel="alternate" type="text/html" title="引入sbt错误" /><published>2019-02-02T22:59:37+08:00</published><updated>2019-02-02T22:59:37+08:00</updated><id>http://localhost:4000/2019/02/02/sbt_error-conclusion</id><content type="html" xml:base="http://localhost:4000/2019/02/02/sbt_error-conclusion.html">&lt;p&gt;今天使用IntelliJ IDEA创建项目，碰到个古怪的错误，创建完报错，无法引入sbt，错误信息如下
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-02-17T18:14:46+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">AWS搭建VPN</title><link href="http://localhost:4000/2019/02/16/AWS_VPN.html" rel="alternate" type="text/html" title="AWS搭建VPN" /><published>2019-02-16T23:37:24+08:00</published><updated>2019-02-16T23:37:24+08:00</updated><id>http://localhost:4000/2019/02/16/AWS_VPN</id><content type="html" xml:base="http://localhost:4000/2019/02/16/AWS_VPN.html">&lt;p&gt;之前一直用的是搬瓦工的VPS，现在搬瓦工只支持KVM模式，所以价格上去了，我的搬瓦工也到期了，听说AWS首年免费使用，所以尝试一下，注册了一个账号，英文不好的童鞋可以把语言切换成中文。&lt;/p&gt;
+
+&lt;p&gt;首先要注册一个账号，注册的时候要求填电话号码，不要乱填，因为需要验证手机号码的，还需要绑定一张信用卡，信用要支持Visa的，要全币种的信用卡。AWS会进行信用卡验证，扣1$验证信用卡是否有效，说是会退的，后面我还被扣了1$的押金，招行微信公众号发消息告诉我消费了，后来我又打电话给招行客服，客服说我信用卡账单没查到这两笔交易，以账单为准，哈哈&lt;/p&gt;
+
+&lt;p&gt;先选择机器所在地区，我选择的是东京，截图右上角
+&lt;img src=&quot;/blog/blog_aws_vpn/area.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;创建EC2实例,点击图中的launch instance创建实例
+&lt;img src=&quot;/blog/blog_aws_vpn/launch.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;选择带Free tier eligible的机器，这里选的是Ubuntu Server 18.04 LTS这款
+&lt;img src=&quot;/blog/blog_aws_vpn/free_machine.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;进来之后还是选择带Free tier eligible的机器，配置不高，但是搭建VPN还是可以的
+&lt;img src=&quot;/blog/blog_aws_vpn/review_launch.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在之后的页面中点击Launch按钮，会弹出这个框，需要设置密钥对，设置完后下载密钥对，之后再Launch Instances，密钥对在后面会用于登陆服务器，
+&lt;img src=&quot;/blog/blog_aws_vpn/key_pair.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;先启动实例后再连接实例
+&lt;img src=&quot;/blog/blog_aws_vpn/connect.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;会弹出连接方式，教你怎么连接上你创建的实例，先给下载的密钥对文件授权，然后用ssh方式登录服务器
+&lt;img src=&quot;/blog/blog_aws_vpn/ssh_connect.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此，实例创建完成&lt;/p&gt;
+
+&lt;p&gt;登录服务器，用Shadowsocks搭建VPN&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; //获取root权限
+apt-get update //更新apt-get
+apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;python-pip //安装pip工具，用于安装shadowsocks
+pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;shadowsocks //安装shadowsocks
+vim ~/shadowsocks_conf.json //编辑shadowsocks配置
+
+&lt;span class=&quot;c&quot;&gt;#json文件内容为如下&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;server&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;0.0.0.0&quot;&lt;/span&gt;, 
+    &lt;span class=&quot;s2&quot;&gt;&quot;server_port&quot;&lt;/span&gt;: 443, &lt;span class=&quot;c&quot;&gt;#vpn端口号&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;qwertyuiop&quot;&lt;/span&gt;, &lt;span class=&quot;c&quot;&gt;#连接密码&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;local_address&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;local_port&quot;&lt;/span&gt;:1080,
+    &lt;span class=&quot;s2&quot;&gt;&quot;timeout&quot;&lt;/span&gt;:600,
+    &lt;span class=&quot;s2&quot;&gt;&quot;method&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;aes-256-cfb&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;fast_open&quot;&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+ssserver &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; ~/shadowsocks_conf.json &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; start //启动shadowsocks
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;编辑EC2入站规则，还是再控制台页面，下面是有滚动条的，滑到最右边就能看见了
+&lt;img src=&quot;/blog/blog_aws_vpn/security_groups.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/blog_aws_vpn/edit.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;自定义入站规则，把刚刚在json配置文件中的端口给加上去，我用的是443，再加个22端口，ssh默认使用的是22端口，如果修改过，则换为修改后的端口
+&lt;img src=&quot;/blog/blog_aws_vpn/custom_rule.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此搭建工作完成&lt;/p&gt;
+
+&lt;p&gt;本人的是Mac版的，分享一个&lt;a href=&quot;链接:https://pan.baidu.com/s/1Ut0M8bMxCPnr1xoOHOxZig&quot;&gt;百度云链接&lt;/a&gt;，密码:2v7x，两个版本的客户端，任意下载一个即可，使用&lt;a href=&quot;https://github.com/shadowsocks/ShadowsocksX-NG/releases&quot;&gt;GitHub下载地址&lt;/a&gt;下载也可以&lt;/p&gt;
+
+&lt;p&gt;安装完后，在 服务器-&amp;gt;服务器设定，填写配置信息，配置信息在刚刚的json文件中配置了，地址不要使用ifconfig显示的IP，在控制台页面中查看公网IP，还是在下方把滚动条向右滑
+&lt;img src=&quot;/blog/blog_aws_vpn/ss_connect.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/blog_aws_vpn/public_ip.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;大功告成，不要干坏事噢&lt;/p&gt;
+
+&lt;p&gt;为了方便以后登录服务器，建议把ssh public key添加到服务器上&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 本地操作&lt;/span&gt;
+ssh-keygen &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; rsa &lt;span class=&quot;c&quot;&gt;#生成ssh key，使用rsa加密方式，输入密码时可以回车，不设置密码&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.ssh
+&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;id_rsa.pub &lt;span class=&quot;c&quot;&gt;#该文件中的内容就是ssh public key，把该文件中的内容拷贝&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#服务器端操作&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.ssh
+&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;authorized_keys &lt;span class=&quot;c&quot;&gt;#如果没有authorized_keys文件&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#再把刚copy的public key添加到authorized_keys文件中，之后就可以使用ssh user@ip 的方式连接上服务器&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="VPS" /><category term="Linux" /><category term="VPN" /><summary type="html">之前一直用的是搬瓦工的VPS，现在搬瓦工只支持KVM模式，所以价格上去了，我的搬瓦工也到期了，听说AWS首年免费使用，所以尝试一下，注册了一个账号，英文不好的童鞋可以把语言切换成中文。</summary></entry><entry><title type="html">引入sbt错误</title><link href="http://localhost:4000/2019/02/02/sbt_error-conclusion.html" rel="alternate" type="text/html" title="引入sbt错误" /><published>2019-02-02T22:59:37+08:00</published><updated>2019-02-02T22:59:37+08:00</updated><id>http://localhost:4000/2019/02/02/sbt_error-conclusion</id><content type="html" xml:base="http://localhost:4000/2019/02/02/sbt_error-conclusion.html">&lt;p&gt;今天使用IntelliJ IDEA创建项目，碰到个古怪的错误，创建完报错，无法引入sbt，错误信息如下
 &lt;img src=&quot;/blog/blog_sbt_import_error_conclusion/import_error.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;根据错误信息，大胆猜测本地可能没有sbt1.2.8，于是进入sbt本地仓库中查看
@@ -1075,16 +1158,4 @@ response(flow) 当接收到回复时被调用.
 
 &lt;p&gt;爬取的视频如下，是不带有抖音水印的噢！&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/blog/blog_spider_douyin/video.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="爬虫" /><category term="appium" /><category term="python" /><category term="mitmproxy" /><summary type="html">先介绍一下环境与工具 操作系统：MacOS 手机操作系统：Android 手机型号：荣耀8 mitmproxy: 中间人代理【man-in-the-middle proxy】，对手机端的请求进行拦截 Appium:自动化测试工具 环境搭建</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/2018/05/17/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2018-05-17T14:05:21+08:00</published><updated>2018-05-17T14:05:21+08:00</updated><id>http://localhost:4000/2018/05/17/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/2018/05/17/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
-
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name>true</name></author><category term="jekyll" /><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;/blog/blog_spider_douyin/video.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="爬虫" /><category term="appium" /><category term="python" /><category term="mitmproxy" /><summary type="html">先介绍一下环境与工具 操作系统：MacOS 手机操作系统：Android 手机型号：荣耀8 mitmproxy: 中间人代理【man-in-the-middle proxy】，对手机端的请求进行拦截 Appium:自动化测试工具 环境搭建</summary></entry></feed>
