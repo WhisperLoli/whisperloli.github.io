@@ -5,7 +5,7 @@ date:   2019-01-08 19:24:56
 tags:
 - JVM
 - Scala
-color: rgb(255,90,90)
+color: rgb(131, 111, 255)
 cover: '/blog/Halloween/witch_moon.jpg'
 subtitle: '连接方式JMX'
 ---
