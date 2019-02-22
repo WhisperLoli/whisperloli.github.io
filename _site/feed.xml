@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-02-22T10:26:17+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">AWS搭建VPN</title><link href="http://localhost:4000/2019/02/16/AWS_VPN.html" rel="alternate" type="text/html" title="AWS搭建VPN" /><published>2019-02-16T23:37:24+08:00</published><updated>2019-02-16T23:37:24+08:00</updated><id>http://localhost:4000/2019/02/16/AWS_VPN</id><content type="html" xml:base="http://localhost:4000/2019/02/16/AWS_VPN.html">&lt;p&gt;之前一直用的是搬瓦工的VPS，现在搬瓦工只支持KVM模式，所以价格上去了，我的搬瓦工也到期了，听说AWS首年免费使用，所以尝试一下，注册了一个账号，英文不好的童鞋可以把语言切换成中文。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-02-22T21:28:50+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">AWS搭建VPN</title><link href="http://localhost:4000/2019/02/16/AWS_VPN.html" rel="alternate" type="text/html" title="AWS搭建VPN" /><published>2019-02-16T23:37:24+08:00</published><updated>2019-02-16T23:37:24+08:00</updated><id>http://localhost:4000/2019/02/16/AWS_VPN</id><content type="html" xml:base="http://localhost:4000/2019/02/16/AWS_VPN.html">&lt;p&gt;之前一直用的是搬瓦工的VPS，现在搬瓦工只支持KVM模式，所以价格上去了，我的搬瓦工也到期了，听说AWS首年免费使用，所以尝试一下，注册了一个账号，英文不好的童鞋可以把语言切换成中文。&lt;/p&gt;
 
 &lt;p&gt;首先要注册一个账号，注册的时候要求填电话号码，不要乱填，因为需要验证手机号码的，还需要绑定一张信用卡，信用要支持Visa的，要全币种的信用卡。AWS会进行信用卡验证，扣1$验证信用卡是否有效，说是会退的，后面我还被扣了1$的押金，招行微信公众号发消息告诉我消费了，后来我又打电话给招行客服，客服说我信用卡账单没查到这两笔交易，以账单为准，哈哈&lt;/p&gt;
 
 &lt;p&gt;先选择机器所在地区，我选择的是东京，截图右上角
-&lt;img src=&quot;/blog/blog_aws_vpn/area.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/area.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;创建EC2实例,点击图中的launch instance创建实例
-&lt;img src=&quot;/blog/blog_aws_vpn/launch.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/launch.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;选择带Free tier eligible的机器，这里选的是Ubuntu Server 18.04 LTS这款
-&lt;img src=&quot;/blog/blog_aws_vpn/free_machine.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/free_machine.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;进来之后还是选择带Free tier eligible的机器，配置不高，但是搭建VPN还是可以的
-&lt;img src=&quot;/blog/blog_aws_vpn/review_launch.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/review_launch.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;在之后的页面中点击Launch按钮，会弹出这个框，需要设置密钥对，设置完后下载密钥对，之后再Launch Instances，密钥对在后面会用于登陆服务器，
-&lt;img src=&quot;/blog/blog_aws_vpn/key_pair.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/key_pair.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;先启动实例后再连接实例
-&lt;img src=&quot;/blog/blog_aws_vpn/connect.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/connect.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;会弹出连接方式，教你怎么连接上你创建的实例，先给下载的密钥对文件授权，然后用ssh方式登录服务器
-&lt;img src=&quot;/blog/blog_aws_vpn/ssh_connect.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/ssh_connect.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;至此，实例创建完成&lt;/p&gt;
 
@@ -51,21 +51,21 @@ ssserver &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; ~/shadowsocks_conf.jso
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;编辑EC2入站规则，还是再控制台页面，下面是有滚动条的，滑到最右边就能看见了
-&lt;img src=&quot;/blog/blog_aws_vpn/security_groups.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/security_groups.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/blog/blog_aws_vpn/edit.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/blog_aws_vpn/edit.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;自定义入站规则，把刚刚在json配置文件中的端口给加上去，我用的是443，再加个22端口，ssh默认使用的是22端口，如果修改过，则换为修改后的端口
-&lt;img src=&quot;/blog/blog_aws_vpn/custom_rule.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/custom_rule.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;至此搭建工作完成&lt;/p&gt;
 
 &lt;p&gt;本人的是Mac版的，分享一个&lt;a href=&quot;链接:https://pan.baidu.com/s/1Ut0M8bMxCPnr1xoOHOxZig&quot;&gt;百度云链接&lt;/a&gt;，密码:2v7x，两个版本的客户端，任意下载一个即可，使用&lt;a href=&quot;https://github.com/shadowsocks/ShadowsocksX-NG/releases&quot;&gt;GitHub下载地址&lt;/a&gt;下载也可以&lt;/p&gt;
 
 &lt;p&gt;安装完后，在 服务器-&amp;gt;服务器设定，填写配置信息，配置信息在刚刚的json文件中配置了，地址不要使用ifconfig显示的IP，在控制台页面中查看公网IP，还是在下方把滚动条向右滑
-&lt;img src=&quot;/blog/blog_aws_vpn/ss_connect.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/blog/blog_aws_vpn/ss_connect.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/blog/blog_aws_vpn/public_ip.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/blog_aws_vpn/public_ip.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;大功告成，不要干坏事噢&lt;/p&gt;
 
