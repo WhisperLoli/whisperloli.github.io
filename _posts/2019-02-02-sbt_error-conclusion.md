@@ -4,7 +4,7 @@ title:  "引入sbt错误"
 date:   2019-02-02 22:59:37 +0800
 tags: Sbt
 color: rgb(255,90,90)
-cover: '../blog/Halloween/happy.jpg'
+cover: '../blog/Halloween/happy.webp'
 subtitle: 'sbt引入错误 & 年度小结'
 ---
 

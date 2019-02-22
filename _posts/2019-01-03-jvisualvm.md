@@ -4,7 +4,7 @@ title:  "jvisualvm监控远程服务器"
 date:   2019-01-03 21:05:21
 tags: JVM
 color: rgb(30, 144, 255)
-cover: '/blog/Halloween/witch.jpeg'
+cover: '/blog/Halloween/witch.webp'
 subtitle: '连接方式jstatd'
 ---
 

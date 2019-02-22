@@ -6,7 +6,7 @@ tags:
 - elasticsearch
 - 搜索引擎
 color: rgb(244, 204, 204)
-cover: '/blog/Halloween/three_pumkin.jpeg'
+cover: '/blog/Halloween/three_pumkin.webp'
 subtitle: 'elasticsearch自定义分词器IK+Pinyin搜索'
 ---
 

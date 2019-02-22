@@ -6,7 +6,7 @@ tags:
 - JVM
 - Scala
 color: rgb(131, 111, 255)
-cover: '/blog/Halloween/witch_moon.jpg'
+cover: '/blog/Halloween/witch_moon.webp'
 subtitle: '连接方式JMX'
 ---
 添加JVM参数，在这里未使用身份验证，生产环境建议开启用户名密码验证，端口号为18999，可自行更改，同jstatd方式一样，远程访问需要开放指定的端口
