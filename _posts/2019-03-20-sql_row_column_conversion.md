@@ -6,7 +6,7 @@ tags:
 - SQL
 - MySQL
 color: rgb(238, 0, 0)
-cover: '/blog/Halloween/test.webp'
+cover: '/blog/Halloween/2019_05_06_02.webp'
 subtitle: 'MySQL行列转换'
 ---
 
