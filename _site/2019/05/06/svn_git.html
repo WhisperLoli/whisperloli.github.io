@@ -1,0 +1,377 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_default.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>版本管理工具之SVN与Git</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">版本管理工具之SVN与Git</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">版本管理工具之SVN与Git</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2019/03/20/sql_row_column_conversion.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">MySQL行列转换</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2019/03/20/sql_row_column_conversion.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>MySQL行列转换</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        SVN对比Git命令行操作
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <p>之前在公司版本管理工具一直用的是Git，习惯于Git命令行操作，最近换了家公司，发现竟然用的是SVN。在Windows系统上，可以用<a href="https://tortoisesvn.net/downloads.html">小乌龟</a>这个工具。我一直习惯用Mac办公，Mac上也有图形界面工具，例如SmartSVN，但是是收费软件。Mac有个好处就是自带了SVN客户端，可以在命令行中直接使用。</p>
+
+<p>拉取远程代码到本地</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn checkout svn://localhost/mycode <span class="nt">--username</span><span class="o">=</span>mj <span class="nt">--password</span><span class="o">=</span>123 /Users/admin/Documents/code         <span class="c">#svn操作</span>
+
+git clone git@github.com:WhisperLoli/bank.git    <span class="c">#git操作，也可以为http地址</span>
+</code></pre></div></div>
+
+<p>新增的文件添加到SVN版本管理</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn add a.txt <span class="c">#svn操作</span>
+git add a.txt <span class="c">#git操作</span>
+</code></pre></div></div>
+
+<p>svn修改的文件不需要使用add，修改完可以直接commit，提交修改</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn commit <span class="nt">-m</span> <span class="s2">"commit message"</span> <span class="c"># svn操作</span>
+
+git add a.txt      <span class="c">#a.txt文件发生修改后，需要add到暂存区</span>
+git commit <span class="nt">-m</span> <span class="s2">"commit message"</span>  <span class="c"># 提交commit到本地仓库</span>
+git push <span class="o">[</span>origin] <span class="o">[</span>master]  <span class="c"># 推送本地仓库的commit到远程，origin为远程仓库名称，master为远程分支名称，默认为origin和master</span>
+</code></pre></div></div>
+
+<p>更新服务器端代码到本地</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn update   <span class="c"># svn更新本地</span>
+
+git pull     <span class="c"># git更新本地</span>
+</code></pre></div></div>
+
+<p>查看当前状态</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn status    <span class="c"># svn查看状态</span>
+
+git status    <span class="c"># git查看状态</span>
+</code></pre></div></div>
+
+<p>合并分支A的代码到分支B</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn merge svn://localhost/code/A /Users/admin/Documents/code/B  <span class="c">#合并远程分支A到本地B分支</span>
+svn merge /Users/admin/Documents/code/A svn://localhost/code/B <span class="c">#合并本地分支A到远程B分支</span>
+svn commit <span class="nt">-m</span> <span class="s2">"commit message"</span> <span class="c">#提交到服务器</span>
+
+<span class="c">#git的两种合并分支方式</span>
+git checkout B <span class="c">#切换到分支B</span>
+git merge A <span class="c">#合并分支A的信息</span>
+
+git checkout A <span class="c">#切换到分支A</span>
+git rebase B  <span class="c">#将分支A的commit在分支B上重演一遍</span>
+git checkout B <span class="c">#切换回分支A</span>
+
+git push <span class="c">#提交到服务器</span>
+</code></pre></div></div>
+
+<p>恢复修改的文件，修改a.txt，想要撤销修改</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn revert a.txt  <span class="c"># 恢复修改</span>
+
+<span class="c"># 当a.txt在工作区时</span>
+git checkout a.txt
+
+<span class="c"># 当a.txt添加到暂存区后</span>
+git reset HEAD a.txt <span class="c"># 从暂存区取消</span>
+git checkout a.txt
+</code></pre></div></div>
+
+<p>创建分支</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn copy svn://localhost/code/SVNTest svn://localhost/code/branch/new_branch <span class="nt">-m</span> <span class="s1">'aa的分支'</span> <span class="c">#然后拉取到本地</span>
+
+git checkout <span class="nt">-b</span> aa  <span class="c">#创建分支aa，并切换到aa</span>
+git branch aa  <span class="c">#先创建分支aa</span>
+git checkout aa  <span class="c">#切换到分支aa</span>
+</code></pre></div></div>
+
+<p>比较文件做了哪些修改</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn diff a.txt <span class="c">#svn操作</span>
+
+git diff a.txt <span class="c">#git操作</span>
+</code></pre></div></div>
+
+<p>总结了一些基本的操作，使用上面我感觉最大的不同就是git操作是针对每次commit，而svn不同，svn可以切换到任意目录下，只更新小部分的文件，merge也可以只针对某个特定的文件夹merge，而不是对commit做merge</p>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2019/05/06/svn_git', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2019
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
