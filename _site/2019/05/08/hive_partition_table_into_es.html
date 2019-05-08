@@ -1,0 +1,370 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_default.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Hive分区表导入ElasticSearch</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(0, 0, 205) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(0, 0, 205);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Hive分区表导入ElasticSearch</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(0, 0, 205);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(0, 0, 205)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(0, 0, 205);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Hive分区表导入ElasticSearch</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2019/05/06/svn_git.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(0, 0, 205)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(0, 0, 205);"><sapn class="main">版本管理工具之SVN与Git</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(0, 0, 205);border-bottom: 2px solid rgb(0, 0, 205);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2019/05/06/svn_git.html" class="rightchange" style="border-left: 1px solid rgb(0, 0, 205);border-bottom: 2px solid rgb(0, 0, 205);"><span>下一篇<br><br>版本管理工具之SVN与Git</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(0, 0, 205); border-right: 8px solid rgb(0, 0, 205)">
+        hive分区表一次性导入ElasticSearch
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <p>工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。</p>
+
+<p>hive分区表导入ES时，我们希望一次性导入就会在insert表时不加where条件，在实际使用过程中，碰到了一个问题，程序报错，信息如下，查了很久，网上关于这方面的资料很少，最终在elasticsearch-hadoop的项目issue中发现有人提了这个问题，说不是jar的问题，是parquet格式的问题</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ERROR <span class="o">[</span>IPC Server handler 1 on 60702] org.apache.hadoop.mapred.TaskAttemptListenerImpl: Task: attempt_1556068676896_1760_m_000000_0 - exited : java.io.IOException: java.lang.reflect.InvocationTargetException
+	at org.apache.hadoop.hive.io.HiveIOExceptionHandlerChain.handleRecordReaderCreationException<span class="o">(</span>HiveIOExceptionHandlerChain.java:97<span class="o">)</span>
+	at org.apache.hadoop.hive.io.HiveIOExceptionHandlerUtil.handleRecordReaderCreationException<span class="o">(</span>HiveIOExceptionHandlerUtil.java:57<span class="o">)</span>
+	at org.apache.hadoop.hive.shims.HadoopShimsSecure<span class="nv">$CombineFileRecordReader</span>.initNextRecordReader<span class="o">(</span>HadoopShimsSecure.java:267<span class="o">)</span>
+	at org.apache.hadoop.hive.shims.HadoopShimsSecure<span class="nv">$CombineFileRecordReader</span>.next<span class="o">(</span>HadoopShimsSecure.java:140<span class="o">)</span>
+	at org.apache.hadoop.mapred.MapTask<span class="nv">$TrackedRecordReader</span>.moveToNext<span class="o">(</span>MapTask.java:199<span class="o">)</span>
+	at org.apache.hadoop.mapred.MapTask<span class="nv">$TrackedRecordReader</span>.next<span class="o">(</span>MapTask.java:185<span class="o">)</span>
+	at org.apache.hadoop.mapred.MapRunner.run<span class="o">(</span>MapRunner.java:52<span class="o">)</span>
+	at org.apache.hadoop.mapred.MapTask.runOldMapper<span class="o">(</span>MapTask.java:459<span class="o">)</span>
+	at org.apache.hadoop.mapred.MapTask.run<span class="o">(</span>MapTask.java:343<span class="o">)</span>
+	at org.apache.hadoop.mapred.YarnChild<span class="nv">$2</span>.run<span class="o">(</span>YarnChild.java:164<span class="o">)</span>
+	at java.security.AccessController.doPrivileged<span class="o">(</span>Native Method<span class="o">)</span>
+	at javax.security.auth.Subject.doAs<span class="o">(</span>Subject.java:422<span class="o">)</span>
+	at org.apache.hadoop.security.UserGroupInformation.doAs<span class="o">(</span>UserGroupInformation.java:1920<span class="o">)</span>
+	at org.apache.hadoop.mapred.YarnChild.main<span class="o">(</span>YarnChild.java:158<span class="o">)</span>
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0<span class="o">(</span>Native Method<span class="o">)</span>
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance<span class="o">(</span>NativeConstructorAccessorImpl.java:62<span class="o">)</span>
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance<span class="o">(</span>DelegatingConstructorAccessorImpl.java:45<span class="o">)</span>
+	at java.lang.reflect.Constructor.newInstance<span class="o">(</span>Constructor.java:423<span class="o">)</span>
+	at org.apache.hadoop.hive.shims.HadoopShimsSecure<span class="nv">$CombineFileRecordReader</span>.initNextRecordReader<span class="o">(</span>HadoopShimsSecure.java:253<span class="o">)</span>
+	... 11 more
+Caused by: java.lang.IndexOutOfBoundsException: Index: 10, Size: 10
+	at java.util.ArrayList.rangeCheck<span class="o">(</span>ArrayList.java:657<span class="o">)</span>
+	at java.util.ArrayList.get<span class="o">(</span>ArrayList.java:433<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.getProjectedGroupFields<span class="o">(</span>DataWritableReadSupport.java:116<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.getSchemaByName<span class="o">(</span>DataWritableReadSupport.java:176<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.init<span class="o">(</span>DataWritableReadSupport.java:242<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.getSplit<span class="o">(</span>ParquetRecordReaderWrapper.java:256<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.&lt;init&gt;<span class="o">(</span>ParquetRecordReaderWrapper.java:95<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.&lt;init&gt;<span class="o">(</span>ParquetRecordReaderWrapper.java:81<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat.getRecordReader<span class="o">(</span>MapredParquetInputFormat.java:72<span class="o">)</span>
+	at org.apache.hadoop.hive.ql.io.CombineHiveRecordReader.&lt;init&gt;<span class="o">(</span>CombineHiveRecordReader.java:68<span class="o">)</span>
+	... 16 more
+</code></pre></div></div>
+
+<p>既然导致这个错误的原因是源数据表是parquet格式，所以我们要创建张临时表，存储格式为orc格式，用于存储源表的数据，或者一开始，我们导入hive时就用orc格式</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">add</span> <span class="n">jar</span> <span class="n">elasticsearch</span><span class="o">-</span><span class="n">hadoop</span><span class="p">.</span><span class="n">jar</span><span class="p">;</span>
+
+<span class="n">USE</span> <span class="n">tmp</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">es_table</span><span class="p">(</span>
+        <span class="n">es_id</span>  <span class="n">string</span> <span class="k">COMMENT</span> <span class="nv">"id"</span><span class="p">,</span>
+        <span class="n">name</span>   <span class="n">string</span> <span class="k">COMMENT</span> <span class="nv">"姓名"</span><span class="p">,</span>
+        <span class="n">gender</span>  <span class="n">int</span> <span class="k">COMMENT</span> <span class="nv">"性别"</span><span class="p">,</span>
+        <span class="n">age</span> <span class="n">int</span> <span class="k">COMMENT</span> <span class="nv">"年龄"</span><span class="p">,</span>
+        <span class="n">birth_year</span>  <span class="n">string</span> <span class="k">COMMENT</span> <span class="nv">"出生年份"</span>
+        <span class="p">)</span>
+        <span class="n">STORED</span> <span class="k">BY</span> <span class="s1">'org.elasticsearch.hadoop.hive.EsStorageHandler'</span>
+        <span class="n">TBLPROPERTIES</span> <span class="p">(</span>
+	        <span class="s1">'es.resource'</span> <span class="o">=</span> <span class="s1">'student/info'</span><span class="p">,</span>
+	        <span class="s1">'es.mapping.id'</span> <span class="o">=</span> <span class="s1">'es_id'</span><span class="p">,</span>
+	        <span class="s1">'es.index.auto.create'</span> <span class="o">=</span> <span class="s1">'true'</span><span class="p">,</span>
+	        <span class="s1">'es.mapping.routing'</span> <span class="o">=</span> <span class="s1">'es_id'</span><span class="p">,</span>
+	        <span class="s1">'es.nodes'</span> <span class="o">=</span> <span class="s1">'127.0.0.1:9200'</span>
+        <span class="p">);</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">student_tmp</span> <span class="p">(</span>
+	 <span class="n">es_id</span>  <span class="n">string</span> <span class="k">COMMENT</span> <span class="nv">"id"</span><span class="p">,</span>
+    <span class="n">name</span>   <span class="n">string</span> <span class="k">COMMENT</span> <span class="nv">"姓名"</span><span class="p">,</span>
+    <span class="n">gender</span>  <span class="n">int</span> <span class="k">COMMENT</span> <span class="nv">"性别"</span><span class="p">,</span>
+    <span class="n">age</span> <span class="n">int</span> <span class="k">COMMENT</span> <span class="nv">"年龄"</span><span class="p">,</span>
+<span class="p">)</span> <span class="n">PATITIONED</span> <span class="k">BY</span> <span class="p">(</span><span class="n">birth_year</span> <span class="n">String</span><span class="p">)</span> <span class="n">STORED</span> <span class="k">AS</span> <span class="n">orc</span><span class="p">;</span>
+
+<span class="o">#</span> <span class="err">设置动态分区</span>
+<span class="k">SET</span> <span class="n">hive</span><span class="p">.</span><span class="k">exec</span><span class="p">.</span><span class="k">dynamic</span><span class="p">.</span><span class="n">partition</span><span class="p">.</span><span class="k">mode</span><span class="o">=</span><span class="n">nonstrict</span><span class="p">;</span>
+<span class="k">INSERT</span> <span class="n">OVERWRITE</span> <span class="n">student_tmp</span> <span class="n">PARTITION</span><span class="p">(</span><span class="n">birth_year</span><span class="p">)</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span><span class="p">;</span>
+
+<span class="k">INSERT</span> <span class="n">OVERWRITE</span> <span class="n">es_table</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">student_tmp</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>完成后，再将临时表drop掉，完美！如果想做成定时任务的话，可以用beeline执行hive sql，官方也不建议使用hive cli了，推荐使用beeline。</p>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2019/05/08/hive_partition_table_into_es', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2019
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

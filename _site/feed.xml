@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-05-06T23:56:16+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">版本管理工具之SVN与Git</title><link href="http://localhost:4000/2019/05/06/svn_git.html" rel="alternate" type="text/html" title="版本管理工具之SVN与Git" /><published>2019-05-06T21:36:49+08:00</published><updated>2019-05-06T21:36:49+08:00</updated><id>http://localhost:4000/2019/05/06/svn_git</id><content type="html" xml:base="http://localhost:4000/2019/05/06/svn_git.html">&lt;p&gt;之前在公司版本管理工具一直用的是Git，习惯于Git命令行操作，最近换了家公司，发现竟然用的是SVN。在Windows系统上，可以用&lt;a href=&quot;https://tortoisesvn.net/downloads.html&quot;&gt;小乌龟&lt;/a&gt;这个工具。我一直习惯用Mac办公，Mac上也有图形界面工具，例如SmartSVN，但是是收费软件。Mac有个好处就是自带了SVN客户端，可以在命令行中直接使用。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-05-08T23:18:56+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Hive分区表导入ElasticSearch</title><link href="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html" rel="alternate" type="text/html" title="Hive分区表导入ElasticSearch" /><published>2019-05-08T22:25:19+08:00</published><updated>2019-05-08T22:25:19+08:00</updated><id>http://localhost:4000/2019/05/08/hive_partition_table_into_es</id><content type="html" xml:base="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html">&lt;p&gt;工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。&lt;/p&gt;
+
+&lt;p&gt;hive分区表导入ES时，我们希望一次性导入就会在insert表时不加where条件，在实际使用过程中，碰到了一个问题，程序报错，信息如下，查了很久，网上关于这方面的资料很少，最终在elasticsearch-hadoop的项目issue中发现有人提了这个问题，说不是jar的问题，是parquet格式的问题&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ERROR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;IPC Server handler 1 on 60702] org.apache.hadoop.mapred.TaskAttemptListenerImpl: Task: attempt_1556068676896_1760_m_000000_0 - exited : java.io.IOException: java.lang.reflect.InvocationTargetException
+	at org.apache.hadoop.hive.io.HiveIOExceptionHandlerChain.handleRecordReaderCreationException&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HiveIOExceptionHandlerChain.java:97&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.io.HiveIOExceptionHandlerUtil.handleRecordReaderCreationException&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HiveIOExceptionHandlerUtil.java:57&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.shims.HadoopShimsSecure&lt;span class=&quot;nv&quot;&gt;$CombineFileRecordReader&lt;/span&gt;.initNextRecordReader&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HadoopShimsSecure.java:267&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.shims.HadoopShimsSecure&lt;span class=&quot;nv&quot;&gt;$CombineFileRecordReader&lt;/span&gt;.next&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HadoopShimsSecure.java:140&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.mapred.MapTask&lt;span class=&quot;nv&quot;&gt;$TrackedRecordReader&lt;/span&gt;.moveToNext&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:199&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.mapred.MapTask&lt;span class=&quot;nv&quot;&gt;$TrackedRecordReader&lt;/span&gt;.next&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:185&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.mapred.MapRunner.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapRunner.java:52&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.mapred.MapTask.runOldMapper&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:459&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.mapred.MapTask.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:343&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.mapred.YarnChild&lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt;.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;YarnChild.java:164&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.security.AccessController.doPrivileged&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Native Method&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at javax.security.auth.Subject.doAs&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Subject.java:422&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.security.UserGroupInformation.doAs&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UserGroupInformation.java:1920&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.mapred.YarnChild.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;YarnChild.java:158&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Native Method&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NativeConstructorAccessorImpl.java:62&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DelegatingConstructorAccessorImpl.java:45&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.lang.reflect.Constructor.newInstance&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Constructor.java:423&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.shims.HadoopShimsSecure&lt;span class=&quot;nv&quot;&gt;$CombineFileRecordReader&lt;/span&gt;.initNextRecordReader&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HadoopShimsSecure.java:253&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	... 11 more
+Caused by: java.lang.IndexOutOfBoundsException: Index: 10, Size: 10
+	at java.util.ArrayList.rangeCheck&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ArrayList.java:657&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.ArrayList.get&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ArrayList.java:433&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.getProjectedGroupFields&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DataWritableReadSupport.java:116&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.getSchemaByName&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DataWritableReadSupport.java:176&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.init&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DataWritableReadSupport.java:242&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.getSplit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ParquetRecordReaderWrapper.java:256&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.&amp;lt;init&amp;gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ParquetRecordReaderWrapper.java:95&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.&amp;lt;init&amp;gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ParquetRecordReaderWrapper.java:81&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat.getRecordReader&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapredParquetInputFormat.java:72&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at org.apache.hadoop.hive.ql.io.CombineHiveRecordReader.&amp;lt;init&amp;gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CombineHiveRecordReader.java:68&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	... 16 more
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;既然导致这个错误的原因是源数据表是parquet格式，所以我们要创建张临时表，存储格式为orc格式，用于存储源表的数据，或者一开始，我们导入hive时就用orc格式&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jar&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadoop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;USE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;es_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;es_id&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;姓名&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;gender&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;性别&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;年龄&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;birth_year&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;出生年份&quot;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;STORED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'org.elasticsearch.hadoop.hive.EsStorageHandler'&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;TBLPROPERTIES&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	        &lt;span class=&quot;s1&quot;&gt;'es.resource'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'student/info'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	        &lt;span class=&quot;s1&quot;&gt;'es.mapping.id'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'es_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	        &lt;span class=&quot;s1&quot;&gt;'es.index.auto.create'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'true'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	        &lt;span class=&quot;s1&quot;&gt;'es.mapping.routing'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'es_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	        &lt;span class=&quot;s1&quot;&gt;'es.nodes'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'127.0.0.1:9200'&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student_tmp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	 &lt;span class=&quot;n&quot;&gt;es_id&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;姓名&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;gender&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;性别&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;年龄&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATITIONED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;birth_year&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STORED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;设置动态分区&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;dynamic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nonstrict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OVERWRITE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student_tmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;birth_year&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OVERWRITE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;es_table&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student_tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;完成后，再将临时表drop掉，完美！如果想做成定时任务的话，可以用beeline执行hive sql，官方也不建议使用hive cli了，推荐使用beeline。&lt;/p&gt;</content><author><name>true</name></author><category term="Hive" /><category term="ElasticSearch" /><summary type="html">工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。</summary></entry><entry><title type="html">版本管理工具之SVN与Git</title><link href="http://localhost:4000/2019/05/06/svn_git.html" rel="alternate" type="text/html" title="版本管理工具之SVN与Git" /><published>2019-05-06T21:36:49+08:00</published><updated>2019-05-06T21:36:49+08:00</updated><id>http://localhost:4000/2019/05/06/svn_git</id><content type="html" xml:base="http://localhost:4000/2019/05/06/svn_git.html">&lt;p&gt;之前在公司版本管理工具一直用的是Git，习惯于Git命令行操作，最近换了家公司，发现竟然用的是SVN。在Windows系统上，可以用&lt;a href=&quot;https://tortoisesvn.net/downloads.html&quot;&gt;小乌龟&lt;/a&gt;这个工具。我一直习惯用Mac办公，Mac上也有图形界面工具，例如SmartSVN，但是是收费软件。Mac有个好处就是自带了SVN客户端，可以在命令行中直接使用。&lt;/p&gt;
 
 &lt;p&gt;拉取远程代码到本地&lt;/p&gt;
 
@@ -809,169 +884,4 @@ netstat -p
 &lt;p&gt;查看特定端口被哪个进程使用&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsof -i:port
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="Linux" /><summary type="html">查看当前所在的工作目录的全路径 pwd 查看当前系统的时间</summary></entry><entry><title type="html">KVM虚拟化技术</title><link href="http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html" rel="alternate" type="text/html" title="KVM虚拟化技术" /><published>2018-12-14T00:00:00+08:00</published><updated>2018-12-14T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF</id><content type="html" xml:base="http://localhost:4000/2018/12/14/KVM%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.html">&lt;p&gt;宿主机平台是Centos和Ubuntu搭建虚拟机会有一些区别，所以对二者都进行介绍一下&lt;/p&gt;
-
-&lt;p&gt;宿主机：Centos7&lt;/p&gt;
-
-&lt;p&gt;查看宿主机IP，如果没有ifconfig命令则需要安装网络插件包：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;net-tools
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;安装KVM&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;kvm
-yum &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;qemu-kvm python-virtinst libvirt libvirt-python virt-manager libguestfs-tools bridge-utils virt-install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;检测是否安装成功&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsmod | grep kvm
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如果安装成功则显示如下，关键是前面的kvm_intel和kvm&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kvm_intel  162153  0
-kvm        525259  1 kvm_intel
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;开启kvm服务&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start libvirtd.service
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;创建虚拟网桥连接&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /etc/sysconfig/network-scripts/
-
-vi ifcfg-br0
-
-&lt;span class=&quot;c&quot;&gt;#在文件中输入如下内容&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BOOTPROTO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;static
-&lt;span class=&quot;nv&quot;&gt;ONBOOT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YES
-&lt;span class=&quot;nv&quot;&gt;DEVICE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;br0
-&lt;span class=&quot;nv&quot;&gt;NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;br0
-&lt;span class=&quot;nv&quot;&gt;TYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Bridge
-&lt;span class=&quot;nv&quot;&gt;IPADDR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.1.95
-&lt;span class=&quot;nv&quot;&gt;NETMASK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;255.255.255.0
-&lt;span class=&quot;nv&quot;&gt;GATEWAY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.1.254
-&lt;span class=&quot;nv&quot;&gt;DNS1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;114.114.114.114
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;将刚创建的网桥连接添加到当前网卡配置中&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;示例在eth0/em1中添加BRIDGE=br0(注意：BRIDGE要大写)，保留name,device,onboot属性即可，其他的可以注释掉
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;或者使用如下配置网桥&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 查看当前宿主机网络配置所使用的网卡，选择需要桥接的网卡。转去宿主机的/etc/sysconfig/network-scripts目录下。 
-2. 假如当前配置的物理网卡为eth0，我们将eth0的ip地址桥接出去。cp -a ifcfg-eth0 ifcfg-br0 
-3. 将ifcfg-eth0文件中配置的ip地址、掩码、网关、DNS等信息统统删掉，并增加一行BRIDGE=br0 
-4. 将ifcfg-br0文件中的UUID IPV6的信息统统删掉，将TYPE修改为Bridge，NAME和DEVICE修改为br0. 修改完毕之后的内容示例如下。 
-5. 将网络服务重新启动或者将宿主机重新启动使得配置生效。使用ifconfig命令查看ip地址信息。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;修改完如下图所示
-&lt;img src=&quot;/blog/blog_kvm/ifcfg-em1.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;重启网络&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl restart network
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看虚拟网卡&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brctl show
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;创建虚拟机&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo virt-install --name test --ram 4096 --disk path=/var/lib/libvirt/images/test.img,size=200 --vcpus 2 --os-type linux --network bridge=br0 --graphics none --virt-type kvm --location /tmp/CentOS-7-x86_64-DVD-1804.iso --os-variant none --extra-args='console=ttyS0' 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用命令之后会出现下图界面，然后需要在命令行中配置虚拟机信息
-&lt;img src=&quot;/blog/blog_kvm/process.jpg&quot; alt=&quot;image&quot; /&gt;
-&lt;img src=&quot;/blog/blog_kvm/install.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;宿主机：Ubuntu16.04&lt;/p&gt;
-
-&lt;p&gt;安装kvm&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo apt-get install qemu-kvm qemu-system libvirt-bin  bridge-utils virt-manager
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;创建虚拟网卡：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi /etc/network/interfaces
-   
-auto lo
-iface lo inet loopback
-
-auto br0
-iface br0 inet static
-address 10.0.101.10
-netmask 255.255.255.0
-gateway 10.0.101.254
-dns-nameservers 114.114.114.114
-bridge_ports eno1
-bridge_stp on
-bridge_fd 0
-bridge_maxwait 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ubuntu创建虚拟网卡后需要重启系统才会生效&lt;/p&gt;
-
-&lt;p&gt;使用图形化界面virt-manager安装方式，之后在界面上配置虚拟机信息&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo virt-manager
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;命令行创建：&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;virt-install &lt;span class=&quot;nt&quot;&gt;--virt-type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kvm &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vm1 &lt;span class=&quot;nt&quot;&gt;--vcpus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2 &lt;span class=&quot;nt&quot;&gt;--memory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;65536 &lt;span class=&quot;nt&quot;&gt;--location&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/CentOS-7-x86_64-DVD-1804.iso &lt;span class=&quot;nt&quot;&gt;--disk&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/var/lib/libvirt/images/shebao.qcow2,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;200,format&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;qcow2 &lt;span class=&quot;nt&quot;&gt;--network&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;bridge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;br0 &lt;span class=&quot;nt&quot;&gt;--graphics&lt;/span&gt; none &lt;span class=&quot;nt&quot;&gt;--extra-args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'console=ttyS0'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--force&lt;/span&gt;   
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;kvm常用命令&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;virsh list              #查看在运行的虚拟机
-virsh list --all        #查看所有虚拟机（关闭的也在内）
-virsh start  test	    #启动该虚拟机，test是创建时设置的虚拟机名字
-virsh reboot test       #重启虚拟机
-virsh destroy test	    #强制关闭该虚拟机，但并非真的销毁该虚拟机，只是关闭而已    
-virsh undefine test     #移除虚拟机,被该指令删除后不能启动
-virsh console + 域名（虚拟机的名称） #连接虚拟机
-virsh autostart + 域名  #虚拟机随宿主机启动
-virsh auotstart --disable +域名 #取消自启动
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;彻底删除虚拟机&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;virsh destroy &lt;span class=&quot;nb&quot;&gt;test
-&lt;/span&gt;virsh undefine &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--remove-all-storage&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;修改虚拟机CPU，内存，磁盘，修改完后需要重启虚拟机生效&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;virsh edit test.xml
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;ubuntu虚拟机（在宿主机上安装的虚拟机系统为Ubuntu）开启virsh console支持，可以在宿主机上使用virsh console test连接到虚拟机test上&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo systemctl enable serial-getty@ttyS0.service
-sudo systemctl start serial-getty@ttyS0.service
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;kvm虚拟机静态迁移&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 确定虚拟机处于关闭状态
-2. 查看虚拟机的磁盘配置文件
-    virsh domblklist test
-3. 导入虚拟机的配置文件
-    virsh dumpxml test &amp;gt; /tmp/test.xml
-4. 拷贝配置文件到目标主机上
-5. 拷贝虚拟机的磁盘文件到目标主机上
-6. 再目标主机上定义注册虚拟主机
-    virsh define /etc/libvirt/qemu/test.xml 
-7. 开启虚拟机
-    virsh start test
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="KVM" /><category term="Linux" /><summary type="html">宿主机平台是Centos和Ubuntu搭建虚拟机会有一些区别，所以对二者都进行介绍一下</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="Linux" /><summary type="html">查看当前所在的工作目录的全路径 pwd 查看当前系统的时间</summary></entry></feed>
