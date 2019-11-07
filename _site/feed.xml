@@ -1,4 +1,204 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-07-04T21:28:47+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Hive分区表导入ElasticSearch</title><link href="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html" rel="alternate" type="text/html" title="Hive分区表导入ElasticSearch" /><published>2019-05-08T22:25:19+08:00</published><updated>2019-05-08T22:25:19+08:00</updated><id>http://localhost:4000/2019/05/08/hive_partition_table_into_es</id><content type="html" xml:base="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html">&lt;p&gt;工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-11-07T21:11:00+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark SQL窗口函数使用</title><link href="http://localhost:4000/2019/11/07/spark-sql-window-function.html" rel="alternate" type="text/html" title="Spark SQL窗口函数使用" /><published>2019-11-07T20:36:49+08:00</published><updated>2019-11-07T20:36:49+08:00</updated><id>http://localhost:4000/2019/11/07/spark-sql-window-function</id><content type="html" xml:base="http://localhost:4000/2019/11/07/spark-sql-window-function.html">&lt;p&gt;数据集&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csv&quot;&gt;year,class,student,score
+2010,语文,A,84
+2010,数学,A,59
+2010,英语,A,30
+2010,语文,B,44
+2010,数学,B,76
+2010,英语,B,68
+2011,语文,A,51
+2011,数学,A,94
+2011,英语,A,71
+2011,语文,B,87
+2011,数学,B,44
+2011,英语,B,40
+2012,语文,A,91
+2012,数学,A,50
+2012,英语,A,81
+2012,语文,B,81
+2012,数学,B,84
+2012,英语,B,98
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;问题一：每学年每门学科的第一名？&lt;/p&gt;
+
+&lt;p&gt;问题二：每年总成绩都有提升的学生？&lt;/p&gt;
+
+&lt;p&gt;如上两个问题使用普通SQL都不好解决，这时就该窗口函数登场了，第一个问题其实不通过窗口函数也可以解决，但会存在缺点，解法一通过SQL操作，解法二通过窗口函数，事先通过spark将数据集读入DataFrame，即为df，第二个问题则要复杂很多&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;问题一 
+
+解法一
+思路：根据成绩排序，高分排在前，低分在后，然后根据学年、学科两个字段去重，会去除掉同学年、
+同学科成绩低于最高分的记录
+缺点：如果有学科并列第一，也会被去掉一条记录，只保留一条记录
+df.orderBy(desc(&quot;score&quot;))
+  .dropDuplicates(&quot;year&quot;,&quot;class&quot;)
+  .orderBy(&quot;year&quot;)
+  .show()
+      
+解法二
+思路：通过窗口函数获取每学年、每学科的最高成绩，创建新的一列，该列的值为当前学年、当前学科
+的最高成绩，之后过滤出成绩与最高成绩相等的记录，该操作不会存在上面方法的缺点
+df.withColumn(&quot;max&quot;, max(&quot;score&quot;).over(Window.partitionBy(&quot;year&quot;,&quot;class&quot;)))
+  .filter($&quot;score&quot; === $&quot;max&quot;)
+  .orderBy(&quot;year&quot;)
+  .drop(&quot;max&quot;)
+  .show()
+      
+问题二
+思路：先通过窗口函数计算每学年每个学生的总成绩，然后只保留 学年、学生、总成绩 三列，筛选完
+字段会有重复记录需要去重，之后通过窗口函数lag添加新的一列previous，该列的值为该学生去年的
+总成绩，第一个学年的上一学年的总成绩为null，当上一学年的总成绩为null或者当前年的总成绩大于
+上一学年的总成绩，对应新列flag相应的值置为1，否则置为0，最后通过窗口函数判断每一位学生的
+flag列的平均值，如果平均值还是1，则该学生每年的总成绩都比上一年总成绩高
+df.withColumn(&quot;sum&quot;, sum(&quot;score&quot;).over(Window.partitionBy(&quot;student&quot;,&quot;year&quot;)))
+  .select(&quot;year&quot;,&quot;student&quot;, &quot;sum&quot;)
+  .distinct()
+  .withColumn(&quot;previous&quot;, lag(&quot;sum&quot;,1).over(Window.partitionBy(&quot;student&quot;).orderBy(&quot;student&quot;,&quot;year&quot;)))
+  .withColumn(&quot;flag&quot;, when(($&quot;previous&quot;.isNull).or($&quot;sum&quot; &amp;gt; $&quot;previous&quot;),1).otherwise(0))
+  .drop(&quot;sum&quot;, &quot;previous&quot;)
+  .withColumn(&quot;avg&quot;, avg(&quot;flag&quot;).over(Window.partitionBy(&quot;student&quot;)))
+  .filter($&quot;avg&quot; === 1)
+  .dropDuplicates(&quot;student&quot;)
+  .select(&quot;student&quot;)
+  .show()
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="Spark SQL" /><category term="SQL" /><category term="Spark" /><summary type="html">数据集</summary></entry><entry><title type="html">Mac本地编译chromedriver</title><link href="http://localhost:4000/2019/07/05/compile_chromedriver.html" rel="alternate" type="text/html" title="Mac本地编译chromedriver" /><published>2019-07-05T05:01:32+08:00</published><updated>2019-07-05T05:01:32+08:00</updated><id>http://localhost:4000/2019/07/05/compile_chromedriver</id><content type="html" xml:base="http://localhost:4000/2019/07/05/compile_chromedriver.html">&lt;p&gt;Mac OS本地编译chromedriver，参考&lt;a href=&quot;https://chromium.googlesource.com/chromium/src/+/master/docs/mac_build_instructions.md&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;chromedriver中自带的属性可以用来进行是否爬虫鉴定，所以被很多网站应用，这也是我为什么自己编译chromedriver的原因。耗费了自己很大的功夫，主要原因还是因为GFW的问题，大家都懂的。&lt;/p&gt;
+
+&lt;p&gt;电脑即使浏览器配置了翻墙，终端也是不能翻墙的，所以要先配置终端翻墙，如果没有VPN的话，建议买一个吧，或者参考我之前的文章&lt;a href=&quot;https://whisperloli.github.io/2019/02/16/AWS_VPN.html&quot;&gt;AWS搭建VPN&lt;/a&gt;，因为接下来的工作在翻墙的基础上完成的&lt;/p&gt;
+
+&lt;p&gt;配置终端翻墙&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi ~/.bash_profile
+
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;http_proxy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://127.0.0.1:1087
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;https_proxy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://127.0.0.1:1087
+&lt;span class=&quot;c&quot;&gt;# export all_proxy=socks5://127.0.0.1:1089&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#可以配置http_proxy和https_proxy，也可以配置所有的代理都用socks5，即上面注释掉的all_proxy，上面两种方式二选一即可&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;切换系统的默认python为python2，我的因为安装了Anaconda，所以默认的换成了python3，后面需要使用python2&lt;/p&gt;
+
+&lt;p&gt;安装depot_tools工具&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;配置depot_tools到环境变量中&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi ~/.bash_profile
+
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:/depot_tools_path/depot_tools&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;配置git编码支持&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global core.precomposeUnicode true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;创建一个目录用于获取chrome的源码&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 随便找个地方创建，当然得保证有读写权限
+mkdir chromium &amp;amp;&amp;amp; cd chromium
+
+#获取代码
+fetch --no-history chromium
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;获取代码这一步差不多花了我5、6个小时吧，只要网络正常，一般不会出现什么问题，可以夜里面慢慢下载，我就是这样做的。最后下载完，看了一下文件夹大小，26个G左右，太大了，每次终端进入到这个文件夹下执行操作都会卡顿&lt;/p&gt;
+
+&lt;p&gt;下载完成后会有个src目录，进入src目录&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;src
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;切换分支，chromedriver需要对应chrome浏览器版本，按自己的需要切换，大致相近即可&lt;/p&gt;
+
+&lt;p&gt;同步工程相关代码&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gclient &lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--force&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面这步同步代码完成后可能会报错
+&lt;img src=&quot;/blog/blog_mac_compile_chromedriver/gclient_sysn_error.jpg&quot; alt=&quot;image&quot; /&gt;
+红框中标出的内容说明代码同步完成，下面的错误可以不管它&lt;/p&gt;
+
+&lt;p&gt;写配置信息到args.gn中&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi args.gn
+
+&lt;span class=&quot;nv&quot;&gt;is_debug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;is_component_build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;symbol_level&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;执行runhooks操作，这一步也是最容易出问题的一步，会出现各种莫名的问题&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gclient runhooks
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;错误记录及解决方案&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;错误：buildtools/mac/gn文件不存在&lt;/p&gt;
+
+    &lt;p&gt;解决方案：&lt;a href=&quot;https://chrome-infra-packages.appspot.com/p/gn/gn/mac-amd64/+/git_revision:c4a88ac93e44a1950ecb4b490ef63dea6d2bf3d3&quot;&gt;gn下载网站&lt;/a&gt;，去网站上下载一个，放到需要的目录下，之后会在报错信息中告诉你，当前gn与需要的gn版本不一致，然后错误信息中会给出需要的版本的下载路径&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;错误：下载https://commondatastorage.googleapis.com/chromium-browser-clang/Mac/clang-363790-d874c057-3.tgz失败
+&lt;img src=&quot;/blog/blog_mac_compile_chromedriver/download_failure.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;解决方案:这个问题也是因为GFW导致的，需要打开tools/clang/scripts/update.py，配置urlopen翻墙，也就是挂代理
+ &lt;img src=&quot;/blog/blog_mac_compile_chromedriver/add_proxy.jpg&quot; alt=&quot;image&quot; /&gt;
+ 红框中的内容是我自己加进去的&lt;/p&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; import urllib2      		
+ &lt;span class=&quot;nv&quot;&gt;proxies&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;urllib2.ProxyHandler&lt;span class=&quot;o&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'https'&lt;/span&gt;:&lt;span class=&quot;s1&quot;&gt;'127.0.0.1:1087'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;opener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;urllib2.build_opener&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;proxies&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+ urllib2.install_opener&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;opener&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;如果还是不行的话可能是网络不好，多试几遍&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;错误：找不到.cipd_bin/vpython文件
+ 解决方案: 在终端执行update_depot_tools命令，如果执行该命令报错&lt;/p&gt;
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; curl: &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;35&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; error:1400410B:SSL routines:CONNECT_CR_SRVR_HELLO:wrong version number
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;这是因为网络不好的原因，网络好的话，秒级时间就OK&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;之后runhooks就没什么错误了，一路通畅&lt;/p&gt;
+
+&lt;p&gt;上述结束后可以看到提示：Running hooks: 100% (75/75), done.
+那么执行下面的命令吧&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gn gen out/Release
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;可能会出现如下的错误
+&lt;img src=&quot;/blog/blog_mac_compile_chromedriver/xcode_error.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个是因为电脑中没有安装Xcode的缘故，赶紧去AppStore下一个，Xcode也挺大的，几个G的大小，下载完成后安装，然后按照错误中的提示执行命令&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#最后的是Xcode.app安装的路径，如果不在/Applications下面，可以用find命令查找一下&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;xcode-select &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /Applications/Xcode.app
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;马上就要大功告成了，激动吧&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ninja &lt;span class=&quot;nt&quot;&gt;-C&lt;/span&gt; out/Release chromedriver
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;最后一步差不多十来分钟，可以去喝个茶，休息会，等待执行完成后，进入out/Release目录下面就可以看到chromedriver了，如果你也是想用于爬虫的话，记得修改源码的识别码哦，我已经改了，在本博文中没写进去。最后，说一句Fucking GFW，因为浪费我时间最久的就是这个&lt;/p&gt;</content><author><name>true</name></author><category term="Mac" /><category term="chromedriver" /><summary type="html">Mac OS本地编译chromedriver，参考官方文档</summary></entry><entry><title type="html">Hive分区表导入ElasticSearch</title><link href="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html" rel="alternate" type="text/html" title="Hive分区表导入ElasticSearch" /><published>2019-05-08T22:25:19+08:00</published><updated>2019-05-08T22:25:19+08:00</updated><id>http://localhost:4000/2019/05/08/hive_partition_table_into_es</id><content type="html" xml:base="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html">&lt;p&gt;工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。&lt;/p&gt;
 
 &lt;p&gt;hive分区表导入ES时，我们希望一次性导入就会在insert表时不加where条件，在实际使用过程中，碰到了一个问题，程序报错，信息如下，查了很久，网上关于这方面的资料很少，最终在elasticsearch-hadoop的项目issue中发现有人提了这个问题，说不是jar的问题，是parquet格式的问题&lt;/p&gt;
 
@@ -512,376 +712,4 @@ ik_max_word:细粒度分词，切分出的词尽可能的多
 
 &lt;p&gt;如果对IK分词器的效果不是很满意，可以自己整理语料，放入词库中，自定义词库路径为&quot;config/analysis-ik/custom&quot;，同时需要修改IKAnalyzer.cfg.xml文件，在该文件中配置自定义词库的读取&lt;/p&gt;
 
-&lt;p&gt;推荐一个分词工具，个人认为挺好用的，是由梁斌老师提供的&lt;a href=&quot;http://www.pullword.com/&quot;&gt;基于深度学习的中文在线抽词PullWord&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="elasticsearch" /><category term="搜索引擎" /><summary type="html">Elasticsearch默认的分词器会将中文比如”你好”拆分成”你”和”好”这两个字，然后按照倒排索引进行存储，所以默认的分词不好用，大部分时候都会自己更换分词器以达到预期的效果。推荐一个很好用的分词器，众所周知的IK分词器</summary></entry><entry><title type="html">sbt打包程序</title><link href="http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html" rel="alternate" type="text/html" title="sbt打包程序" /><published>2018-12-19T00:00:00+08:00</published><updated>2018-12-19T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F</id><content type="html" xml:base="http://localhost:4000/2018/12/19/sbt%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F.html">&lt;p&gt;Assembly Jar（组合Jar）与普通Jar的区别就是Assembly Jar会将所有的依赖都打进Jar中，最后生成的包比较大&lt;/p&gt;
-
-&lt;p&gt;打包spark程序步骤如下，sbt版本0.13.17：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 在project下创建plugins.sbt,并添加内容
-    addSbtPlugin(&quot;com.eed3si9n&quot; % &quot;sbt-assembly&quot; % &quot;0.14.6&quot;)
-    
-2. 修改build.sbt文件，添加以下内容
-    assemblyJarName in assembly := &quot;first-spark-assembly.jar&quot; # 配置jar的名字
-    assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false) # 把scala本身排除在组合jar之外，因为spark已经包含了scala
-
-3. 运行 sbt clean assembly
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;依赖项，%%表示测试时需要，一般为%； % “provided”表示此依赖不打入最终的jar文件内，提交到spark集群中所有spark相关的jar不需要打入到Assembly Jar中&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;libraryDependencies+=&quot;org.apache.spark&quot;%%&quot;spark-core&quot;%&quot;2.2.0&quot;%&quot;provided&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用阿里云的仓库&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;resolvers+=&quot;aliyun Maven Repository&quot;at&quot;http://maven.aliyun.com/nexus/content/groups/public&quot;
-externalResolvers:= Resolver.withDefaultResolvers(resolvers.value,mavenCentral=false)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;指定java版本&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;javacOptions++=Seq(&quot;-source&quot;,&quot;1.8&quot;,&quot;-target&quot;,&quot;1.8&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;指定主函数&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mainClass in Compile:=Some(&quot;org.apache.spark.WordCount&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如果有些jar包maven仓库没有，而工程中确实要用到，你可以在项目根录下建立lib文件夹，将额外的jar放进去即可。&lt;br /&gt;
-或者可以自定义lib文件夹的名称，例如：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;unmanagedBase := &quot;mylib&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然后将用到的jar包放到工程根目录的mylib文件夹下，sbt会自动将lib下的jar包中的类加到最终的Assembly Jar中。&lt;/p&gt;
-
-&lt;p&gt;sbt打包错误&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Unable to find credentials for [Sonatype Nexus Repository Manager @ nx.company.cn]
-
-解决方案：build.sbt文件中添加
-credentials += Credentials(&quot;Sonatype Nexus Repository Manager&quot;, &quot;nx.company.cn&quot;, &quot;user&quot;, &quot;password&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;sbt-native-packager&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 在project下创建plugins.sbt,并添加内容
-addSbtPlugin(&quot;com.typesafe.sbt&quot; % &quot;sbt-native-packager&quot; % &quot;1.3.15&quot;)
-
-2. 在build.sbt中开启插件支持,JavaAppPackaging只是一种,下面是举例
-enablePlugins(JavaAppPackaging)
-
-3. sbt &amp;lt;config-scope&amp;gt;:&amp;lt;config-type&amp;gt;
-
-	例：sbt universal:packageBin
-
-	universal:packageBin - Generates a universal zip file
-	universal:packageZipTarball - Generates a universal tgz file
-	debian:packageBin - Generates a deb
-	docker:publishLocal - Builds a Docker image using the local Docker server
-	rpm:packageBin - Generates an rpm
-	universal:packageOsxDmg - Generates a DMG file with the same contents as the universal zip/tgz.
-	windows:packageBin - Generates an MSI
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;sbt-native-packager使用参见&lt;a href=&quot;https://www.scala-sbt.org/sbt-native-packager/index.html&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="Scala" /><category term="Sbt" /><category term="打包" /><category term="Spark" /><summary type="html">Assembly Jar（组合Jar）与普通Jar的区别就是Assembly Jar会将所有的依赖都打进Jar中，最后生成的包比较大</summary></entry><entry><title type="html">Linux常用命令</title><link href="http://localhost:4000/2018/12/16/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html" rel="alternate" type="text/html" title="Linux常用命令" /><published>2018-12-16T00:00:00+08:00</published><updated>2018-12-16T00:00:00+08:00</updated><id>http://localhost:4000/2018/12/16/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</id><content type="html" xml:base="http://localhost:4000/2018/12/16/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html">&lt;p&gt;查看当前所在的工作目录的全路径&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pwd
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看当前系统的时间&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;date
-date +%Y-%m-%d   # 按后面的格式显示当前时间，2018-12-16
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看当前有谁在线（在当前的服务器上）&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;who 或者 w
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看最近的登陆历史记录&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;last
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;关机/重启&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;关机（必须用root用户）
-shutdown -h now  # 立刻关机
-shutdown -h +10  #  10分钟以后关机
-shutdown -h 12:00:00  #12点整的时候关机
-
-重启
-shutdown -r now
-reboot   # 等于立刻重启
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;清屏&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;clear 或者 ctrl + l
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;挂起当前进程&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ctrl+z   # 进程会挂起到后台
-bg jobid  # 让进程在后台继续执行
-fg jobid   # 让进程回到前台
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;切换工作目录&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~     # 切换到用户主目录（家目录）
-cd -     #  回退到上次所在的目录
-cd  什么路径都不带，则回到用户的主目录
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;创建文件夹&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir hello #创建文件夹
-mkdir -p  aaa/bbb/ccc   # 级联创建文件夹
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;删除文件夹&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rmdir  aaa   # 可以删除空文件夹
-rm  -r  aaa   # 可以把aaa整个文件夹及其中的所有子文件及文件夹全部删除
-rm  -rf  aaa   # 强制删除aaa及其子文件夹、文件
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;修改文件夹名称&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mv aaa boy   #mv本质上是移动
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;创建文件&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;touch somefile.1   # 创建一个空文件somefile.1
-echo &quot;hi,boy&quot; &amp;gt; somefile.2    ## 利用重定向“&amp;gt;”的功能，将一条指令的输出结果写入到一个文件中，会覆盖原文件内容，如果指定的文件不存在，则会创建出来
-vi somefile.3   #编辑文件，编辑完后保存，如果不存在则会创建新的文件
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;拷贝&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cp somefile.1 /home/hadoop/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看文件内容&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat somefile      #一次性将文件内容全部输出（控制台）
-cat file -n   #显示文件内容及行号
-more somefile     # 可以翻页查看, 下翻一页(空格)    上翻一页（b）   退出（q）
-less somefile      #可以翻页查看,下翻一页(空格)    上翻一页（b），上翻一行(↑)  下翻一行（↓）  可以搜索关键字（/keyword）
-tail -10 install.log  查看文件尾部的10行
-head -10 install.log   查看文件头部的10行
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;压缩与解压&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1、gzip压缩，压缩后a.txt会不存在，生成压缩文件a.txt.gz
-    gzip a.txt
-2、解压
-    gunzip a.txt.gz
-    gzip -d a.txt.gz
-    
-3、bzip2压缩，压缩后a.txt不存在，会生成压缩文件a.txt.bz2
-    bzip2 a.txt
-4、解压
-    bunzip2 a.bz2
-    bzip2 -d a.bz2
-    
-5、打包并压缩
-    tar -zcvf a.tar.gz  aaa/   #会打包aaa文件夹并压缩
-8、解包并解压缩
-    tar  -zxvf  a.tar.gz
-    解压到/usr下
-    tar  -zxvf  a.tar.gz  -C  /usr
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;常用查找命令的使用&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1、查找可执行的命令所在的路径：
-which     # which ls 查看ls命令所在的路径
-
-2、查找可执行的命令的位置：
-whereis  # whereis ls 查看ls命令所在的路径
-
-3、从某个文件夹开始查找文件
-find / -name &quot;hadoop*&quot; #在根目录下查找文件名以hadoop为前缀的文件
-find / -name &quot;hadoop*&quot; -ls
-
-4、查找并删除
-find / -name &quot;hadoop*&quot; -ok rm {} \;
-find / -name &quot;hadoop*&quot; -exec rm {} \;
-
-5、查找用户为hadoop的文件
-find  /usr  -user  hadoop  -ls
-
-6、查找用户为hadoop的文件夹
-find /home -user hadoop -type d -ls  # -type指定文件类型，d代表目录
-
-7、查找权限为777的文件夹
-find / -perm -777 -type d -ls
-
-8、查看当前目录下文件个数
-find ./ | wc -l
-
-9、显示命令历史
-history
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;文件权限的操作&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x      （也可以用二进制表示  111 101 101  --&amp;gt;  755）
-
-d：标识节点类型（d：文件夹   -：文件  l:链接）
-r：可读   w：可写    x：可执行 
-第一组rwx：  # 表示这个文件的拥有者对它的权限：可读可写可执行
-第二组r-x：  # 表示这个文件的所属组用户对它的权限：可读，不可写，可执行
-第三组r-x：  # 表示这个文件的其他用户（相对于上面两类用户）对它的权限：可读，不可写，可执行
-
-chmod g-rw haha.dat		 # 表示将haha.dat对所属组的rw权限取消
-chmod o-rw haha.dat		 # 表示将haha.dat对其他人的rw权限取消
-chmod u+x haha.dat		 # 表示将haha.dat对所属用户的权限增加x
-chmod a-x haha.dat       # 表示将haha.dat对所用户取消x权限
-
-
-也可以用数字的方式来修改权限
-chmod 664 haha.dat   
-
-如果要将一个文件夹的所有内容权限统一修改，则可以-R参数
-chmod -R 770 aaa/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;修改文件所有权&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;只有root权限能执行&amp;gt;
-chown angela  aaa		## 改变所属用户
-chown :angela  aaa		## 改变所属组
-chown angela:angela aaa/	## 同时修改所属用户和所属组
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;基本用户管理&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;添加一个用户：
-useradd spark
-passwd  spark     #根据提示设置密码即可
-
-删除一个用户：
-userdel -r spark     #加一个-r就表示把用户及用户的主目录都删除
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;为用户配置sudo权限&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;用root编辑 vi /etc/sudoers
-在文件的如下位置，为hadoop添加一行即可
-root    ALL=(ALL)       ALL     
-hadoop  ALL=(ALL)       ALL
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;统计文件或文件夹的大小&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -sh  /mnt/cdrom/packages  #查看文件夹大小
-df -h    #查看磁盘的空间
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看内存大小&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;free -h
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;修改IP&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(重启后永久生效)centos
-vi /etc/sysconfig/network-scripts/ifcfg-eth0
-
-(重启后无效)
-ifconfig eth0 192.168.12.22
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;关闭防火墙&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;centos7
-    systemctl stop firewalld   #关闭防火墙
-    systemctl disable firewalld #设置开机禁止自启动
-    
-ubuntu 
-    ufw stop #关闭防火墙
-    ufw disable #设置开机禁止自启动
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;上传下载&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp a.txt root@192.168.0.10:~          #上传a.txt到root用户的主目录下
-
-scp root@192.168.0.10:~/a.txt .        #下载a.txt到当前目录
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看cpu核数&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lscpu
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看程序的binary文件所在路径&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;示例：which python
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看程序的搜索路径&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;示例：whereis python
-当系统中安装了同一软件的多个版本时，不确定使用的是哪个版本时，这个命令就能派上用场
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;按时间排序，以列表的方式显示目录项&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -lrt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;创建符号链接/硬链接&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ln cc ccAgain :硬连接；删除一个，将仍能找到；
-ln -s cc ccTo :符号链接(软链接)；删除源，另一个无法使用；（后面一个ccTo 为新建的文件）
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;列出所有端口 (包括监听和未监听的)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;netstat -a
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;列出所有有监听的服务状态&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;netstat -l
-
-显示进程ID
-netstat -p
-
-如果显示不出来，则可以使用lsof -i:port
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;列出所有 tcp 端口&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;netstat -at
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看cpu信息&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lscpu 或者 cat /proc/cpuinfo
-
-查看核数
-    lscpu中CPUS信息  
-    或者
-    cat /proc/cpuinfo | grep processor | wc -l
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看cpu状态&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;top
-按CPU使用率排序 P
-按内存RES使用率排序 M
-显示程序全路径 c
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看特定端口被哪个进程使用&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsof -i:port
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="Linux" /><summary type="html">查看当前所在的工作目录的全路径 pwd 查看当前系统的时间</summary></entry></feed>
+&lt;p&gt;推荐一个分词工具，个人认为挺好用的，是由梁斌老师提供的&lt;a href=&quot;http://www.pullword.com/&quot;&gt;基于深度学习的中文在线抽词PullWord&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="elasticsearch" /><category term="搜索引擎" /><summary type="html">Elasticsearch默认的分词器会将中文比如”你好”拆分成”你”和”好”这两个字，然后按照倒排索引进行存储，所以默认的分词不好用，大部分时候都会自己更换分词器以达到预期的效果。推荐一个很好用的分词器，众所周知的IK分词器</summary></entry></feed>

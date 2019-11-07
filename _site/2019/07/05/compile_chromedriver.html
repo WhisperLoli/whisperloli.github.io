@@ -1,0 +1,427 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_default.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Mac本地编译chromedriver</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(191, 239, 255) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(191, 239, 255);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Mac本地编译chromedriver</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(191, 239, 255);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="/2019/11/07/spark-sql-window-function.html" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(191, 239, 255)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(191, 239, 255);"><sapn class="main">Spark SQL窗口函数使用</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Mac本地编译chromedriver</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2019/05/08/hive_partition_table_into_es.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(191, 239, 255)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(191, 239, 255);"><sapn class="main">Hive分区表导入ElasticSearch</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="/2019/11/07/spark-sql-window-function.html" class="leftchange" style="border-right: 1px solid rgb(191, 239, 255);border-bottom: 2px solid rgb(191, 239, 255);"><span>上一篇<br><br>Spark SQL窗口函数使用</span></a>
+    
+    
+      <a href="/2019/05/08/hive_partition_table_into_es.html" class="rightchange" style="border-left: 1px solid rgb(191, 239, 255);border-bottom: 2px solid rgb(191, 239, 255);"><span>下一篇<br><br>Hive分区表导入ElasticSearch</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(191, 239, 255); border-right: 8px solid rgb(191, 239, 255)">
+        Mac OS编译chromedriver踩坑之路
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <p>Mac OS本地编译chromedriver，参考<a href="https://chromium.googlesource.com/chromium/src/+/master/docs/mac_build_instructions.md">官方文档</a></p>
+
+<p>chromedriver中自带的属性可以用来进行是否爬虫鉴定，所以被很多网站应用，这也是我为什么自己编译chromedriver的原因。耗费了自己很大的功夫，主要原因还是因为GFW的问题，大家都懂的。</p>
+
+<p>电脑即使浏览器配置了翻墙，终端也是不能翻墙的，所以要先配置终端翻墙，如果没有VPN的话，建议买一个吧，或者参考我之前的文章<a href="https://whisperloli.github.io/2019/02/16/AWS_VPN.html">AWS搭建VPN</a>，因为接下来的工作在翻墙的基础上完成的</p>
+
+<p>配置终端翻墙</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi ~/.bash_profile
+
+<span class="nb">export </span><span class="nv">http_proxy</span><span class="o">=</span>http://127.0.0.1:1087
+<span class="nb">export </span><span class="nv">https_proxy</span><span class="o">=</span>http://127.0.0.1:1087
+<span class="c"># export all_proxy=socks5://127.0.0.1:1089</span>
+<span class="c">#可以配置http_proxy和https_proxy，也可以配置所有的代理都用socks5，即上面注释掉的all_proxy，上面两种方式二选一即可</span>
+
+<span class="nb">source</span> ~/.bash_profile
+</code></pre></div></div>
+
+<p>切换系统的默认python为python2，我的因为安装了Anaconda，所以默认的换成了python3，后面需要使用python2</p>
+
+<p>安装depot_tools工具</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+</code></pre></div></div>
+
+<p>配置depot_tools到环境变量中</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi ~/.bash_profile
+
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PATH</span><span class="s2">:/depot_tools_path/depot_tools"</span>
+
+<span class="nb">source</span> ~/.bash_profile
+</code></pre></div></div>
+
+<p>配置git编码支持</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --global core.precomposeUnicode true
+</code></pre></div></div>
+
+<p>创建一个目录用于获取chrome的源码</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 随便找个地方创建，当然得保证有读写权限
+mkdir chromium &amp;&amp; cd chromium
+
+#获取代码
+fetch --no-history chromium
+</code></pre></div></div>
+
+<p>获取代码这一步差不多花了我5、6个小时吧，只要网络正常，一般不会出现什么问题，可以夜里面慢慢下载，我就是这样做的。最后下载完，看了一下文件夹大小，26个G左右，太大了，每次终端进入到这个文件夹下执行操作都会卡顿</p>
+
+<p>下载完成后会有个src目录，进入src目录</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>src
+</code></pre></div></div>
+
+<p>切换分支，chromedriver需要对应chrome浏览器版本，按自己的需要切换，大致相近即可</p>
+
+<p>同步工程相关代码</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gclient <span class="nb">sync</span> <span class="nt">--force</span>
+</code></pre></div></div>
+
+<p>上面这步同步代码完成后可能会报错
+<img src="/blog/blog_mac_compile_chromedriver/gclient_sysn_error.jpg" alt="image" />
+红框中标出的内容说明代码同步完成，下面的错误可以不管它</p>
+
+<p>写配置信息到args.gn中</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi args.gn
+
+<span class="nv">is_debug</span><span class="o">=</span><span class="nb">false
+</span><span class="nv">is_component_build</span><span class="o">=</span><span class="nb">true
+</span><span class="nv">symbol_level</span><span class="o">=</span>0
+
+</code></pre></div></div>
+
+<p>执行runhooks操作，这一步也是最容易出问题的一步，会出现各种莫名的问题</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gclient runhooks
+</code></pre></div></div>
+
+<p>错误记录及解决方案</p>
+
+<ol>
+  <li>
+    <p>错误：buildtools/mac/gn文件不存在</p>
+
+    <p>解决方案：<a href="https://chrome-infra-packages.appspot.com/p/gn/gn/mac-amd64/+/git_revision:c4a88ac93e44a1950ecb4b490ef63dea6d2bf3d3">gn下载网站</a>，去网站上下载一个，放到需要的目录下，之后会在报错信息中告诉你，当前gn与需要的gn版本不一致，然后错误信息中会给出需要的版本的下载路径</p>
+  </li>
+  <li>
+    <p>错误：下载https://commondatastorage.googleapis.com/chromium-browser-clang/Mac/clang-363790-d874c057-3.tgz失败
+<img src="/blog/blog_mac_compile_chromedriver/download_failure.jpg" alt="image" /></p>
+
+    <p>解决方案:这个问题也是因为GFW导致的，需要打开tools/clang/scripts/update.py，配置urlopen翻墙，也就是挂代理
+ <img src="/blog/blog_mac_compile_chromedriver/add_proxy.jpg" alt="image" />
+ 红框中的内容是我自己加进去的</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> import urllib2      		
+ <span class="nv">proxies</span><span class="o">=</span>urllib2.ProxyHandler<span class="o">({</span><span class="s1">'https'</span>:<span class="s1">'127.0.0.1:1087'</span><span class="o">})</span>
+ <span class="nv">opener</span><span class="o">=</span>urllib2.build_opener<span class="o">(</span>proxies<span class="o">)</span>
+ urllib2.install_opener<span class="o">(</span>opener<span class="o">)</span>
+</code></pre></div>    </div>
+    <p>如果还是不行的话可能是网络不好，多试几遍</p>
+  </li>
+  <li>
+    <p>错误：找不到.cipd_bin/vpython文件
+ 解决方案: 在终端执行update_depot_tools命令，如果执行该命令报错</p>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> curl: <span class="o">(</span>35<span class="o">)</span> error:1400410B:SSL routines:CONNECT_CR_SRVR_HELLO:wrong version number
+</code></pre></div>    </div>
+    <p>这是因为网络不好的原因，网络好的话，秒级时间就OK</p>
+  </li>
+</ol>
+
+<p>之后runhooks就没什么错误了，一路通畅</p>
+
+<p>上述结束后可以看到提示：Running hooks: 100% (75/75), done.
+那么执行下面的命令吧</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gn gen out/Release
+</code></pre></div></div>
+<p>可能会出现如下的错误
+<img src="/blog/blog_mac_compile_chromedriver/xcode_error.jpg" alt="image" /></p>
+
+<p>这个是因为电脑中没有安装Xcode的缘故，赶紧去AppStore下一个，Xcode也挺大的，几个G的大小，下载完成后安装，然后按照错误中的提示执行命令</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#最后的是Xcode.app安装的路径，如果不在/Applications下面，可以用find命令查找一下</span>
+<span class="nb">sudo </span>xcode-select <span class="nt">-s</span> /Applications/Xcode.app
+</code></pre></div></div>
+
+<p>马上就要大功告成了，激动吧</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ninja <span class="nt">-C</span> out/Release chromedriver
+</code></pre></div></div>
+<p>最后一步差不多十来分钟，可以去喝个茶，休息会，等待执行完成后，进入out/Release目录下面就可以看到chromedriver了，如果你也是想用于爬虫的话，记得修改源码的识别码哦，我已经改了，在本博文中没写进去。最后，说一句Fucking GFW，因为浪费我时间最久的就是这个</p>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2019/07/05/compile_chromedriver', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2019
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
