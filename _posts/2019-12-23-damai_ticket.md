@@ -2,7 +2,9 @@
 layout: post
 title:  "大麦抢票"
 date:   2019-12-23 22:05:21 +0800
-tags: Python，Selenium
+tags: 
+- python
+- selenium
 color: rgb(255,90,90)
 cover: '/blog/Halloween/2019_05_06_06.webp'
 subtitle: '简要介绍大麦网抢票机制'

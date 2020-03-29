@@ -1,4 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-23T22:47:13+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">大麦抢票</title><link href="http://localhost:4000/2019/12/23/damai_ticket.html" rel="alternate" type="text/html" title="大麦抢票" /><published>2019-12-23T22:05:21+08:00</published><updated>2019-12-23T22:05:21+08:00</updated><id>http://localhost:4000/2019/12/23/damai_ticket</id><content type="html" xml:base="http://localhost:4000/2019/12/23/damai_ticket.html">&lt;p&gt;废话不多说，大部分都是为了把妹才研究的！
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-03-29T21:27:13+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark踩坑记（一）</title><link href="http://localhost:4000/2020/03/29/spark_hole_one.html" rel="alternate" type="text/html" title="Spark踩坑记（一）" /><published>2020-03-29T21:01:29+08:00</published><updated>2020-03-29T21:01:29+08:00</updated><id>http://localhost:4000/2020/03/29/spark_hole_one</id><content type="html" xml:base="http://localhost:4000/2020/03/29/spark_hole_one.html">&lt;p&gt;在上周的项目中碰到了个坑吧&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;spark streaming消费kafka数据存redis。kafka和redis都是自己公司内部封装过的，不能直接使用spark-redis连接内部的redis，没办法，只能老老实实的用自己公司提供的redis-client。每次流处理都要写redis，所以最好是只创建一个redis client，然后分发到所有excutor中。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;自己公司内部的redis-client中的类没有实现序列化，spark分发时需要序列化对象再传输。
+如果类没有实现序列化，就会报错org.apache.spark.SparkException: Task not serializable。我觉得这个简单啊，然后就上百度搜了一下。CSDN上很多人转载文章，都是一样的解决方案，给类中成员变量加注解@transient，成员对象不参与序列化。我去试了，根本不行，还有一些解决方案，还有些说用spark broadcast，但是广播也是需要序列化的，还有说把scala方法改成scala函数，我真的无语了。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;我研究了挺久吧，最终得以解决。&lt;strong&gt;&lt;u&gt;划重点，类中使用第三方成员变量未实现序列化且无法修改源码，使用伴生对象object创建该类的实例，类似单例模式，spark中使用object类中创建的对象，该方法无需序列化。scala中object类相当于java静态类，类中方法、属性皆为静态方法、属性。&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;还有一个就是在executor中直接调用driver端创建的SparkContent对象也会报错，信息为Caused by: java.io.NotSerializableException: org.apache.spark.SparkContext，SparkContext对象也是不支持序列化的，如果需要使用，可以遍历RDD的使用使用rdd.sparkContext方法获得&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;接下来提供一下我对流处理中redis-client创建的见解吧。大致可以分为一下几种方法吧。&lt;/p&gt;
+
+&lt;p&gt;####方法一&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;使用collect方法，将executor中的数据收集到driver端，再使用redis-client操作&lt;/p&gt;
+
+  &lt;p&gt;优点：redis-client可以不用序列化，且只创建一个连接&lt;/p&gt;
+
+  &lt;p&gt;缺点：所有数据都collect到driver端，会对driver造成压力，数据量过大还会直接OOM&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;####方法二&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;使用foreachPartition/foreach方法遍历流中的数据，在这里面new RedisClient操作，foreach遍历会每条数据都创建一个连接，性能更差，无需考虑&lt;/p&gt;
+
+  &lt;p&gt;优点：redis-client无需实现序列化&lt;/p&gt;
+
+  &lt;p&gt;缺点：会根据partition数量创建n个client，且均为短连接，partition数据太多的话会对redis集群造成压力&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;####方法三&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;executor使用driver创建的一个连接&lt;/p&gt;
+
+  &lt;p&gt;优点：只有一个连接&lt;/p&gt;
+
+  &lt;p&gt;缺点：client需要实现序列化&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;####方法四&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;即上述我使用的方法，采用伴生对象object创建类实例&lt;/p&gt;
+
+  &lt;p&gt;优点：client无需序列化，应该只创建一个连接（未测试，应该是在driver端初始化该object，如果在每个executor JVM中创建的话，则创建的client数量会和executor数量一致，如果是的话，解决方案可以在driver端调用object中的方法强行初始化）&lt;/p&gt;
+
+  &lt;p&gt;缺点：貌似没啥缺点，是除开可以序列化之外最完美的方案&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;可能会有人问，为什么不使用广播，广播会比直接在executor中使用性能好。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;我测试过了，使用广播的话，会抛出ConcurrentModificationException的异常，这个java异常是多线程并发改一个对象产生的异常。这个异常可能是我司的redis-client才有也不一定，可以做尝试。&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><category term="Spark Streaming" /><summary type="html">在上周的项目中碰到了个坑吧 spark streaming消费kafka数据存redis。kafka和redis都是自己公司内部封装过的，不能直接使用spark-redis连接内部的redis，没办法，只能老老实实的用自己公司提供的redis-client。每次流处理都要写redis，所以最好是只创建一个redis client，然后分发到所有excutor中。</summary></entry><entry><title type="html">大麦抢票</title><link href="http://localhost:4000/2019/12/23/damai_ticket.html" rel="alternate" type="text/html" title="大麦抢票" /><published>2019-12-23T22:05:21+08:00</published><updated>2019-12-23T22:05:21+08:00</updated><id>http://localhost:4000/2019/12/23/damai_ticket</id><content type="html" xml:base="http://localhost:4000/2019/12/23/damai_ticket.html">&lt;p&gt;废话不多说，大部分都是为了把妹才研究的！
 如README里面写的，首先需要安装selenium，我使用的浏览器及环境如下&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;浏览器：谷歌
@@ -47,7 +111,7 @@ chromedriver下载地址：http://chromedriver.storage.googleapis.com/index.html
 
 &lt;p&gt;代码还是有很多需要改进的地方，有实际应用才好改进，也就是bug复现&lt;/p&gt;
 
-&lt;p&gt;完整代码参见&lt;a href=&quot;https://github.com/WhisperLoli/DaMai&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="Python，Selenium" /><summary type="html">废话不多说，大部分都是为了把妹才研究的！ 如README里面写的，首先需要安装selenium，我使用的浏览器及环境如下</summary></entry><entry><title type="html">Spark SQL窗口函数使用</title><link href="http://localhost:4000/2019/11/07/spark-sql-window-function.html" rel="alternate" type="text/html" title="Spark SQL窗口函数使用" /><published>2019-11-07T20:36:49+08:00</published><updated>2019-11-07T20:36:49+08:00</updated><id>http://localhost:4000/2019/11/07/spark-sql-window-function</id><content type="html" xml:base="http://localhost:4000/2019/11/07/spark-sql-window-function.html">&lt;p&gt;数据集&lt;/p&gt;
+&lt;p&gt;完整代码参见&lt;a href=&quot;https://github.com/WhisperLoli/DaMai&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="python" /><category term="selenium" /><summary type="html">废话不多说，大部分都是为了把妹才研究的！ 如README里面写的，首先需要安装selenium，我使用的浏览器及环境如下</summary></entry><entry><title type="html">Spark SQL窗口函数使用</title><link href="http://localhost:4000/2019/11/07/spark-sql-window-function.html" rel="alternate" type="text/html" title="Spark SQL窗口函数使用" /><published>2019-11-07T20:36:49+08:00</published><updated>2019-11-07T20:36:49+08:00</updated><id>http://localhost:4000/2019/11/07/spark-sql-window-function</id><content type="html" xml:base="http://localhost:4000/2019/11/07/spark-sql-window-function.html">&lt;p&gt;数据集&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-csv&quot;&gt;year,class,student,score
 2010,语文,A,84
@@ -564,49 +628,4 @@ ssh-keygen &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; rsa &lt;span class=&
 
 &lt;p&gt;注意：Scala程序做成systemd服务启动，添加JVM参数需要在参数前加-J，如下&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/blog/blog_jvm/scala_style.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="JVM" /><category term="Scala" /><summary type="html">添加JVM参数，在这里未使用身份验证，生产环境建议开启用户名密码验证，端口号为18999，可自行更改，同jstatd方式一样，远程访问需要开放指定的端口</summary></entry><entry><title type="html">jvisualvm监控远程服务器</title><link href="http://localhost:4000/2019/01/04/jvisualvm.html" rel="alternate" type="text/html" title="jvisualvm监控远程服务器" /><published>2019-01-04T05:05:21+08:00</published><updated>2019-01-04T05:05:21+08:00</updated><id>http://localhost:4000/2019/01/04/jvisualvm</id><content type="html" xml:base="http://localhost:4000/2019/01/04/jvisualvm.html">&lt;p&gt;步骤&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;ssh登录服务器&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh root@xxx.xxx.xxx.xxx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在家目录下创建授权文件&lt;/p&gt;
-
-    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
-vi jstatd.all.policy
-&lt;span class=&quot;c&quot;&gt;#在文件中输入如下内容&lt;/span&gt;
-grant codebase &lt;span class=&quot;s2&quot;&gt;&quot;file:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.home&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/../lib/tools.jar&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
- permission java.security.AllPermission&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;启动jstatd服务，默认连接端口号为1099&lt;/p&gt;
-
-    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/bin/jstatd &lt;span class=&quot;nt&quot;&gt;-J-Djava&lt;/span&gt;.security.policy&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;jstatd.all.policy
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;本地连接不上远程解决方案&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;服务器上开启了防火墙，需要开放1099端口，或者关闭防火墙，需要注意的是，仅仅开放1099端口可能还是连接不上，因为jstatd服务有两个端口，另一个端口也需要开放
-&lt;img src=&quot;/blog/blog_jvm/jstatd_port.jpg&quot; alt=&quot;image&quot; /&gt;
-如图所示，还有另一个端口37529，经测试，该端口是随机的，每次开启jstatd服务，该端口都会变化，检查端口是否开放，在本地执行如下命令&lt;/p&gt;
-
-    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;telnet ip port &lt;span class=&quot;c&quot;&gt;#如果端口未开放，则连接会被拒绝或者卡在尝试连接中&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果端口均可以访问，执行如下命令启动服务&lt;/p&gt;
-
-    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/bin/jstatd &lt;span class=&quot;nt&quot;&gt;-J-Djava&lt;/span&gt;.security.policy&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;jstatd.all.policy &lt;span class=&quot;nt&quot;&gt;-J-Djava&lt;/span&gt;.rmi.server.hostname&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;域名&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;IP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>true</name></author><category term="JVM" /><summary type="html">步骤</summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;/blog/blog_jvm/scala_style.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="JVM" /><category term="Scala" /><summary type="html">添加JVM参数，在这里未使用身份验证，生产环境建议开启用户名密码验证，端口号为18999，可自行更改，同jstatd方式一样，远程访问需要开放指定的端口</summary></entry></feed>
