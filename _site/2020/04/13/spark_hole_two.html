@@ -1,0 +1,383 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_default.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark踩坑记（二）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark踩坑记（二）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark踩坑记（二）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/03/29/spark_hole_one.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark踩坑记（一）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/03/29/spark_hole_one.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark踩坑记（一）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        第三方包与spark集群guava包冲突
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>前不久提交了个任务到集群中，死活不通过，查看日志，发现guava包冲突。项目中用了个第三方包，该第三方包使用了guava包，版本是19.0。而spark集群内部也会使用guava包，集群用的是CDH的，spark版本2.3，但是我最后查到guava版本竟然是11.0.2，如何查看集群jar版本，通过spark history server随意进入一个application下，然后点击上方Environment，在该页面下有Classpath Entries，如下图</p>
+</blockquote>
+
+<p><img src="/blog/blog_spark_hole_two/spark_guava_version.jpg" alt="guava版本" /></p>
+
+<blockquote>
+  <p>出现该冲突的原因是JVM加载jar，如果有多个版本的jar，默认会先使用spark集群内部的，JVM一旦加载后，就不会进行第二次加载，如果运用了高版本的jar的一些特性，也就会无法运行程序。</p>
+
+  <hr />
+  <p>###解决方案
+方案一：升级集群内部jar版本，且不说该方式不好评估升级jar后对集群带来的负面影响，该方式有些治标不治本吧，以后如果其他jar更新，集群每次都要更新jar版本，成本也太大了，不推荐使用</p>
+
+  <p>方案二：使用shade方式替换包，推荐该方式</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1）maven管理
+</code></pre></div>  </div>
+
+  <p>修改pom.xml</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">build</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">plugins</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">plugin</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">maven</span><span class="o">.</span><span class="na">plugins</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">maven</span><span class="o">-</span><span class="n">shade</span><span class="o">-</span><span class="n">plugin</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;</span><span class="mf">3.2</span><span class="o">.</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">version</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">executions</span><span class="o">&gt;</span>
+                    <span class="o">&lt;</span><span class="n">execution</span><span class="o">&gt;</span>
+                        <span class="o">&lt;</span><span class="n">phase</span><span class="o">&gt;</span><span class="kn">package</span><span class="o">&lt;/</span><span class="n">phase</span><span class="o">&gt;</span>
+                        <span class="o">&lt;</span><span class="n">goals</span><span class="o">&gt;</span>
+                            <span class="o">&lt;</span><span class="n">goal</span><span class="o">&gt;</span><span class="n">shade</span><span class="o">&lt;/</span><span class="n">goal</span><span class="o">&gt;</span>
+                        <span class="o">&lt;/</span><span class="n">goals</span><span class="o">&gt;</span>
+                        <span class="o">&lt;</span><span class="n">configuration</span><span class="o">&gt;</span>
+                            <span class="o">&lt;</span><span class="n">relocations</span><span class="o">&gt;</span>
+                                <span class="o">&lt;</span><span class="n">relocation</span><span class="o">&gt;</span>
+                                    <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">google</span><span class="o">.</span><span class="na">common</span><span class="o">&lt;/</span><span class="n">pattern</span><span class="o">&gt;</span>
+                                    <span class="o">&lt;</span><span class="n">shadedPattern</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">xxx</span><span class="o">.</span><span class="na">shaded</span><span class="o">.</span><span class="na">com</span><span class="o">.</span><span class="na">google</span><span class="o">.</span><span class="na">common</span><span class="o">&lt;/</span><span class="n">shadedPattern</span><span class="o">&gt;</span>
+                                <span class="o">&lt;/</span><span class="n">relocation</span><span class="o">&gt;</span>
+                            <span class="o">&lt;/</span><span class="n">relocations</span><span class="o">&gt;</span>
+                            <span class="o">&lt;</span><span class="n">filters</span><span class="o">&gt;</span>
+                                <span class="o">&lt;</span><span class="n">filter</span><span class="o">&gt;</span>
+                                    <span class="o">&lt;</span><span class="n">artifact</span><span class="o">&gt;*:*&lt;/</span><span class="n">artifact</span><span class="o">&gt;</span>
+                                    <span class="o">&lt;</span><span class="n">excludes</span><span class="o">&gt;</span>
+                                        <span class="o">&lt;</span><span class="n">exclude</span><span class="o">&gt;</span><span class="n">META</span><span class="o">-</span><span class="n">INF</span><span class="o">/</span><span class="n">maven</span><span class="o">/**&lt;/</span><span class="n">exclude</span><span class="o">&gt;</span>
+                                    <span class="o">&lt;/</span><span class="n">excludes</span><span class="o">&gt;</span>
+                                <span class="o">&lt;/</span><span class="n">filter</span><span class="o">&gt;</span>
+                            <span class="o">&lt;/</span><span class="n">filters</span><span class="o">&gt;</span>
+                        <span class="o">&lt;/</span><span class="n">configuration</span><span class="o">&gt;</span>
+                    <span class="o">&lt;/</span><span class="n">execution</span><span class="o">&gt;</span>
+                <span class="o">&lt;/</span><span class="n">executions</span><span class="o">&gt;</span>
+            <span class="o">&lt;/</span><span class="n">plugin</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">plugins</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">build</span><span class="o">&gt;</span>
+
+</code></pre></div></div>
+<blockquote>
+  <p>2) sbt管理</p>
+
+  <p>修改项目目录的project/plugins.sbt，添加assembly插件addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "sbt0.10.1_0.3")</p>
+
+  <p>修改build.sbt</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">assemblyShadeRules</span> <span class="n">in</span> <span class="n">assembly</span> <span class="o">:=</span> <span class="nc">Seq</span><span class="o">(</span>
+  <span class="nc">ShadeRule</span><span class="o">.</span><span class="n">rename</span><span class="o">(</span><span class="s">"com.google.common"</span> <span class="o">-&gt;</span> <span class="s">"com.xxx.shaded.com.google.common"</span><span class="o">).</span><span class="n">inAll</span>
+<span class="o">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>assembly插件打的是个fat jar，需要注意的是maven方式打得fat jar是没办法完成包名替换的，还是会存在guava包冲突</p>
+</blockquote>
+
+<hr />
+<blockquote>
+  <p>本人使用的是maven方式，打完包后需要验证是否替换包名成功</p>
+
+  <p>下载个jd-gui工具验证，<a href="http://java-decompiler.github.io/">官方下载地址</a>，下载完安装成功后打开，拖动jar包进入应用程序窗口内会自动打开jar包，包名未完成替换jar如下图
+<img src="/blog/blog_spark_hole_two/jar_origin.jpg" alt="未替换图片" /></p>
+</blockquote>
+
+<blockquote>
+  <p>替换成功后的截图如下，可见com.google.common.base变成了com.feiniu.shaded.com.google.common包
+<img src="/blog/blog_spark_hole_two/jar_replace_success.jpg" alt="替换成功图片" /></p>
+</blockquote>
+
+<hr />
+<blockquote>
+  <p>总结下，无论是自己项目中直接引入guava包，还是引用的第三方包用了guava包都可以完成替换，类推下，所以其他包与spark集群包冲突都可以通过shade化来解决</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/04/13/spark_hole_two', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
