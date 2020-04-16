@@ -18,6 +18,7 @@ subtitle: '第三方包与spark集群guava包冲突'
 > 出现该冲突的原因是JVM加载jar，如果有多个版本的jar，默认会先使用spark集群内部的，JVM一旦加载后，就不会进行第二次加载，如果运用了高版本的jar的一些特性，也就会无法运行程序。
 > 
 ---
+
 ###解决方案
 > 方案一：升级集群内部jar版本，且不说该方式不好评估升级jar后对集群带来的负面影响，该方式有些治标不治本吧，以后如果其他jar更新，集群每次都要更新jar版本，成本也太大了，不推荐使用
 > 
@@ -65,7 +66,7 @@ subtitle: '第三方包与spark集群guava包冲突'
 ```
 > 2) sbt管理
 > 
-> 修改项目目录的project/plugins.sbt，添加assembly插件addSbtPlugin(\"com.eed3si9n\" % \"sbt-assembly\" % \"sbt0.10.1_0.3\")
+> 修改项目目录的project/plugins.sbt，如果没有该文件则创建该文件，添加assembly插件addSbtPlugin(\"com.eed3si9n\" % \"sbt-assembly\" % \"0.14.10\")
 >  
 > 修改build.sbt
 
