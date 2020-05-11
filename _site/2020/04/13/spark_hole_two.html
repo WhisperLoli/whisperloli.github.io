@@ -122,8 +122,8 @@ var _hmt = _hmt || [];
   <!-- 页面宽度大于800px -->
   <div class="left-area">
     
-      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
-      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+      <a href="/2020/05/11/spark_shell_process.html" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（一）</sapn></span></div>
     
   </div>
   <div class="post-titlearea">
@@ -142,7 +142,7 @@ var _hmt = _hmt || [];
   <!-- 页面宽度小于800px -->
   <div class="post-changearea">
     
-      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+      <a href="/2020/05/11/spark_shell_process.html" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>上一篇<br><br>Spark源码学习笔记（一）</span></a>
     
     
       <a href="/2020/03/29/spark_hole_one.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark踩坑记（一）</span></a>
@@ -172,8 +172,11 @@ var _hmt = _hmt || [];
   <p>出现该冲突的原因是JVM加载jar，如果有多个版本的jar，默认会先使用spark集群内部的，JVM一旦加载后，就不会进行第二次加载，如果运用了高版本的jar的一些特性，也就会无法运行程序。</p>
 
   <hr />
-  <p>###解决方案
-方案一：升级集群内部jar版本，且不说该方式不好评估升级jar后对集群带来的负面影响，该方式有些治标不治本吧，以后如果其他jar更新，集群每次都要更新jar版本，成本也太大了，不推荐使用</p>
+</blockquote>
+
+<p>###解决方案</p>
+<blockquote>
+  <p>方案一：升级集群内部jar版本，且不说该方式不好评估升级jar后对集群带来的负面影响，该方式有些治标不治本吧，以后如果其他jar更新，集群每次都要更新jar版本，成本也太大了，不推荐使用</p>
 
   <p>方案二：使用shade方式替换包，推荐该方式</p>
 
@@ -221,7 +224,7 @@ var _hmt = _hmt || [];
 <blockquote>
   <p>2) sbt管理</p>
 
-  <p>修改项目目录的project/plugins.sbt，添加assembly插件addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "sbt0.10.1_0.3")</p>
+  <p>修改项目目录的project/plugins.sbt，如果没有该文件则创建该文件，添加assembly插件addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.10")</p>
 
   <p>修改build.sbt</p>
 </blockquote>

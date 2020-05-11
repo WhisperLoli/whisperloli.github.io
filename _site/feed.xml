@@ -1,4 +1,116 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-14T23:48:20+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark踩坑记（二）</title><link href="http://localhost:4000/2020/04/13/spark_hole_two.html" rel="alternate" type="text/html" title="Spark踩坑记（二）" /><published>2020-04-13T20:25:43+08:00</published><updated>2020-04-13T20:25:43+08:00</updated><id>http://localhost:4000/2020/04/13/spark_hole_two</id><content type="html" xml:base="http://localhost:4000/2020/04/13/spark_hole_two.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-11T19:44:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark源码学习笔记（一）</title><link href="http://localhost:4000/2020/05/11/spark_shell_process.html" rel="alternate" type="text/html" title="Spark源码学习笔记（一）" /><published>2020-05-11T19:01:29+08:00</published><updated>2020-05-11T19:01:29+08:00</updated><id>http://localhost:4000/2020/05/11/spark_shell_process</id><content type="html" xml:base="http://localhost:4000/2020/05/11/spark_shell_process.html">&lt;p&gt;一直想研究spark源码来着，希望自己也能坚持下去吧。&lt;/p&gt;
+
+&lt;p&gt;先从github clone一份spark源码，我下载的源码版本是2.3.3版本。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/spark_source_code/source_code_1/spark-shell.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;从图中，我们可以看到，用户在客户端执行spark-shell命令底层其实执行的还是spark-submit操作，相当于用一个shell包装了spark-submit。主类为org.apache.spark.repl.Main，该类位于spark-repl模块下。REPL的中文含义是交互式解释器，使用spark-shell其实就是交互式编程。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/spark_source_code/source_code_1/spark-shell-main.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;进入主函数，可以看到执行了一堆环境加载操作，最后执行interp.process(setting)，调用SparkILoop类的process方法，该类继承自ILoop，process方法并未重写，进入父类查看process方法&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  // start an interpreter with the given settings
+  def process(settings: Settings): Boolean = savingContextLoader {
+    this.settings = settings
+    createInterpreter()
+    // sets in to some kind of reader depending on environmental cues
+    in = in0.fold(chooseReader(settings))(r =&amp;gt; SimpleReader(r, out, interactive = true))
+    globalFuture = future {
+      intp.initializeSynchronous()
+      loopPostInit()
+      !intp.reporter.hasErrors
+    }
+    loadFiles(settings)
+    printWelcome()  
+    try loop() match {
+      case LineResults.EOF =&amp;gt; out print Properties.shellInterruptedString
+      case _               =&amp;gt;
+    }
+    catch AbstractOrMissingHandler()
+    finally closeInterpreter()
+	true
+  } 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;又是做了很多初始化工作，接着加载配置文件loadFiles(settings)，该方法在SparkILoop类中被重写，在子类继承的方法中调用重写的方法，会调用SparkILoop重写后的loadFiles方法&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /**
+   * We override `loadFiles` because we need to initialize Spark *before* the REPL
+   * sees any files, so that the Spark context is visible in those files. This is a bit of a
+   * hack, but there isn't another hook available to us at this point.
+   */
+  override def loadFiles(settings: Settings): Unit = {
+    initializeSpark()
+    super.loadFiles(settings)
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;看方法名和注释都能知道，先初始化spark对象，再加载配置文件&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	val initializationCommands: Seq[String] = Seq(
+    &quot;&quot;&quot;
+    @transient val spark = if (org.apache.spark.repl.Main.sparkSession != null) {
+        org.apache.spark.repl.Main.sparkSession
+      } else {
+        org.apache.spark.repl.Main.createSparkSession()
+      }
+    @transient val sc = {
+      val _sc = spark.sparkContext
+      if (_sc.getConf.getBoolean(&quot;spark.ui.reverseProxy&quot;, false)) {
+        val proxyUrl = _sc.getConf.get(&quot;spark.ui.reverseProxyUrl&quot;, null)
+        if (proxyUrl != null) {
+          println(
+            s&quot;Spark Context Web UI is available at ${proxyUrl}/proxy/${_sc.applicationId}&quot;)
+        } else {
+          println(s&quot;Spark Context Web UI is available at Spark Master Public URL&quot;)
+        }
+      } else {
+        _sc.uiWebUrl.foreach {
+          webUrl =&amp;gt; println(s&quot;Spark context Web UI available at ${webUrl}&quot;)
+        }
+      }
+      println(&quot;Spark context available as 'sc' &quot; +
+        s&quot;(master = ${_sc.master}, app id = ${_sc.applicationId}).&quot;)
+      println(&quot;Spark session available as 'spark'.&quot;)
+      _sc
+    }
+    &quot;&quot;&quot;,
+    &quot;import org.apache.spark.SparkContext._&quot;,
+    &quot;import spark.implicits._&quot;,
+    &quot;import spark.sql&quot;,
+    &quot;import org.apache.spark.sql.functions._&quot;
+  )
+  def initializeSpark() {
+    intp.beQuietDuring {
+      savingReplayStack { // remove the commands from session history.
+        initializationCommands.foreach(processLine)
+      }
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;initializationCommands.foreach(processLine)调用processLine方法执行initializationCommands对象的每个元素，创建SparkSession对象，SparkContext对象，获取配置信息，然后打印，加载完配置文件后，执行process方法中的printWelcome方法，loadFiles和printWelcome方法执行完成后，用户就可以看到如下效果
+&lt;img src=&quot;/blog/spark_source_code/source_code_1/spark_welcome.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/** The main read-eval-print loop for the repl.  It calls
+   *  command() for each line of input, and stops when
+   *  command() returns false.
+   */
+  @tailrec final def loop(): LineResult = {
+    import LineResults._
+    readOneLine() match {
+      case null =&amp;gt; EOF
+      case line =&amp;gt; if (try processLine(line) catch crashRecovery) loop() else ERR
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;接着执行loop()方法，loop方法内部调用readOneLine循环读取用户的输入，使用processLine处理用户的输入信息，发生异常catch时执行crashRecovery函数，比如import的包不存在之类的，可以恢复正常进行如上，processLine方法执行成功后继续调用loop方法，递归调用&lt;/p&gt;
+
+  &lt;p&gt;loop方法还使用了严格尾递归检查注解。对于是否是严格尾递归，若不能自行判断，可使用Scala提供的尾递归标注@scala.annotation.tailrec，这个符号除了可以标识尾递归外，更重要的是编译器会检查该函数是否真的尾递归，若不是，会导致编译错误&lt;/p&gt;
+
+  &lt;p&gt;如上就是spark-shell的整个执行流程&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><summary type="html">一直想研究spark源码来着，希望自己也能坚持下去吧。</summary></entry><entry><title type="html">Spark踩坑记（二）</title><link href="http://localhost:4000/2020/04/13/spark_hole_two.html" rel="alternate" type="text/html" title="Spark踩坑记（二）" /><published>2020-04-13T20:25:43+08:00</published><updated>2020-04-13T20:25:43+08:00</updated><id>http://localhost:4000/2020/04/13/spark_hole_two</id><content type="html" xml:base="http://localhost:4000/2020/04/13/spark_hole_two.html">&lt;blockquote&gt;
   &lt;p&gt;前不久提交了个任务到集群中，死活不通过，查看日志，发现guava包冲突。项目中用了个第三方包，该第三方包使用了guava包，版本是19.0。而spark集群内部也会使用guava包，集群用的是CDH的，spark版本2.3，但是我最后查到guava版本竟然是11.0.2，如何查看集群jar版本，通过spark history server随意进入一个application下，然后点击上方Environment，在该页面下有Classpath Entries，如下图&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -8,8 +120,11 @@
   &lt;p&gt;出现该冲突的原因是JVM加载jar，如果有多个版本的jar，默认会先使用spark集群内部的，JVM一旦加载后，就不会进行第二次加载，如果运用了高版本的jar的一些特性，也就会无法运行程序。&lt;/p&gt;
 
   &lt;hr /&gt;
-  &lt;p&gt;###解决方案
-方案一：升级集群内部jar版本，且不说该方式不好评估升级jar后对集群带来的负面影响，该方式有些治标不治本吧，以后如果其他jar更新，集群每次都要更新jar版本，成本也太大了，不推荐使用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;###解决方案&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;方案一：升级集群内部jar版本，且不说该方式不好评估升级jar后对集群带来的负面影响，该方式有些治标不治本吧，以后如果其他jar更新，集群每次都要更新jar版本，成本也太大了，不推荐使用&lt;/p&gt;
 
   &lt;p&gt;方案二：使用shade方式替换包，推荐该方式&lt;/p&gt;
 
@@ -57,7 +172,7 @@
 &lt;blockquote&gt;
   &lt;p&gt;2) sbt管理&lt;/p&gt;
 
-  &lt;p&gt;修改项目目录的project/plugins.sbt，添加assembly插件addSbtPlugin(&quot;com.eed3si9n&quot; % &quot;sbt-assembly&quot; % &quot;sbt0.10.1_0.3&quot;)&lt;/p&gt;
+  &lt;p&gt;修改项目目录的project/plugins.sbt，如果没有该文件则创建该文件，添加assembly插件addSbtPlugin(&quot;com.eed3si9n&quot; % &quot;sbt-assembly&quot; % &quot;0.14.10&quot;)&lt;/p&gt;
 
   &lt;p&gt;修改build.sbt&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -693,19 +808,4 @@ ssh-keygen &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; rsa &lt;span class=&
 &lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;authorized_keys &lt;span class=&quot;c&quot;&gt;#如果没有authorized_keys文件&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#再把刚copy的public key添加到authorized_keys文件中，之后就可以使用ssh user@ip 的方式连接上服务器&lt;/span&gt;
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="VPS" /><category term="Linux" /><category term="VPN" /><summary type="html">之前一直用的是搬瓦工的VPS，现在搬瓦工只支持KVM模式，所以价格上去了，我的搬瓦工也到期了，听说AWS首年免费使用，所以尝试一下，注册了一个账号，英文不好的童鞋可以把语言切换成中文。</summary></entry><entry><title type="html">引入sbt错误</title><link href="http://localhost:4000/2019/02/02/sbt_error-conclusion.html" rel="alternate" type="text/html" title="引入sbt错误" /><published>2019-02-02T22:59:37+08:00</published><updated>2019-02-02T22:59:37+08:00</updated><id>http://localhost:4000/2019/02/02/sbt_error-conclusion</id><content type="html" xml:base="http://localhost:4000/2019/02/02/sbt_error-conclusion.html">&lt;p&gt;今天使用IntelliJ IDEA创建项目，碰到个古怪的错误，创建完报错，无法引入sbt，错误信息如下
-&lt;img src=&quot;/blog/blog_sbt_import_error_conclusion/import_error.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;根据错误信息，大胆猜测本地可能没有sbt1.2.8，于是进入sbt本地仓库中查看
-&lt;img src=&quot;/blog/blog_sbt_import_error_conclusion/sbt_local_version.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;果然，本地仓库中sbt版本没有1.2.8，于是切换项目的sbt版本，切换sbt版本需要修改build.properties中sbt的版本号，切换操作如下图显示
-&lt;img src=&quot;/blog/blog_sbt_import_error_conclusion/sbt_version.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;PS：明天回家，准备过年。&lt;br /&gt;
-         从去年十一月份出来实习到现在，已经工作一年多了，学到了很多，技术上得到了很大的成长，虽然有时很累，但是更多的还是开心，语言也从python到scala，再到python，仍然记得当初秋招和实习找工作时我想做的是Java开发。工作中慢慢的接触到大数据领域，再慢慢接触到算法领域，也学了一段时间的算法，常见分类、聚类算法，scikit-learn等，个人更感兴趣的还是大数据领域。&lt;br /&gt;
-         今年，告别校园生涯，走上社会，遗憾的是说好的毕业旅行泡汤了。&lt;br /&gt;
-         毕业后没多久，公司也发生了很多变动，leader的离职对我的打击还是挺大的吧，从没想过他会离职，真的非常优秀的leader，还会给我们指导学习方向，教会了我很多东西。还记得之前他出差，还和我语音通话一起调bug到凌晨，真的非常感谢。在leader离职后的日子里，虽然技术上没什么大的成长，但是在社会阅历上也有很多成长，因为缺少了前leader这棵大树，可以看到公司的很多实际情况，或许，也是在这个时候才真正的了解公司了。才开始知道其实很多事情并没有表面看上去那么光鲜亮丽吧！也见识了各种各样的甩锅技术，可悲的是很多人怕背锅连最基本的担当都丢失了，出了事情把所有的责任往外推的一干二净。有过希望，也有过失落。这一年就这么过去了，真的好快，感觉自己还有很多东西没学，还有很多东西不懂。来年，一定变得更优秀！&lt;br /&gt;
-         这一年里，最最最重要的是收获了真挚的友谊（小肥汪&amp;amp;刺猬妈），这是最开心的事情了。偶尔一起聚个餐，周末一起出去玩，让孤孤单单的我也感受到了温暖。谢谢你们！愿友谊地久天长！ &lt;br /&gt;
-         2018，再见！&lt;br /&gt;
-         2019，加油！&lt;/p&gt;</content><author><name>true</name></author><category term="Sbt" /><summary type="html">今天使用IntelliJ IDEA创建项目，碰到个古怪的错误，创建完报错，无法引入sbt，错误信息如下</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="VPS" /><category term="Linux" /><category term="VPN" /><summary type="html">之前一直用的是搬瓦工的VPS，现在搬瓦工只支持KVM模式，所以价格上去了，我的搬瓦工也到期了，听说AWS首年免费使用，所以尝试一下，注册了一个账号，英文不好的童鞋可以把语言切换成中文。</summary></entry></feed>
