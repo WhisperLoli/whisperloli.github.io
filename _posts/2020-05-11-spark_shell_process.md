@@ -22,8 +22,9 @@ subtitle: 'spark-shell启动流程'
 
 > 进入主函数，可以看到执行了一堆环境加载操作，最后执行interp.process(setting)，调用SparkILoop类的process方法，该类继承自ILoop，process方法并未重写，进入父类查看process方法
 > 
-> ```
->   // start an interpreter with the given settings
+
+```scala
+// start an interpreter with the given settings
   def process(settings: Settings): Boolean = savingContextLoader {
     this.settings = settings
     createInterpreter()
@@ -44,11 +45,13 @@ subtitle: 'spark-shell启动流程'
     finally closeInterpreter()
 	true
   } 
-> ```
+```
+
 > 又是做了很多初始化工作，接着加载配置文件loadFiles(settings)，该方法在SparkILoop类中被重写，在子类继承的方法中调用重写的方法，会调用SparkILoop重写后的loadFiles方法
 > 
-> ```
->  /**
+
+```scala
+ /**
    * We override `loadFiles` because we need to initialize Spark *before* the REPL
    * sees any files, so that the Spark context is visible in those files. This is a bit of a
    * hack, but there isn't another hook available to us at this point.
@@ -57,11 +60,13 @@ subtitle: 'spark-shell启动流程'
     initializeSpark()
     super.loadFiles(settings)
   }
-> ```
+```
+
 > 看方法名和注释都能知道，先初始化spark对象，再加载配置文件
 > 
-> ```
-> 	val initializationCommands: Seq[String] = Seq(
+
+```scala
+val initializationCommands: Seq[String] = Seq(
     """
     @transient val spark = if (org.apache.spark.repl.Main.sparkSession != null) {
         org.apache.spark.repl.Main.sparkSession
@@ -101,12 +106,14 @@ subtitle: 'spark-shell启动流程'
       }
     }
   }
-> ```
+```
+
 > initializationCommands.foreach(processLine)调用processLine方法执行initializationCommands对象的每个元素，创建SparkSession对象，SparkContext对象，获取配置信息，然后打印，加载完配置文件后，执行process方法中的printWelcome方法，loadFiles和printWelcome方法执行完成后，用户就可以看到如下效果
 > ![](/blog/spark_source_code/source_code_1/spark_welcome.jpg)
 > 
-> ```
-> /** The main read-eval-print loop for the repl.  It calls
+
+```scala
+ /** The main read-eval-print loop for the repl.  It calls
    *  command() for each line of input, and stops when
    *  command() returns false.
    */
@@ -117,7 +124,8 @@ subtitle: 'spark-shell启动流程'
       case line => if (try processLine(line) catch crashRecovery) loop() else ERR
     }
   }
-> ```
+ ```
+ 
 > 接着执行loop()方法，loop方法内部调用readOneLine循环读取用户的输入，使用processLine处理用户的输入信息，发生异常catch时执行crashRecovery函数，比如import的包不存在之类的，可以恢复正常进行如上，processLine方法执行成功后继续调用loop方法，递归调用
 > 
 > loop方法还使用了严格尾递归检查注解。对于是否是严格尾递归，若不能自行判断，可使用Scala提供的尾递归标注@scala.annotation.tailrec，这个符号除了可以标识尾递归外，更重要的是编译器会检查该函数是否真的尾递归，若不是，会导致编译错误

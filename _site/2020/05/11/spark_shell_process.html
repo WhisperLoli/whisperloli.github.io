@@ -177,44 +177,54 @@ var _hmt = _hmt || [];
 <blockquote>
   <p>进入主函数，可以看到执行了一堆环境加载操作，最后执行interp.process(setting)，调用SparkILoop类的process方法，该类继承自ILoop，process方法并未重写，进入父类查看process方法</p>
 
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  // start an interpreter with the given settings
-  def process(settings: Settings): Boolean = savingContextLoader {
-    this.settings = settings
-    createInterpreter()
-    // sets in to some kind of reader depending on environmental cues
-    in = in0.fold(chooseReader(settings))(r =&gt; SimpleReader(r, out, interactive = true))
-    globalFuture = future {
-      intp.initializeSynchronous()
-      loopPostInit()
-      !intp.reporter.hasErrors
-    }
-    loadFiles(settings)
-    printWelcome()  
-    try loop() match {
-      case LineResults.EOF =&gt; out print Properties.shellInterruptedString
-      case _               =&gt;
-    }
-    catch AbstractOrMissingHandler()
-    finally closeInterpreter()
-	true
-  } 
-</code></pre></div>  </div>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// start an interpreter with the given settings
+</span>  <span class="k">def</span> <span class="n">process</span><span class="o">(</span><span class="n">settings</span><span class="k">:</span> <span class="kt">Settings</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="n">savingContextLoader</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">settings</span> <span class="k">=</span> <span class="n">settings</span>
+    <span class="n">createInterpreter</span><span class="o">()</span>
+    <span class="c1">// sets in to some kind of reader depending on environmental cues
+</span>    <span class="n">in</span> <span class="k">=</span> <span class="n">in0</span><span class="o">.</span><span class="n">fold</span><span class="o">(</span><span class="n">chooseReader</span><span class="o">(</span><span class="n">settings</span><span class="o">))(</span><span class="n">r</span> <span class="k">=&gt;</span> <span class="nc">SimpleReader</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="n">out</span><span class="o">,</span> <span class="n">interactive</span> <span class="k">=</span> <span class="kc">true</span><span class="o">))</span>
+    <span class="n">globalFuture</span> <span class="k">=</span> <span class="n">future</span> <span class="o">{</span>
+      <span class="n">intp</span><span class="o">.</span><span class="n">initializeSynchronous</span><span class="o">()</span>
+      <span class="n">loopPostInit</span><span class="o">()</span>
+      <span class="o">!</span><span class="n">intp</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">hasErrors</span>
+    <span class="o">}</span>
+    <span class="n">loadFiles</span><span class="o">(</span><span class="n">settings</span><span class="o">)</span>
+    <span class="n">printWelcome</span><span class="o">()</span>  
+    <span class="k">try</span> <span class="n">loop</span><span class="o">()</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">LineResults</span><span class="o">.</span><span class="nc">EOF</span> <span class="k">=&gt;</span> <span class="n">out</span> <span class="n">print</span> <span class="nc">Properties</span><span class="o">.</span><span class="n">shellInterruptedString</span>
+      <span class="k">case</span> <span class="k">_</span>               <span class="k">=&gt;</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="nc">AbstractOrMissingHandler</span><span class="o">()</span>
+    <span class="k">finally</span> <span class="n">closeInterpreter</span><span class="o">()</span>
+	<span class="kc">true</span>
+  <span class="o">}</span> 
+</code></pre></div></div>
+
+<blockquote>
   <p>又是做了很多初始化工作，接着加载配置文件loadFiles(settings)，该方法在SparkILoop类中被重写，在子类继承的方法中调用重写的方法，会调用SparkILoop重写后的loadFiles方法</p>
 
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /**
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cm">/**
    * We override `loadFiles` because we need to initialize Spark *before* the REPL
    * sees any files, so that the Spark context is visible in those files. This is a bit of a
    * hack, but there isn't another hook available to us at this point.
-   */
-  override def loadFiles(settings: Settings): Unit = {
-    initializeSpark()
-    super.loadFiles(settings)
-  }
-</code></pre></div>  </div>
+   */</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="n">loadFiles</span><span class="o">(</span><span class="n">settings</span><span class="k">:</span> <span class="kt">Settings</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">initializeSpark</span><span class="o">()</span>
+    <span class="k">super</span><span class="o">.</span><span class="n">loadFiles</span><span class="o">(</span><span class="n">settings</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
   <p>看方法名和注释都能知道，先初始化spark对象，再加载配置文件</p>
 
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	val initializationCommands: Seq[String] = Seq(
-    """
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">initializationCommands</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
+    <span class="s">"""
     @transient val spark = if (org.apache.spark.repl.Main.sparkSession != null) {
         org.apache.spark.repl.Main.sparkSession
       } else {
@@ -240,35 +250,41 @@ var _hmt = _hmt || [];
       println("Spark session available as 'spark'.")
       _sc
     }
-    """,
-    "import org.apache.spark.SparkContext._",
-    "import spark.implicits._",
-    "import spark.sql",
-    "import org.apache.spark.sql.functions._"
-  )
-  def initializeSpark() {
-    intp.beQuietDuring {
-      savingReplayStack { // remove the commands from session history.
-        initializationCommands.foreach(processLine)
-      }
-    }
-  }
-</code></pre></div>  </div>
+    """</span><span class="o">,</span>
+    <span class="s">"import org.apache.spark.SparkContext._"</span><span class="o">,</span>
+    <span class="s">"import spark.implicits._"</span><span class="o">,</span>
+    <span class="s">"import spark.sql"</span><span class="o">,</span>
+    <span class="s">"import org.apache.spark.sql.functions._"</span>
+  <span class="o">)</span>
+  <span class="k">def</span> <span class="n">initializeSpark</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">intp</span><span class="o">.</span><span class="n">beQuietDuring</span> <span class="o">{</span>
+      <span class="n">savingReplayStack</span> <span class="o">{</span> <span class="c1">// remove the commands from session history.
+</span>        <span class="n">initializationCommands</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">processLine</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
   <p>initializationCommands.foreach(processLine)调用processLine方法执行initializationCommands对象的每个元素，创建SparkSession对象，SparkContext对象，获取配置信息，然后打印，加载完配置文件后，执行process方法中的printWelcome方法，loadFiles和printWelcome方法执行完成后，用户就可以看到如下效果
 <img src="/blog/spark_source_code/source_code_1/spark_welcome.jpg" alt="" /></p>
 
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/** The main read-eval-print loop for the repl.  It calls
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cm">/** The main read-eval-print loop for the repl.  It calls
    *  command() for each line of input, and stops when
    *  command() returns false.
-   */
-  @tailrec final def loop(): LineResult = {
-    import LineResults._
-    readOneLine() match {
-      case null =&gt; EOF
-      case line =&gt; if (try processLine(line) catch crashRecovery) loop() else ERR
-    }
-  }
-</code></pre></div>  </div>
+   */</span>
+  <span class="nd">@tailrec</span> <span class="k">final</span> <span class="k">def</span> <span class="n">loop</span><span class="o">()</span><span class="k">:</span> <span class="kt">LineResult</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">import</span> <span class="nn">LineResults._</span>
+    <span class="n">readOneLine</span><span class="o">()</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="kc">null</span> <span class="k">=&gt;</span> <span class="nc">EOF</span>
+      <span class="k">case</span> <span class="n">line</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">(</span><span class="k">try</span> <span class="n">processLine</span><span class="o">(</span><span class="n">line</span><span class="o">)</span> <span class="k">catch</span> <span class="n">crashRecovery</span><span class="o">)</span> <span class="n">loop</span><span class="o">()</span> <span class="k">else</span> <span class="nc">ERR</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
   <p>接着执行loop()方法，loop方法内部调用readOneLine循环读取用户的输入，使用processLine处理用户的输入信息，发生异常catch时执行crashRecovery函数，比如import的包不存在之类的，可以恢复正常进行如上，processLine方法执行成功后继续调用loop方法，递归调用</p>
 
   <p>loop方法还使用了严格尾递归检查注解。对于是否是严格尾递归，若不能自行判断，可使用Scala提供的尾递归标注@scala.annotation.tailrec，这个符号除了可以标识尾递归外，更重要的是编译器会检查该函数是否真的尾递归，若不是，会导致编译错误</p>
