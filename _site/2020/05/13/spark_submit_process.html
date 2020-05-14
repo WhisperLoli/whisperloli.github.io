@@ -1,0 +1,507 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（二）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（二）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="/2020/05/13/spark_class_process.html" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（三）</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（二）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/05/11/spark_shell_process.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（一）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="/2020/05/13/spark_class_process.html" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>上一篇<br><br>Spark源码学习笔记（三）</span></a>
+    
+    
+      <a href="/2020/05/11/spark_shell_process.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（一）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        spark-submit命令揭秘
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>上篇讲完spark-shell，那么这篇就讲讲spark-submit吧，spark-shell其实在shell脚本中也是执行的spark-submit命令，指定--class参数为org.apache.spark.repl.Main</p>
+
+  <p><img src="/blog/spark_source_code/source_code_2/spark_submit_shell.jpg" alt="" />
+从spark-submit脚本中，可以看到，底层执行的是spark-class命令，SparkSubmit被当作主类传进去，exec命令的意思也是执行，用被执行的命令行替换掉当前的shell进程，且exec命令后的其他命令将不再执行</p>
+
+  <p>进入SparkSubmit类，查找主函数</p>
+
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="c1">// Initialize logging if it hasn't been done yet. Keep track of   whether logging needs to
+</span>  <span class="c1">// be reset before the application starts.
+</span>  <span class="k">val</span> <span class="n">uninitLog</span> <span class="k">=</span> <span class="n">initializeLogIfNecessary</span><span class="o">(</span><span class="kc">true</span><span class="o">,</span> <span class="n">silent</span> <span class="k">=</span> <span class="kc">true</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">appArgs</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkSubmitArguments</span><span class="o">(</span><span class="n">args</span><span class="o">)</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">appArgs</span><span class="o">.</span><span class="n">verbose</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// scalastyle:off println
+</span>    <span class="n">printStream</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="n">appArgs</span><span class="o">)</span>
+    <span class="c1">// scalastyle:on println
+</span>  <span class="o">}</span>
+  <span class="n">appArgs</span><span class="o">.</span><span class="n">action</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">SparkSubmitAction</span><span class="o">.</span><span class="nc">SUBMIT</span> <span class="k">=&gt;</span> <span class="n">submit</span><span class="o">(</span><span class="n">appArgs</span><span class="o">,</span> <span class="n">uninitLog</span><span class="o">)</span>
+    <span class="k">case</span> <span class="nc">SparkSubmitAction</span><span class="o">.</span><span class="nc">KILL</span> <span class="k">=&gt;</span> <span class="n">kill</span><span class="o">(</span><span class="n">appArgs</span><span class="o">)</span>
+    <span class="k">case</span> <span class="nc">SparkSubmitAction</span><span class="o">.</span><span class="nc">REQUEST_STATUS</span> <span class="k">=&gt;</span> <span class="n">requestStatus</span><span class="o">(</span><span class="n">appArgs</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+  
+</code></pre></div></div>
+
+<blockquote>
+  <p>主函数中会创建SparkSubmitArguments对象，这个类主要的作用就是较验用户使用spark-submit提交的参数，最后封装到对象中，进入该类后，会执行parse(args.asJava)方法，解析spark-sumit后面跟着的参数，正则匹配参数中如果带有=并且是–开头的话，则会解析成key-value键值对，如果参数中没有=，则会进行关键字匹配，例如–driver-memory，代码中已经枚举了所有的关键key，循环较验参数，正则没匹配上的参数再进行循环匹配，如果正则全都没匹配上的话，时间复杂度就是O(n2)，这段代码是java写的，可能是多个开发者协同开发吧，个人感觉使用scala match匹配会更好些，内层循环中如果匹配上了关键词，则会将下一个参数也取进来当成value，如果没匹配上，则会执行handleUnknown方法，判断当前参数是否为提交的jar资源，如果是jar资源则跳出参数解析循环，剩下的参数被传递进入handleExtraArgs方法，最后当成用户提交的jar的main class参数</p>
+
+  <p>参数解析完后调用mergeDefaultSparkProperties合并重复的配置参数，接着执行ignoreNonSparkProperties忽略无效的配置参数，接着加载参数给类中的属性赋值，action默认为submit，如果指定的话可以为kill，status，用了这么久的spark-submit，一直以为只有提交任务用，没想到还可以查看任务状态、kill任务。</p>
+
+  <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">mainClass</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isPython</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isR</span> <span class="o">&amp;&amp;</span> <span class="n">primaryResource</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">uri</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">URI</span><span class="o">(</span><span class="n">primaryResource</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">uriScheme</span> <span class="k">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">getScheme</span><span class="o">()</span>
+  <span class="n">uriScheme</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="s">"file"</span> <span class="k">=&gt;</span>
+      <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">Utils</span><span class="o">.</span><span class="n">tryWithResource</span><span class="o">(</span><span class="k">new</span> <span class="nc">JarFile</span><span class="o">(</span><span class="n">uri</span><span class="o">.</span><span class="n">getPath</span><span class="o">))</span> <span class="o">{</span> <span class="n">jar</span> <span class="k">=&gt;</span>
+          <span class="c1">// Note that this might still return null if no main-class is set; we catch that later
+</span>          <span class="n">mainClass</span> <span class="k">=</span> <span class="n">jar</span><span class="o">.</span><span class="n">getManifest</span><span class="o">.</span><span class="n">getMainAttributes</span><span class="o">.</span><span class="n">getValue</span><span class="o">(</span><span class="s">"Main-Class"</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="k">_:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+          <span class="nc">SparkSubmit</span><span class="o">.</span><span class="n">printErrorAndExit</span><span class="o">(</span><span class="n">s</span><span class="s">"Cannot load main class from JAR $primaryResource"</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span>
+      <span class="nc">SparkSubmit</span><span class="o">.</span><span class="n">printErrorAndExit</span><span class="o">(</span>
+        <span class="n">s</span><span class="s">"Cannot load main class from JAR $primaryResource with URI $uriScheme. "</span> <span class="o">+</span>
+        <span class="s">"Please specify a class through --class."</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>  </div>
+  <p>提交的jar的主类参数如果不存在，则会从jar中pom获取指定的main class，最后还要执行validateArguments方法验证一遍参数。</p>
+</blockquote>
+
+<blockquote>
+  <p>参数解析较验完后，接着会根据args.action匹配是submit还是kill或者status操作</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@tailrec</span>
+<span class="k">private</span> <span class="k">def</span> <span class="n">submit</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">SparkSubmitArguments</span><span class="o">,</span> <span class="n">uninitLog</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="o">(</span><span class="n">childArgs</span><span class="o">,</span> <span class="n">childClasspath</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">,</span> <span class="n">childMainClass</span><span class="o">)</span> <span class="k">=</span> <span class="n">prepareSubmitEnvironment</span><span class="o">(</span><span class="n">args</span><span class="o">)</span>
+
+  <span class="k">def</span> <span class="n">doRunMain</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">proxyUser</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">proxyUser</span> <span class="k">=</span> <span class="nc">UserGroupInformation</span><span class="o">.</span><span class="n">createProxyUser</span><span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">proxyUser</span><span class="o">,</span>
+        <span class="nc">UserGroupInformation</span><span class="o">.</span><span class="n">getCurrentUser</span><span class="o">())</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">proxyUser</span><span class="o">.</span><span class="n">doAs</span><span class="o">(</span><span class="k">new</span> <span class="nc">PrivilegedExceptionAction</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]()</span> <span class="o">{</span>
+        <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+          <span class="n">runMain</span><span class="o">(</span><span class="n">childArgs</span><span class="o">,</span> <span class="n">childClasspath</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">,</span> <span class="n">childMainClass</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">})</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+        <span class="c1">// Hadoop's AuthorizationException suppresses the exception's stack trace, which
+</span>        <span class="c1">// makes the message printed to the output by the JVM not very helpful. Instead,
+</span>        <span class="c1">// detect exceptions with empty stack traces here, and treat them differently.
+</span>        <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getStackTrace</span><span class="o">().</span><span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+          <span class="c1">// scalastyle:off println
+</span>          <span class="n">printStream</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="s">"ERROR: ${e.getClass().getName()}: ${e.getMessage()}"</span><span class="o">)</span>
+          <span class="c1">// scalastyle:on println
+</span>          <span class="n">exitFn</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="k">throw</span> <span class="n">e</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">runMain</span><span class="o">(</span><span class="n">childArgs</span><span class="o">,</span> <span class="n">childClasspath</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">,</span> <span class="n">childMainClass</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="c1">// Let the main class re-initialize the logging system once it starts.
+</span>  <span class="k">if</span> <span class="o">(</span><span class="n">uninitLog</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Logging</span><span class="o">.</span><span class="n">uninitialize</span><span class="o">()</span>
+  <span class="o">}</span>
+
+  <span class="c1">// In standalone cluster mode, there are two submission gateways:
+</span>  <span class="c1">//   (1) The traditional RPC gateway using o.a.s.deploy.Client as a wrapper
+</span>  <span class="c1">//   (2) The new REST-based gateway introduced in Spark 1.3
+</span>  <span class="c1">// The latter is the default behavior as of Spark 1.3, but Spark submit will fail over
+</span>  <span class="c1">// to use the legacy gateway if the master endpoint turns out to be not a REST server.
+</span>  <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">isStandaloneCluster</span> <span class="o">&amp;&amp;</span> <span class="n">args</span><span class="o">.</span><span class="n">useRest</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// scalastyle:off println
+</span>      <span class="n">printStream</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="s">"Running Spark using the REST application submission protocol."</span><span class="o">)</span>
+      <span class="c1">// scalastyle:on println
+</span>      <span class="n">doRunMain</span><span class="o">()</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="c1">// Fail over to use the legacy submission gateway
+</span>      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">SubmitRestConnectionException</span> <span class="o">=&gt;</span>
+        <span class="n">printWarning</span><span class="o">(</span><span class="n">s</span><span class="s">"Master endpoint ${args.master} was not a REST server. "</span> <span class="o">+</span>
+          <span class="s">"Falling back to legacy submission gateway instead."</span><span class="o">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">useRest</span> <span class="k">=</span> <span class="kc">false</span>
+        <span class="n">submit</span><span class="o">(</span><span class="n">args</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="c1">// In all other modes, just run the main class as prepared
+</span>  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+  	<span class="n">doRunMain</span><span class="o">()</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<blockquote>
+  <p>进入submit方法后会执行prepareSubmitEnvironment，该方法执行到下面，会判断当前执行模式，基于yarn,k8s,mesos等，不同的模式会提供不同的操作，提供各自的较验，当然所有的配置会写入sparkConf对象中，再后续会执行DependencyUtils.resolveMavenDependencies方法，解决maven中的jar依赖问题，生成一些排除规则去除一些jar。如下部分jar就会被排除</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nc">IVY_DEFAULT_EXCLUDES</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="s">"catalyst_"</span><span class="o">,</span> <span class="s">"core_"</span><span class="o">,</span> <span class="s">"graphx_"</span><span class="o">,</span> <span class="s">"kvstore_"</span><span class="o">,</span> <span class="s">"launcher_"</span><span class="o">,</span> <span class="s">"mllib_"</span><span class="o">,</span>
+    <span class="s">"mllib-local_"</span><span class="o">,</span> <span class="s">"network-common_"</span><span class="o">,</span> <span class="s">"network-shuffle_"</span><span class="o">,</span> <span class="s">"repl_"</span><span class="o">,</span> <span class="s">"sketch_"</span><span class="o">,</span> <span class="s">"sql_"</span><span class="o">,</span> <span class="s">"streaming_"</span><span class="o">,</span>
+    <span class="s">"tags_"</span><span class="o">,</span> <span class="s">"unsafe_"</span><span class="o">)</span>
+    
+<span class="cm">/** Add exclusion rules for dependencies already included in the spark-assembly */</span>
+<span class="k">def</span> <span class="n">addExclusionRules</span><span class="o">(</span>
+  <span class="n">ivySettings</span><span class="k">:</span> <span class="kt">IvySettings</span><span class="o">,</span>
+  <span class="n">ivyConfName</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+  <span class="n">md</span><span class="k">:</span> <span class="kt">DefaultModuleDescriptor</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<span class="c1">// Add scala exclusion rule
+</span><span class="n">md</span><span class="o">.</span><span class="n">addExcludeRule</span><span class="o">(</span><span class="n">createExclusion</span><span class="o">(</span><span class="s">"*:scala-library:*"</span><span class="o">,</span> <span class="n">ivySettings</span><span class="o">,</span> <span class="n">ivyConfName</span><span class="o">))</span>
+
+<span class="nc">IVY_DEFAULT_EXCLUDES</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">comp</span> <span class="k">=&gt;</span>
+  <span class="n">md</span><span class="o">.</span><span class="n">addExcludeRule</span><span class="o">(</span><span class="n">createExclusion</span><span class="o">(</span><span class="n">s</span><span class="s">"org.apache.spark:spark-$comp*:*"</span><span class="o">,</span> <span class="n">ivySettings</span><span class="o">,</span>
+    <span class="n">ivyConfName</span><span class="o">))</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>获取到返回值后，从doRunMain进入runMain方法，准备执行用户提交的main函数，创建SparkApplication对象</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">app</span><span class="k">:</span> <span class="kt">SparkApplication</span> <span class="o">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">SparkApplication</span><span class="o">].</span><span class="n">isAssignableFrom</span><span class="o">(</span><span class="n">mainClass</span><span class="o">))</span> <span class="o">{</span>
+  <span class="n">mainClass</span><span class="o">.</span><span class="n">newInstance</span><span class="o">().</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">SparkApplication</span><span class="o">]</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+  <span class="c1">// SPARK-4170
+</span>  <span class="k">if</span> <span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">scala.App</span><span class="o">].</span><span class="n">isAssignableFrom</span><span class="o">(</span><span class="n">mainClass</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">printWarning</span><span class="o">(</span><span class="s">"Subclasses of scala.App may not work correctly. Use a main() method instead."</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="k">new</span> <span class="nc">JavaMainApplication</span><span class="o">(</span><span class="n">mainClass</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>SparkApplication是trait类型，如果SparkApplicaiton是mainClass的父类，则直接通过mainClass创建实例，否则创建类JavaMainApplication实例，将mainClass当作参数传入</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@tailrec</span>
+<span class="k">def</span> <span class="n">findCause</span><span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Throwable</span><span class="o">)</span><span class="k">:</span> <span class="kt">Throwable</span> <span class="o">=</span> <span class="n">t</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">UndeclaredThrowableException</span> <span class="o">=&gt;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getCause</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">findCause</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getCause</span><span class="o">())</span> <span class="k">else</span> <span class="n">e</span>
+  <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">InvocationTargetException</span> <span class="o">=&gt;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getCause</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">findCause</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getCause</span><span class="o">())</span> <span class="k">else</span> <span class="n">e</span>
+  <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Throwable</span> <span class="o">=&gt;</span>
+    <span class="n">e</span>
+<span class="o">}</span>
+
+<span class="k">try</span> <span class="o">{</span>
+  <span class="n">app</span><span class="o">.</span><span class="n">start</span><span class="o">(</span><span class="n">childArgs</span><span class="o">.</span><span class="n">toArray</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">)</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="n">t</span><span class="k">:</span> <span class="kt">Throwable</span> <span class="o">=&gt;</span>
+    <span class="n">findCause</span><span class="o">(</span><span class="n">t</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">SparkUserAppException</span><span class="o">(</span><span class="n">exitCode</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="nc">System</span><span class="o">.</span><span class="n">exit</span><span class="o">(</span><span class="n">exitCode</span><span class="o">)</span>
+
+      <span class="k">case</span> <span class="n">t</span><span class="k">:</span> <span class="kt">Throwable</span> <span class="o">=&gt;</span>
+        <span class="k">throw</span> <span class="n">t</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>调用start方法，这个地方用到了多态，如果调用的是JavaMainApplication类型的start方法，如下，则会通过反射执行main方法，并将sparkConf对象中的配置写入SystemProperties中</p>
+
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">deploy</span><span class="o">]</span> <span class="k">class</span> <span class="nc">JavaMainApplication</span><span class="o">(</span><span class="n">klass</span><span class="k">:</span> <span class="kt">Class</span><span class="o">[</span><span class="k">_</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">SparkApplication</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="n">start</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="n">conf</span><span class="k">:</span> <span class="kt">SparkConf</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>   <span class="o">{</span>
+    <span class="k">val</span> <span class="n">mainMethod</span> <span class="k">=</span> <span class="n">klass</span><span class="o">.</span><span class="n">getMethod</span><span class="o">(</span><span class="s">"main"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">](</span><span class="mi">0</span><span class="o">).</span><span class="n">getClass</span><span class="o">)</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="nc">Modifier</span><span class="o">.</span><span class="n">isStatic</span><span class="o">(</span><span class="n">mainMethod</span><span class="o">.</span><span class="n">getModifiers</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">(</span><span class="s">"The main method in the given 	main class must be static"</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">sysProps</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getAll</span><span class="o">.</span><span class="n">toMap</span>
+	   <span class="n">sysProps</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">v</span><span class="o">)</span> <span class="k">=&gt;</span>
+  	   <span class="n">sys</span><span class="o">.</span><span class="n">props</span><span class="o">(</span><span class="n">k</span><span class="o">)</span> <span class="k">=</span> <span class="n">v</span>
+    <span class="o">}</span>
+    <span class="n">mainMethod</span><span class="o">.</span><span class="n">invoke</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>源码中涉及到很多面向对象知识，有些知识点都忘了，看了源码，满脑子都是继承、封装、多态，对于面向对象很熟的同学，看源码应该会容易很多</p>
+</blockquote>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/05/13/spark_submit_process', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

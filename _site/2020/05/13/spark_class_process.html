@@ -1,0 +1,503 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（三）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（三）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（三）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/05/13/spark_submit_process.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（二）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/05/13/spark_submit_process.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（二）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        spark-class命令学习
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>spark-submit命令底层使用的是spark-class命令，那么spark-class又做了哪些操作呢？</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Find the java binary</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="k">${</span><span class="nv">JAVA_HOME</span><span class="k">}</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+  </span><span class="nv">RUNNER</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">JAVA_HOME</span><span class="k">}</span><span class="s2">/bin/java"</span>
+<span class="k">else
+  if</span> <span class="o">[</span> <span class="s2">"</span><span class="k">$(</span><span class="nb">command</span> <span class="nt">-v</span> java<span class="k">)</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nv">RUNNER</span><span class="o">=</span><span class="s2">"java"</span>
+  <span class="k">else
+    </span><span class="nb">echo</span> <span class="s2">"JAVA_HOME is not set"</span> <span class="o">&gt;</span>&amp;2
+    <span class="nb">exit </span>1
+  <span class="k">fi
+fi
+
+</span>build_command<span class="o">()</span> <span class="o">{</span>
+  <span class="s2">"</span><span class="nv">$RUNNER</span><span class="s2">"</span> <span class="nt">-Xmx128m</span> <span class="nt">-cp</span> <span class="s2">"</span><span class="nv">$LAUNCH_CLASSPATH</span><span class="s2">"</span> org.apache.spark.launcher.Main <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+  <span class="nb">printf</span> <span class="s2">"%d</span><span class="se">\0</span><span class="s2">"</span> <span class="nv">$?</span>
+<span class="o">}</span>
+
+<span class="c"># Turn off posix mode since it does not allow process substitution</span>
+<span class="nb">set</span> +o posix
+<span class="nv">CMD</span><span class="o">=()</span>
+<span class="k">while </span><span class="nv">IFS</span><span class="o">=</span> <span class="nb">read</span> <span class="nt">-d</span> <span class="s1">''</span> <span class="nt">-r</span> ARG<span class="p">;</span> <span class="k">do
+  </span>CMD+<span class="o">=(</span><span class="s2">"</span><span class="nv">$ARG</span><span class="s2">"</span><span class="o">)</span>
+<span class="k">done</span> &lt; &lt;<span class="o">(</span>build_command <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="o">)</span>
+
+<span class="nv">COUNT</span><span class="o">=</span><span class="k">${#</span><span class="nv">CMD</span><span class="p">[@]</span><span class="k">}</span>
+<span class="nv">LAST</span><span class="o">=</span><span class="k">$((</span>COUNT <span class="o">-</span> <span class="m">1</span><span class="k">))</span>
+<span class="nv">LAUNCHER_EXIT_CODE</span><span class="o">=</span><span class="k">${</span><span class="nv">CMD</span><span class="p">[</span><span class="nv">$LAST</span><span class="p">]</span><span class="k">}</span>
+
+<span class="c"># Certain JVM failures result in errors being printed to stdout (instead of stderr), which causes</span>
+<span class="c"># the code that parses the output of the launcher to get confused. In those cases, check if the</span>
+<span class="c"># exit code is an integer, and if it's not, handle it as a special error case.</span>
+<span class="k">if</span> <span class="o">!</span> <span class="o">[[</span> <span class="nv">$LAUNCHER_EXIT_CODE</span> <span class="o">=</span>~ ^[0-9]+<span class="nv">$ </span><span class="o">]]</span><span class="p">;</span> <span class="k">then
+  </span><span class="nb">echo</span> <span class="s2">"</span><span class="k">${</span><span class="nv">CMD</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span> | <span class="nb">head</span> <span class="nt">-n-1</span> 1&gt;&amp;2
+  <span class="nb">exit </span>1
+<span class="k">fi
+
+if</span> <span class="o">[</span> <span class="nv">$LAUNCHER_EXIT_CODE</span> <span class="o">!=</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+  </span><span class="nb">exit</span> <span class="nv">$LAUNCHER_EXIT_CODE</span>
+<span class="k">fi
+
+</span><span class="nv">CMD</span><span class="o">=(</span><span class="s2">"</span><span class="k">${</span><span class="nv">CMD</span><span class="p">[@]</span>:0:<span class="nv">$LAST</span><span class="k">}</span><span class="s2">"</span><span class="o">)</span>
+<span class="nb">exec</span> <span class="s2">"</span><span class="k">${</span><span class="nv">CMD</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span>
+</code></pre></div></div>
+<blockquote>
+  <p>分析脚本可以知道build_command方法会启动java程序，脚本通过循环读取build_command的输出给CMD变量，最后通过exec命令执行CMD变量里的内容</p>
+</blockquote>
+
+<p><img src="/blog/spark_source_code/source_code_3/spark_launcher_main.jpg" alt="" /></p>
+<blockquote>
+  <p>进入主函数，代码中会获取第一个参数判断是不是SparkSubmit操作，如果不是SparkSubmit，则会创建SparkClassCommandBuilder对象，SparkSubmitCommandBuilder和SparkClassCommandBuilder均继承自抽象类AbstractCommandBuilder，重写父类中的buildCommand方法</p>
+
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">buildSparkSubmitCommand</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">env</span><span class="o">)</span>
+      <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">IllegalArgumentException</span> <span class="o">{</span>
+    <span class="c1">// Load the properties file and check whether spark-submit will be running the app's driver</span>
+    <span class="c1">// or just launching a cluster app. When running the driver, the JVM's argument will be</span>
+    <span class="c1">// modified to cover the driver's configuration.</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">config</span> <span class="o">=</span> <span class="n">getEffectiveConfig</span><span class="o">();</span>
+    <span class="kt">boolean</span> <span class="n">isClientMode</span> <span class="o">=</span> <span class="n">isClientMode</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">isClientMode</span> <span class="o">?</span> <span class="n">config</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">SparkLauncher</span><span class="o">.</span><span class="na">DRIVER_EXTRA_CLASSPATH</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">buildJavaCommand</span><span class="o">(</span><span class="n">extraClassPath</span><span class="o">);</span>
+    <span class="c1">// Take Thrift Server as daemon</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isThriftServer</span><span class="o">(</span><span class="n">mainClass</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">addOptionString</span><span class="o">(</span><span class="n">cmd</span><span class="o">,</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"SPARK_DAEMON_JAVA_OPTS"</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="n">addOptionString</span><span class="o">(</span><span class="n">cmd</span><span class="o">,</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"SPARK_SUBMIT_OPTS"</span><span class="o">));</span>
+    <span class="c1">// We don't want the client to specify Xmx. These have to be set by their corresponding</span>
+    <span class="c1">// memory flag --driver-memory or configuration entry spark.driver.memory</span>
+    <span class="n">String</span> <span class="n">driverExtraJavaOptions</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">SparkLauncher</span><span class="o">.</span><span class="na">DRIVER_EXTRA_JAVA_OPTIONS</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">isEmpty</span><span class="o">(</span><span class="n">driverExtraJavaOptions</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">driverExtraJavaOptions</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"Xmx"</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Not allowed to specify max heap(Xmx) memory settings through "</span> <span class="o">+</span>
+                   <span class="s">"java options (was %s). Use the corresponding --driver-memory or "</span> <span class="o">+</span>
+                   <span class="s">"spark.driver.memory configuration instead."</span><span class="o">,</span> <span class="n">driverExtraJavaOptions</span><span class="o">);</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isClientMode</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// Figuring out where the memory value come from is a little tricky due to precedence.</span>
+      <span class="c1">// Precedence is observed in the following order:</span>
+      <span class="c1">// - explicit configuration (setConf()), which also covers --driver-memory cli argument.</span>
+      <span class="c1">// - properties file.</span>
+      <span class="c1">// - SPARK_DRIVER_MEMORY env variable</span>
+      <span class="c1">// - SPARK_MEM env variable</span>
+      <span class="c1">// - default value (1g)</span>
+      <span class="c1">// Take Thrift Server as daemon</span>
+      <span class="n">String</span> <span class="n">tsMemory</span> <span class="o">=</span>
+        <span class="n">isThriftServer</span><span class="o">(</span><span class="n">mainClass</span><span class="o">)</span> <span class="o">?</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"SPARK_DAEMON_MEMORY"</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+      <span class="n">String</span> <span class="n">memory</span> <span class="o">=</span> <span class="n">firstNonEmpty</span><span class="o">(</span><span class="n">tsMemory</span><span class="o">,</span> <span class="n">config</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">SparkLauncher</span><span class="o">.</span><span class="na">DRIVER_MEMORY</span><span class="o">),</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"SPARK_DRIVER_MEMORY"</span><span class="o">),</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"SPARK_MEM"</span><span class="o">),</span> <span class="n">DEFAULT_MEM</span><span class="o">);</span>
+      <span class="n">cmd</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"-Xmx"</span> <span class="o">+</span> <span class="n">memory</span><span class="o">);</span>
+      <span class="n">addOptionString</span><span class="o">(</span><span class="n">cmd</span><span class="o">,</span> <span class="n">driverExtraJavaOptions</span><span class="o">);</span>
+      <span class="n">mergeEnvPathList</span><span class="o">(</span><span class="n">env</span><span class="o">,</span> <span class="n">getLibPathEnvName</span><span class="o">(),</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">SparkLauncher</span><span class="o">.</span><span class="na">DRIVER_EXTRA_LIBRARY_PATH</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="n">cmd</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"org.apache.spark.deploy.SparkSubmit"</span><span class="o">);</span>
+    <span class="n">cmd</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">buildSparkSubmitArgs</span><span class="o">());</span>
+    <span class="k">return</span> <span class="n">cmd</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>其中buildJavaCommand(extraClassPath)会获取JAVA_HOME路径，添加到cmd中，后面会执行cmd.add(“org.apache.spark.deploy.SparkSubmit”)，以及添加spark-submit参数进入cmd中，最后打印出来返回给shell，最后拼接的cmd变量完整结果类似用java命令执行jar，然后配齐参数，利用shell直接运行启动JVM</p>
+
+  <p>说到这里，有人可能就会有疑问，用命令行就可以直接启动JVM运行org.apache.spark.deploy.SparkSubmit，为什么还要做一层spark-class呢，最终效果都是是java命令行启动JVM，不用急，我们还有参数mainClass不是org.apache.spark.deploy.SparkSubmit的情况呢</p>
+
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">buildCommand</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">env</span><span class="o">)</span>
+      <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">IllegalArgumentException</span> <span class="o">{</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">javaOptsKeys</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">String</span> <span class="n">memKey</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">extraClassPath</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+    <span class="c1">// Master, Worker, HistoryServer, ExternalShuffleService, MesosClusterDispatcher use</span>
+    <span class="c1">// SPARK_DAEMON_JAVA_OPTS (and specific opts) + SPARK_DAEMON_MEMORY.</span>
+    <span class="k">switch</span> <span class="o">(</span><span class="n">className</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.deploy.master.Master"</span><span class="o">:</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_DAEMON_JAVA_OPTS"</span><span class="o">);</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_MASTER_OPTS"</span><span class="o">);</span>
+        <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">getenv</span><span class="o">(</span><span class="s">"SPARK_DAEMON_CLASSPATH"</span><span class="o">);</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_DAEMON_MEMORY"</span><span class="o">;</span>
+        <span class="k">break</span><span class="o">;</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.deploy.worker.Worker"</span><span class="o">:</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_DAEMON_JAVA_OPTS"</span><span class="o">);</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_WORKER_OPTS"</span><span class="o">);</span>
+        <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">getenv</span><span class="o">(</span><span class="s">"SPARK_DAEMON_CLASSPATH"</span><span class="o">);</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_DAEMON_MEMORY"</span><span class="o">;</span>
+        <span class="k">break</span><span class="o">;</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.deploy.history.HistoryServer"</span><span class="o">:</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_DAEMON_JAVA_OPTS"</span><span class="o">);</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_HISTORY_OPTS"</span><span class="o">);</span>
+        <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">getenv</span><span class="o">(</span><span class="s">"SPARK_DAEMON_CLASSPATH"</span><span class="o">);</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_DAEMON_MEMORY"</span><span class="o">;</span>
+        <span class="k">break</span><span class="o">;</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.executor.CoarseGrainedExecutorBackend"</span><span class="o">:</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_EXECUTOR_OPTS"</span><span class="o">);</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_EXECUTOR_MEMORY"</span><span class="o">;</span>
+        <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">getenv</span><span class="o">(</span><span class="s">"SPARK_EXECUTOR_CLASSPATH"</span><span class="o">);</span>
+        <span class="k">break</span><span class="o">;</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.executor.MesosExecutorBackend"</span><span class="o">:</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_EXECUTOR_OPTS"</span><span class="o">);</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_EXECUTOR_MEMORY"</span><span class="o">;</span>
+        <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">getenv</span><span class="o">(</span><span class="s">"SPARK_EXECUTOR_CLASSPATH"</span><span class="o">);</span>
+        <span class="k">break</span><span class="o">;</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.deploy.mesos.MesosClusterDispatcher"</span><span class="o">:</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_DAEMON_JAVA_OPTS"</span><span class="o">);</span>
+        <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">getenv</span><span class="o">(</span><span class="s">"SPARK_DAEMON_CLASSPATH"</span><span class="o">);</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_DAEMON_MEMORY"</span><span class="o">;</span>
+        <span class="k">break</span><span class="o">;</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.deploy.ExternalShuffleService"</span><span class="o">:</span>
+      <span class="k">case</span> <span class="s">"org.apache.spark.deploy.mesos.MesosExternalShuffleService"</span><span class="o">:</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_DAEMON_JAVA_OPTS"</span><span class="o">);</span>
+        <span class="n">javaOptsKeys</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"SPARK_SHUFFLE_OPTS"</span><span class="o">);</span>
+        <span class="n">extraClassPath</span> <span class="o">=</span> <span class="n">getenv</span><span class="o">(</span><span class="s">"SPARK_DAEMON_CLASSPATH"</span><span class="o">);</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_DAEMON_MEMORY"</span><span class="o">;</span>
+        <span class="k">break</span><span class="o">;</span>
+      <span class="k">default</span><span class="o">:</span>
+        <span class="n">memKey</span> <span class="o">=</span> <span class="s">"SPARK_DRIVER_MEMORY"</span><span class="o">;</span>
+        <span class="k">break</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">buildJavaCommand</span><span class="o">(</span><span class="n">extraClassPath</span><span class="o">);</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">key</span> <span class="o">:</span> <span class="n">javaOptsKeys</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">String</span> <span class="n">envValue</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">isEmpty</span><span class="o">(</span><span class="n">envValue</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">envValue</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"Xmx"</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%s is not allowed to specify max heap(Xmx) memory settings "</span> <span class="o">+</span>
+                <span class="s">"(was %s). Use the corresponding configuration instead."</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">envValue</span><span class="o">);</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="n">addOptionString</span><span class="o">(</span><span class="n">cmd</span><span class="o">,</span> <span class="n">envValue</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="n">String</span> <span class="n">mem</span> <span class="o">=</span> <span class="n">firstNonEmpty</span><span class="o">(</span><span class="n">memKey</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="n">memKey</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">,</span> <span class="n">DEFAULT_MEM</span><span class="o">);</span>
+    <span class="n">cmd</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"-Xmx"</span> <span class="o">+</span> <span class="n">mem</span><span class="o">);</span>
+    <span class="n">cmd</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">className</span><span class="o">);</span>
+    <span class="n">cmd</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">classArgs</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">cmd</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>看到这段代码，大家应该就会明白，还会启动Master，Worker呢，SparkClassCommandBuilder类的解释为This class handles building the command to launch all internal Spark classes except for
+SparkSubmit，中文含义是构建除了SparkSubmit外的其他spark class启动命令</p>
+</blockquote>
+
+<blockquote>
+  <p>在看spark-class时，CommandBuilderUtils类里面有一段下面的代码，我当时一看，这不就是scala中mkString方法的效果吗，偷偷说一句，scala真香</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** Joins a list of strings using the given separator. */</span>
+  <span class="kd">static</span> <span class="n">String</span> <span class="nf">join</span><span class="o">(</span><span class="n">String</span> <span class="n">sep</span><span class="o">,</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">elements</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">e</span> <span class="o">:</span> <span class="n">elements</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">e</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">sep</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/05/13/spark_class_process', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
