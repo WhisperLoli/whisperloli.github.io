@@ -38,7 +38,7 @@ override def main(args: Array[String]): Unit = {
  
 > 主函数中会创建SparkSubmitArguments对象，这个类主要的作用就是较验用户使用spark-submit提交的参数，最后封装到对象中，进入该类后，会执行parse(args.asJava)方法，解析spark-sumit后面跟着的参数，正则匹配参数中如果带有=并且是--开头的话，则会解析成key-value键值对，如果参数中没有=，则会进行关键字匹配，例如--driver-memory，代码中已经枚举了所有的关键key，循环较验参数，正则没匹配上的参数再进行循环匹配，如果正则全都没匹配上的话，时间复杂度就是O(n2)，这段代码是java写的，可能是多个开发者协同开发吧，个人感觉使用scala match匹配会更好些，内层循环中如果匹配上了关键词，则会将下一个参数也取进来当成value，如果没匹配上，则会执行handleUnknown方法，判断当前参数是否为提交的jar资源，如果是jar资源则跳出参数解析循环，剩下的参数被传递进入handleExtraArgs方法，最后当成用户提交的jar的main class参数
 > 
-> 参数解析完后调用mergeDefaultSparkProperties合并重复的配置参数，接着执行ignoreNonSparkProperties忽略无效的配置参数，接着加载参数给类中的属性赋值，action默认为submit，如果指定的话可以为kill，status，用了这么久的spark-submit，一直以为只有提交任务用，没想到还可以查看任务状态、kill任务。
+> 参数解析完后调用mergeDefaultSparkProperties合并重复的配置参数，接着执行ignoreNonSparkProperties忽略无效的配置参数，无效的参数主要就是非spark开头的参数，该类参数会被忽略掉，项目中如果使用conf配置自定义参数时可以避坑，接着加载参数给类中的属性赋值，action默认为submit，如果指定的话可以为kill，status，用了这么久的spark-submit，一直以为只有提交任务用，没想到还可以查看任务状态、kill任务。
 > 
 ```scala
 if (mainClass == null && !isPython && !isR && primaryResource != null) {
@@ -62,7 +62,7 @@ if (mainClass == null && !isPython && !isR && primaryResource != null) {
   }
 }
 ```
-提交的jar的主类参数如果不存在，则会从jar中pom获取指定的main class，最后还要执行validateArguments方法验证一遍参数。
+提交的jar的主类参数如果不存在，则会从打包时pom生成的文件中获取指定的main class，最后还要执行validateArguments方法验证一遍参数。
 
 > 参数解析较验完后，接着会根据args.action匹配是submit还是kill或者status操作
 
@@ -212,4 +212,3 @@ private[deploy] class JavaMainApplication(klass: Class[_]) extends SparkApplicat
 ```
 
 > 源码中涉及到很多面向对象知识，有些知识点都忘了，看了源码，满脑子都是继承、封装、多态，对于面向对象很熟的同学，看源码应该会容易很多
-
