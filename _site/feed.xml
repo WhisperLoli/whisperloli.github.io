@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-14T20:00:46+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark源码学习笔记（三）</title><link href="http://localhost:4000/2020/05/13/spark_class_process.html" rel="alternate" type="text/html" title="Spark源码学习笔记（三）" /><published>2020-05-13T23:49:08+08:00</published><updated>2020-05-13T23:49:08+08:00</updated><id>http://localhost:4000/2020/05/13/spark_class_process</id><content type="html" xml:base="http://localhost:4000/2020/05/13/spark_class_process.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-30T21:37:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Hive关联ElasticSearch</title><link href="http://localhost:4000/2020/05/30/hive_read_es.html" rel="alternate" type="text/html" title="Hive关联ElasticSearch" /><published>2020-05-30T21:36:49+08:00</published><updated>2020-05-30T21:36:49+08:00</updated><id>http://localhost:4000/2020/05/30/hive_read_es</id><content type="html" xml:base="http://localhost:4000/2020/05/30/hive_read_es.html">&lt;blockquote&gt;
+  &lt;p&gt;迁移阿里云过程中，部分表在阿里云上线，但是表的使用方原来是直接读取hive的数据，迁移阿里云后，表存在max-compute中，业务方读取max-compute比较繁琐，准备让业务方开发代码读取ES，由于业务方未开发完成，所以只能选取临时方案，考虑过用datax同步回hive，但是开源datax功能还是不完善吧，只支持orc,text格式的表，而且同步表不支持overwrite操作&lt;/p&gt;
+
+  &lt;p&gt;hive可以关联ES读取数据，而集群中有hadoop-elasticsearch的jar包，可以直接使用，在此记录下遇到的坑吧，我在集群中使用的jar版本是5.2.0版本，关联上ES表后，测试下查询功能，结果报错如下&lt;/p&gt;
+
+  &lt;p&gt;&lt;img src=&quot;/blog/blog_hive_read_es/query_es_error.jpg&quot; alt=&quot;&quot; /&gt;
+通过报错信息可以知道，底层使用了head方式判断index/type是否存在，而ES 5.x版本中需要使用的是index/_mapping/type这种方式判断&lt;/p&gt;
+
+  &lt;p&gt;&lt;img src=&quot;/blog/blog_hive_read_es/es_head_without_mapping.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;img src=&quot;/blog/blog_hive_read_es/es_head_with_mapping.jpg&quot; alt=&quot;&quot; /&gt;
+可以看到ES 5.x版本中需要_mapping&lt;/p&gt;
+
+  &lt;p&gt;再去github查看elasticsearch-hadoop源码，类elasticsearch-hadoop/mr/src/main/java/org/elasticsearch/hadoop/rest/RestClient.java&lt;/p&gt;
+
+  &lt;p&gt;&lt;img src=&quot;/blog/blog_hive_read_es/code_5.2.0.png&quot; alt=&quot;&quot; /&gt;
+5.2版本中exists方法并没有对indexOrType做任何处理，直接请求&lt;/p&gt;
+
+  &lt;p&gt;&lt;img src=&quot;/blog/blog_hive_read_es/code_5.5.0.png&quot; alt=&quot;&quot; /&gt;
+而从5.5版本开始，代码中会判断ES是否是5.x版本，是的话，使用index/_mapping/type方式，所以更换下集群中hive的包就行了，更换包的话，hive集群需要重启才会生效，也可以在hive命令行中使用add jar 的方式临时添加&lt;/p&gt;
+
+  &lt;p&gt;hive中关联表的字段类型需要与ES mapping的类型严格一致，不一致时查询会报错，字段类型参考&lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/hadoop/5.5/hive.html&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Hive" /><category term="ElasticSearch" /><summary type="html">迁移阿里云过程中，部分表在阿里云上线，但是表的使用方原来是直接读取hive的数据，迁移阿里云后，表存在max-compute中，业务方读取max-compute比较繁琐，准备让业务方开发代码读取ES，由于业务方未开发完成，所以只能选取临时方案，考虑过用datax同步回hive，但是开源datax功能还是不完善吧，只支持orc,text格式的表，而且同步表不支持overwrite操作 hive可以关联ES读取数据，而集群中有hadoop-elasticsearch的jar包，可以直接使用，在此记录下遇到的坑吧，我在集群中使用的jar版本是5.2.0版本，关联上ES表后，测试下查询功能，结果报错如下 通过报错信息可以知道，底层使用了head方式判断index/type是否存在，而ES 5.x版本中需要使用的是index/_mapping/type这种方式判断 可以看到ES 5.x版本中需要_mapping 再去github查看elasticsearch-hadoop源码，类elasticsearch-hadoop/mr/src/main/java/org/elasticsearch/hadoop/rest/RestClient.java 5.2版本中exists方法并没有对indexOrType做任何处理，直接请求 而从5.5版本开始，代码中会判断ES是否是5.x版本，是的话，使用index/_mapping/type方式，所以更换下集群中hive的包就行了，更换包的话，hive集群需要重启才会生效，也可以在hive命令行中使用add jar 的方式临时添加 hive中关联表的字段类型需要与ES mapping的类型严格一致，不一致时查询会报错，字段类型参考官方文档</summary></entry><entry><title type="html">Spark源码学习笔记（三）</title><link href="http://localhost:4000/2020/05/14/spark_class_process.html" rel="alternate" type="text/html" title="Spark源码学习笔记（三）" /><published>2020-05-14T23:49:08+08:00</published><updated>2020-05-14T23:49:08+08:00</updated><id>http://localhost:4000/2020/05/14/spark_class_process</id><content type="html" xml:base="http://localhost:4000/2020/05/14/spark_class_process.html">&lt;blockquote&gt;
   &lt;p&gt;spark-submit命令底层使用的是spark-class命令，那么spark-class又做了哪些操作呢？&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -238,7 +260,7 @@ SparkSubmit，中文含义是构建除了SparkSubmit外的其他spark class启�
 &lt;blockquote&gt;
   &lt;p&gt;主函数中会创建SparkSubmitArguments对象，这个类主要的作用就是较验用户使用spark-submit提交的参数，最后封装到对象中，进入该类后，会执行parse(args.asJava)方法，解析spark-sumit后面跟着的参数，正则匹配参数中如果带有=并且是–开头的话，则会解析成key-value键值对，如果参数中没有=，则会进行关键字匹配，例如–driver-memory，代码中已经枚举了所有的关键key，循环较验参数，正则没匹配上的参数再进行循环匹配，如果正则全都没匹配上的话，时间复杂度就是O(n2)，这段代码是java写的，可能是多个开发者协同开发吧，个人感觉使用scala match匹配会更好些，内层循环中如果匹配上了关键词，则会将下一个参数也取进来当成value，如果没匹配上，则会执行handleUnknown方法，判断当前参数是否为提交的jar资源，如果是jar资源则跳出参数解析循环，剩下的参数被传递进入handleExtraArgs方法，最后当成用户提交的jar的main class参数&lt;/p&gt;
 
-  &lt;p&gt;参数解析完后调用mergeDefaultSparkProperties合并重复的配置参数，接着执行ignoreNonSparkProperties忽略无效的配置参数，接着加载参数给类中的属性赋值，action默认为submit，如果指定的话可以为kill，status，用了这么久的spark-submit，一直以为只有提交任务用，没想到还可以查看任务状态、kill任务。&lt;/p&gt;
+  &lt;p&gt;参数解析完后调用mergeDefaultSparkProperties合并重复的配置参数，接着执行ignoreNonSparkProperties忽略无效的配置参数，无效的参数主要就是非spark开头的参数，该类参数会被忽略掉，项目中如果使用conf配置自定义参数时可以避坑，接着加载参数给类中的属性赋值，action默认为submit，如果指定的话可以为kill，status，用了这么久的spark-submit，一直以为只有提交任务用，没想到还可以查看任务状态、kill任务。&lt;/p&gt;
 
   &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mainClass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isPython&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primaryResource&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uri&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;URI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;primaryResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -261,7 +283,7 @@ SparkSubmit，中文含义是构建除了SparkSubmit外的其他spark class启�
   &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-  &lt;p&gt;提交的jar的主类参数如果不存在，则会从jar中pom获取指定的main class，最后还要执行validateArguments方法验证一遍参数。&lt;/p&gt;
+  &lt;p&gt;提交的jar的主类参数如果不存在，则会从打包时pom生成的文件中获取指定的main class，最后还要执行validateArguments方法验证一遍参数。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;blockquote&gt;
@@ -1026,87 +1048,4 @@ Caused by: java.lang.IndexOutOfBoundsException: Index: 10, Size: 10
 &lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OVERWRITE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;es_table&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student_tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;完成后，再将临时表drop掉，完美！如果想做成定时任务的话，可以用beeline执行hive sql，官方也不建议使用hive cli了，推荐使用beeline。&lt;/p&gt;</content><author><name>true</name></author><category term="Hive" /><category term="elasticsearch" /><summary type="html">工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。</summary></entry><entry><title type="html">版本管理工具之SVN与Git</title><link href="http://localhost:4000/2019/05/06/svn_git.html" rel="alternate" type="text/html" title="版本管理工具之SVN与Git" /><published>2019-05-06T21:36:49+08:00</published><updated>2019-05-06T21:36:49+08:00</updated><id>http://localhost:4000/2019/05/06/svn_git</id><content type="html" xml:base="http://localhost:4000/2019/05/06/svn_git.html">&lt;p&gt;之前在公司版本管理工具一直用的是Git，习惯于Git命令行操作，最近换了家公司，发现竟然用的是SVN。在Windows系统上，可以用&lt;a href=&quot;https://tortoisesvn.net/downloads.html&quot;&gt;小乌龟&lt;/a&gt;这个工具。我一直习惯用Mac办公，Mac上也有图形界面工具，例如SmartSVN，但是是收费软件。Mac有个好处就是自带了SVN客户端，可以在命令行中直接使用。&lt;/p&gt;
-
-&lt;p&gt;拉取远程代码到本地&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn checkout svn://localhost/mycode &lt;span class=&quot;nt&quot;&gt;--username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mj &lt;span class=&quot;nt&quot;&gt;--password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;123 /Users/admin/Documents/code         &lt;span class=&quot;c&quot;&gt;#svn操作&lt;/span&gt;
-
-git clone git@github.com:WhisperLoli/bank.git    &lt;span class=&quot;c&quot;&gt;#git操作，也可以为http地址&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;新增的文件添加到SVN版本管理&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn add a.txt &lt;span class=&quot;c&quot;&gt;#svn操作&lt;/span&gt;
-git add a.txt &lt;span class=&quot;c&quot;&gt;#git操作&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;svn修改的文件不需要使用add，修改完可以直接commit，提交修改&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;commit message&quot;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# svn操作&lt;/span&gt;
-
-git add a.txt      &lt;span class=&quot;c&quot;&gt;#a.txt文件发生修改后，需要add到暂存区&lt;/span&gt;
-git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;commit message&quot;&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 提交commit到本地仓库&lt;/span&gt;
-git push &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;origin] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;master]  &lt;span class=&quot;c&quot;&gt;# 推送本地仓库的commit到远程，origin为远程仓库名称，master为远程分支名称，默认为origin和master&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;更新服务器端代码到本地&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn update   &lt;span class=&quot;c&quot;&gt;# svn更新本地&lt;/span&gt;
-
-git pull     &lt;span class=&quot;c&quot;&gt;# git更新本地&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看当前状态&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn status    &lt;span class=&quot;c&quot;&gt;# svn查看状态&lt;/span&gt;
-
-git status    &lt;span class=&quot;c&quot;&gt;# git查看状态&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;合并分支A的代码到分支B&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn merge svn://localhost/code/A /Users/admin/Documents/code/B  &lt;span class=&quot;c&quot;&gt;#合并远程分支A到本地B分支&lt;/span&gt;
-svn merge /Users/admin/Documents/code/A svn://localhost/code/B &lt;span class=&quot;c&quot;&gt;#合并本地分支A到远程B分支&lt;/span&gt;
-svn commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;commit message&quot;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#提交到服务器&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#git的两种合并分支方式&lt;/span&gt;
-git checkout B &lt;span class=&quot;c&quot;&gt;#切换到分支B&lt;/span&gt;
-git merge A &lt;span class=&quot;c&quot;&gt;#合并分支A的信息&lt;/span&gt;
-
-git checkout A &lt;span class=&quot;c&quot;&gt;#切换到分支A&lt;/span&gt;
-git rebase B  &lt;span class=&quot;c&quot;&gt;#将分支A的commit在分支B上重演一遍&lt;/span&gt;
-git checkout B &lt;span class=&quot;c&quot;&gt;#切换回分支A&lt;/span&gt;
-
-git push &lt;span class=&quot;c&quot;&gt;#提交到服务器&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;恢复修改的文件，修改a.txt，想要撤销修改&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn revert a.txt  &lt;span class=&quot;c&quot;&gt;# 恢复修改&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 当a.txt在工作区时&lt;/span&gt;
-git checkout a.txt
-
-&lt;span class=&quot;c&quot;&gt;# 当a.txt添加到暂存区后&lt;/span&gt;
-git reset HEAD a.txt &lt;span class=&quot;c&quot;&gt;# 从暂存区取消&lt;/span&gt;
-git checkout a.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;创建分支&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn copy svn://localhost/code/SVNTest svn://localhost/code/branch/new_branch &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'aa的分支'&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#然后拉取到本地&lt;/span&gt;
-
-git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; aa  &lt;span class=&quot;c&quot;&gt;#创建分支aa，并切换到aa&lt;/span&gt;
-git branch aa  &lt;span class=&quot;c&quot;&gt;#先创建分支aa&lt;/span&gt;
-git checkout aa  &lt;span class=&quot;c&quot;&gt;#切换到分支aa&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;比较文件做了哪些修改&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svn diff a.txt &lt;span class=&quot;c&quot;&gt;#svn操作&lt;/span&gt;
-
-git diff a.txt &lt;span class=&quot;c&quot;&gt;#git操作&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;总结了一些基本的操作，使用上面我感觉最大的不同就是git操作是针对每次commit，而svn不同，svn可以切换到任意目录下，只更新小部分的文件，merge也可以只针对某个特定的文件夹merge，而不是对commit做merge&lt;/p&gt;</content><author><name>true</name></author><category term="版本管理工具" /><category term="SVN" /><category term="Git" /><summary type="html">之前在公司版本管理工具一直用的是Git，习惯于Git命令行操作，最近换了家公司，发现竟然用的是SVN。在Windows系统上，可以用小乌龟这个工具。我一直习惯用Mac办公，Mac上也有图形界面工具，例如SmartSVN，但是是收费软件。Mac有个好处就是自带了SVN客户端，可以在命令行中直接使用。</summary></entry></feed>
+&lt;p&gt;完成后，再将临时表drop掉，完美！如果想做成定时任务的话，可以用beeline执行hive sql，官方也不建议使用hive cli了，推荐使用beeline。&lt;/p&gt;</content><author><name>true</name></author><category term="Hive" /><category term="elasticsearch" /><summary type="html">工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。</summary></entry></feed>
