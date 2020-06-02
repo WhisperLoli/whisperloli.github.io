@@ -1,4 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-30T21:37:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Hive关联ElasticSearch</title><link href="http://localhost:4000/2020/05/30/hive_read_es.html" rel="alternate" type="text/html" title="Hive关联ElasticSearch" /><published>2020-05-30T21:36:49+08:00</published><updated>2020-05-30T21:36:49+08:00</updated><id>http://localhost:4000/2020/05/30/hive_read_es</id><content type="html" xml:base="http://localhost:4000/2020/05/30/hive_read_es.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-02T00:09:25+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark源码学习笔记（四）</title><link href="http://localhost:4000/2020/06/01/sparkContext.html" rel="alternate" type="text/html" title="Spark源码学习笔记（四）" /><published>2020-06-01T23:17:34+08:00</published><updated>2020-06-01T23:17:34+08:00</updated><id>http://localhost:4000/2020/06/01/sparkContext</id><content type="html" xml:base="http://localhost:4000/2020/06/01/sparkContext.html">&lt;blockquote&gt;
+  &lt;p&gt;开始正式进入spark源码研究阶段了，这段时间也一直在研究这块东西，主要是里面的类、特质太多，各种跳转吧，比较费时间，然后最后也没明白里面各个细节。想到个策略，还是先粗粒度的学习整个流程，之后再深入研究各个细分类。暂时先不研究SparkContext中的方法，SparkContext文件中将近3000行代码，不可能都研究一遍，先大致了解流程吧，等以后再慢慢了解。&lt;/p&gt;
+
+  &lt;p&gt;分享下我在研究源码中的策略&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 有些方法看不懂代码，就直接写一个主函数，调用一下这个方法，看输入输出大致就能明白方法的功能。
+2. debug，直接new SparkContext，进入单步调试模式，巧妙设置断点，看代码是如何运行的
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;spark源码学习中会涉及到metrics(监控工具)，Future/Await（Scala异步编程特性）等知识点，参考&lt;a href=&quot;https://github.com/WhisperLoli/spark-learing&quot;&gt;github demo&lt;/a&gt;&lt;/p&gt;
+
+  &lt;p&gt;进入正题，差不多在SparkContext.scala文件362行附近，之后这一大块都是对变量赋值，首先克隆config给_conf对象，之后基于_conf对象操作，进行校验，较验完设置其他参数，比较重要的就是生成_listenerBus，_statusStore等监听对象。&lt;/p&gt;
+
+  &lt;p&gt;在这之后使用SparkEnv伴生对象的createDriverEnv方法创建SparkEnv对象，这个方法里面创建了各种Spark需要的对象，目前就不细看里面的类，讲一下各个变量吧。&lt;/p&gt;
+
+  &lt;p&gt;rpcEnv：RpcEnv的实例，根据名字就能知道是rpc环境，其内部可以启动NettyRpc server，后续的通信都会使用到他&lt;/p&gt;
+
+  &lt;p&gt;broadcastManager：Broadcast管理器，内部可以创建broadcast，broadcast创建底层使用的是TorrentBroadcastFactory创建TorrentBroadcast，也十分复杂&lt;/p&gt;
+
+  &lt;p&gt;mapOutputTracker：keeps track of the location of the map output of a stage&lt;/p&gt;
+
+  &lt;p&gt;shuffleManager：shuffle管理器，默认使用的是SortShuffleManager&lt;/p&gt;
+
+  &lt;p&gt;memoryManager：内存管理器，默认使用的是UnifiedMemoryManager，官方不建议使用StaticMemoryManager&lt;/p&gt;
+
+  &lt;p&gt;blockTransferService：用于拉数据操作，uses Netty to fetch a set of blocks at time&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;blockManager：block管理器，用于将块缓存到各种存储（内存，磁盘和堆外）中&lt;/p&gt;
+
+  &lt;p&gt;metricsSystem：监控指标系统，例如spark ui中看到的各种指标都是从这里获取&lt;/p&gt;
+
+  &lt;p&gt;outputCommitCoordinator：提交任务到hdfs&lt;/p&gt;
+
+  &lt;p&gt;根据这些变量，创建SparkEnv对象，真的超复杂&lt;/p&gt;
+
+  &lt;p&gt;接着回到SparkContext中，会继续创建各种对象，例如ui，hadoopConfiguration等等，_heartbeatReceiver用于心跳检测，分布式系统中都会有存在心跳检查
+taskScheduler，dagScheduler也会在SparkContext中创建，我们在web ui中看见的application id、AttemptId也是由taskScheduler生成&lt;/p&gt;
+
+  &lt;p&gt;如果开启了动态生成Executor，则ExecutorAllocationManager会根据资源情况自动添加移除
+最后还会由ShutdownHookManager添加个shutdownHook，猜都能知道shutdownHook内部肯定是关闭各种资源，清理生成的临时文件
+至此，SparkContext初始化完成，看了好久，涉及的东西非常多，加油！&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><summary type="html">开始正式进入spark源码研究阶段了，这段时间也一直在研究这块东西，主要是里面的类、特质太多，各种跳转吧，比较费时间，然后最后也没明白里面各个细节。想到个策略，还是先粗粒度的学习整个流程，之后再深入研究各个细分类。暂时先不研究SparkContext中的方法，SparkContext文件中将近3000行代码，不可能都研究一遍，先大致了解流程吧，等以后再慢慢了解。 分享下我在研究源码中的策略 1. 有些方法看不懂代码，就直接写一个主函数，调用一下这个方法，看输入输出大致就能明白方法的功能。 2. debug，直接new SparkContext，进入单步调试模式，巧妙设置断点，看代码是如何运行的 spark源码学习中会涉及到metrics(监控工具)，Future/Await（Scala异步编程特性）等知识点，参考github demo 进入正题，差不多在SparkContext.scala文件362行附近，之后这一大块都是对变量赋值，首先克隆config给_conf对象，之后基于_conf对象操作，进行校验，较验完设置其他参数，比较重要的就是生成_listenerBus，_statusStore等监听对象。 在这之后使用SparkEnv伴生对象的createDriverEnv方法创建SparkEnv对象，这个方法里面创建了各种Spark需要的对象，目前就不细看里面的类，讲一下各个变量吧。 rpcEnv：RpcEnv的实例，根据名字就能知道是rpc环境，其内部可以启动NettyRpc server，后续的通信都会使用到他 broadcastManager：Broadcast管理器，内部可以创建broadcast，broadcast创建底层使用的是TorrentBroadcastFactory创建TorrentBroadcast，也十分复杂 mapOutputTracker：keeps track of the location of the map output of a stage shuffleManager：shuffle管理器，默认使用的是SortShuffleManager memoryManager：内存管理器，默认使用的是UnifiedMemoryManager，官方不建议使用StaticMemoryManager blockTransferService：用于拉数据操作，uses Netty to fetch a set of blocks at time</summary></entry><entry><title type="html">Hive关联ElasticSearch</title><link href="http://localhost:4000/2020/05/30/hive_read_es.html" rel="alternate" type="text/html" title="Hive关联ElasticSearch" /><published>2020-05-30T21:36:49+08:00</published><updated>2020-05-30T21:36:49+08:00</updated><id>http://localhost:4000/2020/05/30/hive_read_es</id><content type="html" xml:base="http://localhost:4000/2020/05/30/hive_read_es.html">&lt;blockquote&gt;
   &lt;p&gt;迁移阿里云过程中，部分表在阿里云上线，但是表的使用方原来是直接读取hive的数据，迁移阿里云后，表存在max-compute中，业务方读取max-compute比较繁琐，准备让业务方开发代码读取ES，由于业务方未开发完成，所以只能选取临时方案，考虑过用datax同步回hive，但是开源datax功能还是不完善吧，只支持orc,text格式的表，而且同步表不支持overwrite操作&lt;/p&gt;
 
   &lt;p&gt;hive可以关联ES读取数据，而集群中有hadoop-elasticsearch的jar包，可以直接使用，在此记录下遇到的坑吧，我在集群中使用的jar版本是5.2.0版本，关联上ES表后，测试下查询功能，结果报错如下&lt;/p&gt;
@@ -973,79 +1016,4 @@ fetch --no-history chromium
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ninja &lt;span class=&quot;nt&quot;&gt;-C&lt;/span&gt; out/Release chromedriver
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;最后一步差不多十来分钟，可以去喝个茶，休息会，等待执行完成后，进入out/Release目录下面就可以看到chromedriver了，如果你也是想用于爬虫的话，记得修改源码的识别码哦，我已经改了，在本博文中没写进去。最后，说一句Fucking GFW，因为浪费我时间最久的就是这个&lt;/p&gt;</content><author><name>true</name></author><category term="Mac" /><category term="chromedriver" /><summary type="html">Mac OS本地编译chromedriver，参考官方文档</summary></entry><entry><title type="html">Hive分区表导入ElasticSearch</title><link href="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html" rel="alternate" type="text/html" title="Hive分区表导入ElasticSearch" /><published>2019-05-08T22:25:19+08:00</published><updated>2019-05-08T22:25:19+08:00</updated><id>http://localhost:4000/2019/05/08/hive_partition_table_into_es</id><content type="html" xml:base="http://localhost:4000/2019/05/08/hive_partition_table_into_es.html">&lt;p&gt;工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。&lt;/p&gt;
-
-&lt;p&gt;hive分区表导入ES时，我们希望一次性导入就会在insert表时不加where条件，在实际使用过程中，碰到了一个问题，程序报错，信息如下，查了很久，网上关于这方面的资料很少，最终在elasticsearch-hadoop的项目issue中发现有人提了这个问题，说不是jar的问题，是parquet格式的问题&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ERROR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;IPC Server handler 1 on 60702] org.apache.hadoop.mapred.TaskAttemptListenerImpl: Task: attempt_1556068676896_1760_m_000000_0 - exited : java.io.IOException: java.lang.reflect.InvocationTargetException
-	at org.apache.hadoop.hive.io.HiveIOExceptionHandlerChain.handleRecordReaderCreationException&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HiveIOExceptionHandlerChain.java:97&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.io.HiveIOExceptionHandlerUtil.handleRecordReaderCreationException&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HiveIOExceptionHandlerUtil.java:57&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.shims.HadoopShimsSecure&lt;span class=&quot;nv&quot;&gt;$CombineFileRecordReader&lt;/span&gt;.initNextRecordReader&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HadoopShimsSecure.java:267&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.shims.HadoopShimsSecure&lt;span class=&quot;nv&quot;&gt;$CombineFileRecordReader&lt;/span&gt;.next&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HadoopShimsSecure.java:140&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.mapred.MapTask&lt;span class=&quot;nv&quot;&gt;$TrackedRecordReader&lt;/span&gt;.moveToNext&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:199&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.mapred.MapTask&lt;span class=&quot;nv&quot;&gt;$TrackedRecordReader&lt;/span&gt;.next&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:185&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.mapred.MapRunner.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapRunner.java:52&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.mapred.MapTask.runOldMapper&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:459&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.mapred.MapTask.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapTask.java:343&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.mapred.YarnChild&lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt;.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;YarnChild.java:164&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at java.security.AccessController.doPrivileged&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Native Method&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at javax.security.auth.Subject.doAs&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Subject.java:422&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.security.UserGroupInformation.doAs&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UserGroupInformation.java:1920&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.mapred.YarnChild.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;YarnChild.java:158&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Caused by: java.lang.reflect.InvocationTargetException
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Native Method&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;NativeConstructorAccessorImpl.java:62&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DelegatingConstructorAccessorImpl.java:45&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at java.lang.reflect.Constructor.newInstance&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Constructor.java:423&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.shims.HadoopShimsSecure&lt;span class=&quot;nv&quot;&gt;$CombineFileRecordReader&lt;/span&gt;.initNextRecordReader&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HadoopShimsSecure.java:253&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	... 11 more
-Caused by: java.lang.IndexOutOfBoundsException: Index: 10, Size: 10
-	at java.util.ArrayList.rangeCheck&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ArrayList.java:657&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at java.util.ArrayList.get&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ArrayList.java:433&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.getProjectedGroupFields&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DataWritableReadSupport.java:116&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.getSchemaByName&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DataWritableReadSupport.java:176&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.parquet.read.DataWritableReadSupport.init&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;DataWritableReadSupport.java:242&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.getSplit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ParquetRecordReaderWrapper.java:256&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.&amp;lt;init&amp;gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ParquetRecordReaderWrapper.java:95&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.parquet.read.ParquetRecordReaderWrapper.&amp;lt;init&amp;gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ParquetRecordReaderWrapper.java:81&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat.getRecordReader&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;MapredParquetInputFormat.java:72&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	at org.apache.hadoop.hive.ql.io.CombineHiveRecordReader.&amp;lt;init&amp;gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CombineHiveRecordReader.java:68&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	... 16 more
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;既然导致这个错误的原因是源数据表是parquet格式，所以我们要创建张临时表，存储格式为orc格式，用于存储源表的数据，或者一开始，我们导入hive时就用orc格式&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jar&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadoop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;USE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;es_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;es_id&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;姓名&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;gender&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;性别&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;年龄&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;birth_year&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;出生年份&quot;&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;STORED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'org.elasticsearch.hadoop.hive.EsStorageHandler'&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;TBLPROPERTIES&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	        &lt;span class=&quot;s1&quot;&gt;'es.resource'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'student/info'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	        &lt;span class=&quot;s1&quot;&gt;'es.mapping.id'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'es_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	        &lt;span class=&quot;s1&quot;&gt;'es.index.auto.create'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'true'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	        &lt;span class=&quot;s1&quot;&gt;'es.mapping.routing'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'es_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	        &lt;span class=&quot;s1&quot;&gt;'es.nodes'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'127.0.0.1:9200'&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student_tmp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	 &lt;span class=&quot;n&quot;&gt;es_id&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;姓名&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;gender&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;性别&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;年龄&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATITIONED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;birth_year&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STORED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;设置动态分区&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;dynamic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nonstrict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OVERWRITE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student_tmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PARTITION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;birth_year&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OVERWRITE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;es_table&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;student_tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;完成后，再将临时表drop掉，完美！如果想做成定时任务的话，可以用beeline执行hive sql，官方也不建议使用hive cli了，推荐使用beeline。&lt;/p&gt;</content><author><name>true</name></author><category term="Hive" /><category term="elasticsearch" /><summary type="html">工作中总会碰到Hive数据导入ElasticSearch，可以写Spark程序读Hive表，再写入ES中。同样，ElasticSearch官方也提供了一个工具，elasticsearch-hadoop.jar工具包，在hive程序中引入该包，就可以创建表与ES相关联，向该表中导入数据，数据就会存入ES中。</summary></entry></feed>
+&lt;p&gt;最后一步差不多十来分钟，可以去喝个茶，休息会，等待执行完成后，进入out/Release目录下面就可以看到chromedriver了，如果你也是想用于爬虫的话，记得修改源码的识别码哦，我已经改了，在本博文中没写进去。最后，说一句Fucking GFW，因为浪费我时间最久的就是这个&lt;/p&gt;</content><author><name>true</name></author><category term="Mac" /><category term="chromedriver" /><summary type="html">Mac OS本地编译chromedriver，参考官方文档</summary></entry></feed>

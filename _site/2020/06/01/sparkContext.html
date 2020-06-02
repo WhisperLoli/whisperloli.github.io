@@ -26,7 +26,7 @@
 <link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
 <!-- Android Lolipop Theme Color -->
 <!-- <meta name="theme-color" content="#1464FB"> -->
-<title>Hive关联ElasticSearch</title>
+<title>Spark源码学习笔记（四）</title>
 <!-- 百度统计 -->
 
 <script>
@@ -110,7 +110,7 @@ var _hmt = _hmt || [];
 <!-- 引入博文顶部样式 -->
 <!-- 版本一 垃圾 -->
 <!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
-    <span class="wow fadeInUp" data-wow-delay="0.2s">Hive关联ElasticSearch</span>
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（四）</span>
     <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
     <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
     <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
@@ -122,30 +122,30 @@ var _hmt = _hmt || [];
   <!-- 页面宽度大于800px -->
   <div class="left-area">
     
-      <a href="/2020/06/01/sparkContext.html" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
-      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（四）</sapn></span></div>
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
     
   </div>
   <div class="post-titlearea">
-    <span class="wow fadeInUp" data-wow-delay="0.2s">Hive关联ElasticSearch</span>
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（四）</span>
     <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
     <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
     <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
   </div>
   <div class="right-area">
     
-      <a href="/2020/05/14/spark_class_process.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
-      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（三）</sapn></span></div>
+      <a href="/2020/05/30/hive_read_es.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Hive关联ElasticSearch</sapn></span></div>
     
   </div>
 
   <!-- 页面宽度小于800px -->
   <div class="post-changearea">
     
-      <a href="/2020/06/01/sparkContext.html" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>上一篇<br><br>Spark源码学习笔记（四）</span></a>
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
     
     
-      <a href="/2020/05/14/spark_class_process.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（三）</span></a>
+      <a href="/2020/05/30/hive_read_es.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Hive关联ElasticSearch</span></a>
     
   </div>
 </div>
@@ -156,34 +156,55 @@ var _hmt = _hmt || [];
   
     
       <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
-        hive关联读取ES的坑
+        SparkContext研究
       </div>
     
   
 
   <!-- 文章内容 -->
   <blockquote>
-  <p>迁移阿里云过程中，部分表在阿里云上线，但是表的使用方原来是直接读取hive的数据，迁移阿里云后，表存在max-compute中，业务方读取max-compute比较繁琐，准备让业务方开发代码读取ES，由于业务方未开发完成，所以只能选取临时方案，考虑过用datax同步回hive，但是开源datax功能还是不完善吧，只支持orc,text格式的表，而且同步表不支持overwrite操作</p>
+  <p>开始正式进入spark源码研究阶段了，这段时间也一直在研究这块东西，主要是里面的类、特质太多，各种跳转吧，比较费时间，然后最后也没明白里面各个细节。想到个策略，还是先粗粒度的学习整个流程，之后再深入研究各个细分类。暂时先不研究SparkContext中的方法，SparkContext文件中将近3000行代码，不可能都研究一遍，先大致了解流程吧，等以后再慢慢了解。</p>
 
-  <p>hive可以关联ES读取数据，而集群中有hadoop-elasticsearch的jar包，可以直接使用，在此记录下遇到的坑吧，我在集群中使用的jar版本是5.2.0版本，关联上ES表后，测试下查询功能，结果报错如下</p>
+  <p>分享下我在研究源码中的策略</p>
 
-  <p><img src="/blog/blog_hive_read_es/query_es_error.jpg" alt="" />
-通过报错信息可以知道，底层使用了head方式判断index/type是否存在，而ES 5.x版本中需要使用的是index/_mapping/type这种方式判断</p>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 有些方法看不懂代码，就直接写一个主函数，调用一下这个方法，看输入输出大致就能明白方法的功能。
+2. debug，直接new SparkContext，进入单步调试模式，巧妙设置断点，看代码是如何运行的
+</code></pre></div>  </div>
 
-  <p><img src="/blog/blog_hive_read_es/es_head_without_mapping.jpg" alt="" /></p>
+  <p>spark源码学习中会涉及到metrics(监控工具)，Future/Await（Scala异步编程特性）等知识点，参考<a href="https://github.com/WhisperLoli/spark-learing">github demo</a></p>
 
-  <p><img src="/blog/blog_hive_read_es/es_head_with_mapping.jpg" alt="" />
-可以看到ES 5.x版本中需要_mapping</p>
+  <p>进入正题，差不多在SparkContext.scala文件362行附近，之后这一大块都是对变量赋值，首先克隆config给_conf对象，之后基于_conf对象操作，进行校验，较验完设置其他参数，比较重要的就是生成_listenerBus，_statusStore等监听对象。</p>
 
-  <p>再去github查看elasticsearch-hadoop源码，类elasticsearch-hadoop/mr/src/main/java/org/elasticsearch/hadoop/rest/RestClient.java</p>
+  <p>在这之后使用SparkEnv伴生对象的createDriverEnv方法创建SparkEnv对象，这个方法里面创建了各种Spark需要的对象，目前就不细看里面的类，讲一下各个变量吧。</p>
 
-  <p><img src="/blog/blog_hive_read_es/code_5.2.0.png" alt="" />
-5.2版本中exists方法并没有对indexOrType做任何处理，直接请求</p>
+  <p>rpcEnv：RpcEnv的实例，根据名字就能知道是rpc环境，其内部可以启动NettyRpc server，后续的通信都会使用到他</p>
 
-  <p><img src="/blog/blog_hive_read_es/code_5.5.0.png" alt="" />
-而从5.5版本开始，代码中会判断ES是否是5.x版本，是的话，使用index/_mapping/type方式，所以更换下集群中hive的包就行了，更换包的话，hive集群需要重启才会生效，也可以在hive命令行中使用add jar 的方式临时添加</p>
+  <p>broadcastManager：Broadcast管理器，内部可以创建broadcast，broadcast创建底层使用的是TorrentBroadcastFactory创建TorrentBroadcast，也十分复杂</p>
 
-  <p>hive中关联表的字段类型需要与ES mapping的类型严格一致，不一致时查询会报错，字段类型参考<a href="https://www.elastic.co/guide/en/elasticsearch/hadoop/5.5/hive.html">官方文档</a></p>
+  <p>mapOutputTracker：keeps track of the location of the map output of a stage</p>
+
+  <p>shuffleManager：shuffle管理器，默认使用的是SortShuffleManager</p>
+
+  <p>memoryManager：内存管理器，默认使用的是UnifiedMemoryManager，官方不建议使用StaticMemoryManager</p>
+
+  <p>blockTransferService：用于拉数据操作，uses Netty to fetch a set of blocks at time</p>
+</blockquote>
+
+<blockquote>
+  <p>blockManager：block管理器，用于将块缓存到各种存储（内存，磁盘和堆外）中</p>
+
+  <p>metricsSystem：监控指标系统，例如spark ui中看到的各种指标都是从这里获取</p>
+
+  <p>outputCommitCoordinator：提交任务到hdfs</p>
+
+  <p>根据这些变量，创建SparkEnv对象，真的超复杂</p>
+
+  <p>接着回到SparkContext中，会继续创建各种对象，例如ui，hadoopConfiguration等等，_heartbeatReceiver用于心跳检测，分布式系统中都会有存在心跳检查
+taskScheduler，dagScheduler也会在SparkContext中创建，我们在web ui中看见的application id、AttemptId也是由taskScheduler生成</p>
+
+  <p>如果开启了动态生成Executor，则ExecutorAllocationManager会根据资源情况自动添加移除
+最后还会由ShutdownHookManager添加个shutdownHook，猜都能知道shutdownHook内部肯定是关闭各种资源，清理生成的临时文件
+至此，SparkContext初始化完成，看了好久，涉及的东西非常多，加油！</p>
 </blockquote>
 
   <!-- 引入share模块 -->
@@ -242,7 +263,7 @@ var _hmt = _hmt || [];
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  id: '/2020/05/30/hive_read_es', // 可选。默认为 location.href
+  id: '/2020/06/01/sparkContext', // 可选。默认为 location.href
   owner: 'WhisperLoli',
   repo: 'whisperloli.github.io',
   oauth: {
