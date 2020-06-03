@@ -1,0 +1,510 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（五）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（五）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（五）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/06/01/sparkContext.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（四）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/06/01/sparkContext.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（四）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        Spark事件监听器
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>之前已经粗略的研究SparkContext启动的整个流程，那么现在细细的研究下里面使用到的监听相关类</p>
+
+  <p>LiveListenerBus，该类主要用于监听SparkListenerEvent事件</p>
+
+  <p>先讲下相关联的类吧，本来想画类图的，偷个懒，哈哈</p>
+
+  <p>MetricRegistry，没啥好说的，就是做个监控，比如总共产生了多少个event的计数之类</p>
+
+  <p>AsyncEventQueue继承自SparkListenerBus，类中eventQueue采用了阻塞队列，使用metrics获取当前队列中有多少个事件，总共shared、appStatus、executorManagement、eventLog四种类型的异步事件队列，分别用于存放对应的监听事件</p>
+
+  <p>SparkListenerBus继承自ListenerBus</p>
+
+  <p>ListenrBuss主要用于添加监听，及向所有已注册的监听发送event</p>
+
+  <p>SparkListenerEvent，是所有其他事件的父类，子类诸如SparkListenerStageCompleted，SparkListenerTaskStart，SparkListenerUnpersistRDD等等，子类含括了所有的监听事件</p>
+
+  <p>SparkListenerInterface，监听事件接口</p>
+
+  <p>SparkListener，继承自SparkListenerInterface，实现当某个event发生时，listener应当做什么操作</p>
+
+  <p>SparkFirehoseListener，同SparkListener类似，实现了SparkListenerInterface中的方法</p>
+
+  <p>在SparkContext初始化中，会执行setupAndStartListenerBus()方法，该方法中会调用LiveListenerBus中的start()方法，用于启动LiveListenerBus</p>
+
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">private</span> <span class="k">def</span> <span class="n">setupAndStartListenerBus</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">EXTRA_LISTENERS</span><span class="o">).</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">classNames</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">listeners</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">loadExtensions</span><span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">SparkListenerInterface</span><span class="o">],</span> <span class="n">classNames</span><span class="o">,</span> <span class="n">conf</span><span class="o">)</span>
+        <span class="n">listeners</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">listener</span> <span class="k">=&gt;</span>
+          <span class="n">listenerBus</span><span class="o">.</span><span class="n">addToSharedQueue</span><span class="o">(</span><span class="n">listener</span><span class="o">)</span>
+          <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Registered listener ${listener.getClass().getName()}"</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+        <span class="k">try</span> <span class="o">{</span>
+          <span class="n">stop</span><span class="o">()</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+          <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Exception when registering SparkListener"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="n">listenerBus</span><span class="o">.</span><span class="n">start</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nc">_env</span><span class="o">.</span><span class="n">metricsSystem</span><span class="o">)</span>
+    <span class="nc">_listenerBusStarted</span> <span class="k">=</span> <span class="kc">true</span>
+  <span class="o">}</span>  
+</code></pre></div></div>
+
+<blockquote>
+  <p>queues采用java中线程安全的并发类CopyOnWriteArrayList存储AsyncEventQueue，LiveListenerBus中的start()方法如下，会调用每个AsyncEventQueue对象的start方法，暂时喊AsyncEventQueue为异步监听事件队列吧，遍历所有的监听事件queuedEvents，并将queuedEvents存储的所有监听事件发送到异步监听事件队列AsyncEventQueue中，LiveListenerBus中addToQueue方法则是添加指定的监听器到特定的队列AsyncEventQueue中，如果特定的队列不存在则新建</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">private</span> <span class="k">val</span> <span class="n">queues</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">CopyOnWriteArrayList</span><span class="o">[</span><span class="kt">AsyncEventQueue</span><span class="o">]()</span>
+ 
+ <span class="c1">// LiveListenerBus中的start方法
+</span> <span class="k">def</span> <span class="n">start</span><span class="o">(</span><span class="n">sc</span><span class="k">:</span> <span class="kt">SparkContext</span><span class="o">,</span> <span class="n">metricsSystem</span><span class="k">:</span> <span class="kt">MetricsSystem</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">started</span><span class="o">.</span><span class="n">compareAndSet</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">(</span><span class="s">"LiveListenerBus already started."</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">this</span><span class="o">.</span><span class="n">sparkContext</span> <span class="k">=</span> <span class="n">sc</span>
+    <span class="n">queues</span><span class="o">.</span><span class="n">asScala</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">q</span> <span class="k">=&gt;</span>
+      <span class="n">q</span><span class="o">.</span><span class="n">start</span><span class="o">(</span><span class="n">sc</span><span class="o">)</span>
+      <span class="n">queuedEvents</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">q</span><span class="o">.</span><span class="n">post</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">queuedEvents</span> <span class="k">=</span> <span class="kc">null</span>
+    <span class="n">metricsSystem</span><span class="o">.</span><span class="n">registerSource</span><span class="o">(</span><span class="n">metrics</span><span class="o">)</span>
+  <span class="o">}</span> 
+  
+ <span class="cm">/**
+   * Add a listener to a specific queue, creating a new queue if needed. Queues are independent
+   * of each other (each one uses a separate thread for delivering events), allowing slower
+   * listeners to be somewhat isolated from others.
+   */</span>
+<span class="k">private</span><span class="o">[</span><span class="kt">spark</span><span class="o">]</span> <span class="k">def</span> <span class="n">addToQueue</span><span class="o">(</span>
+      <span class="n">listener</span><span class="k">:</span> <span class="kt">SparkListenerInterface</span><span class="o">,</span>
+      <span class="n">queue</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">stopped</span><span class="o">.</span><span class="n">get</span><span class="o">())</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">(</span><span class="s">"LiveListenerBus is stopped."</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="n">queues</span><span class="o">.</span><span class="n">asScala</span><span class="o">.</span><span class="n">find</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">queue</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">queue</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">queue</span><span class="o">.</span><span class="n">addListener</span><span class="o">(</span><span class="n">listener</span><span class="o">)</span>
+
+      <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">newQueue</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">AsyncEventQueue</span><span class="o">(</span><span class="n">queue</span><span class="o">,</span> <span class="n">conf</span><span class="o">,</span> <span class="n">metrics</span><span class="o">,</span> <span class="k">this</span><span class="o">)</span>
+        <span class="n">newQueue</span><span class="o">.</span><span class="n">addListener</span><span class="o">(</span><span class="n">listener</span><span class="o">)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">started</span><span class="o">.</span><span class="n">get</span><span class="o">())</span> <span class="o">{</span>
+          <span class="n">newQueue</span><span class="o">.</span><span class="n">start</span><span class="o">(</span><span class="n">sparkContext</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">queues</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="n">newQueue</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+</code></pre></div></div>
+
+<blockquote>
+  <p>AsyncEventQueue中的start方法会启动一个后台监听线程，监听线程会不断的从监听事件队列eventQueue中获取event，然后执行ListenerBus的postToAll()操作，postToAll会把传来监听事件event发送给每一个注册的监听器SparkListenerInterface，监听器根据监听到的事件再执行相应的操作，AsyncEventQueue方法就是将传进来的监听事件event写入监听事件队列中，如果队列满了，则丢弃</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">private</span> <span class="k">val</span> <span class="n">dispatchThread</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">s</span><span class="s">"spark-listener-group-$name"</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">setDaemon</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">tryOrStopSparkContext</span><span class="o">(</span><span class="n">sc</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">dispatch</span><span class="o">()</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">private</span> <span class="k">def</span> <span class="n">dispatch</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="nc">LiveListenerBus</span><span class="o">.</span><span class="n">withinListenerThread</span><span class="o">.</span><span class="n">withValue</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">next</span><span class="k">:</span> <span class="kt">SparkListenerEvent</span> <span class="o">=</span> <span class="n">eventQueue</span><span class="o">.</span><span class="n">take</span><span class="o">()</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">next</span> <span class="o">!=</span> <span class="nc">POISON_PILL</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">ctx</span> <span class="k">=</span> <span class="n">processingTime</span><span class="o">.</span><span class="n">time</span><span class="o">()</span>
+      <span class="k">try</span> <span class="o">{</span>
+        <span class="k">super</span><span class="o">.</span><span class="n">postToAll</span><span class="o">(</span><span class="n">next</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">stop</span><span class="o">()</span>
+      <span class="o">}</span>
+      <span class="n">eventCount</span><span class="o">.</span><span class="n">decrementAndGet</span><span class="o">()</span>
+      <span class="n">next</span> <span class="k">=</span> <span class="n">eventQueue</span><span class="o">.</span><span class="n">take</span><span class="o">()</span>
+    <span class="o">}</span>
+    <span class="n">eventCount</span><span class="o">.</span><span class="n">decrementAndGet</span><span class="o">()</span>
+  <span class="o">}</span>
+
+  <span class="c1">// AsyncEventQueue中的start方法
+</span>  <span class="k">private</span><span class="o">[</span><span class="kt">scheduler</span><span class="o">]</span> <span class="k">def</span> <span class="n">start</span><span class="o">(</span><span class="n">sc</span><span class="k">:</span> <span class="kt">SparkContext</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">started</span><span class="o">.</span><span class="n">compareAndSet</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="n">sc</span> <span class="k">=</span> <span class="n">sc</span>
+      <span class="n">dispatchThread</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">(</span><span class="n">s</span><span class="s">"$name already started!"</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="c1">// AsyncEventQueue中的post方法
+</span>  <span class="k">def</span> <span class="n">post</span><span class="o">(</span><span class="n">event</span><span class="k">:</span> <span class="kt">SparkListenerEvent</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">stopped</span><span class="o">.</span><span class="n">get</span><span class="o">())</span> <span class="o">{</span>
+      <span class="k">return</span>
+    <span class="o">}</span>
+
+    <span class="n">eventCount</span><span class="o">.</span><span class="n">incrementAndGet</span><span class="o">()</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">eventQueue</span><span class="o">.</span><span class="n">offer</span><span class="o">(</span><span class="n">event</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">return</span>
+    <span class="o">}</span>
+
+   <span class="n">eventCount</span><span class="o">.</span><span class="n">decrementAndGet</span><span class="o">()</span>
+    <span class="n">droppedEvents</span><span class="o">.</span><span class="n">inc</span><span class="o">()</span>
+    <span class="n">droppedEventsCounter</span><span class="o">.</span><span class="n">incrementAndGet</span><span class="o">()</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">logDroppedEvent</span><span class="o">.</span><span class="n">compareAndSet</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>
+      <span class="c1">// Only log the following message once to avoid duplicated annoying logs.
+</span>      <span class="n">logError</span><span class="o">(</span><span class="n">s</span><span class="s">"Dropping event from queue $name. "</span> <span class="o">+</span>
+        <span class="s">"This likely means one of the listeners is too slow and cannot keep up with "</span> <span class="o">+</span>
+        <span class="s">"the rate at which tasks are being started by the scheduler."</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">logTrace</span><span class="o">(</span><span class="n">s</span><span class="s">"Dropping event $event"</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">droppedCount</span> <span class="k">=</span> <span class="n">droppedEventsCounter</span><span class="o">.</span><span class="n">get</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">droppedCount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// Don't log too frequently
+</span>      <span class="k">if</span> <span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="n">currentTimeMillis</span><span class="o">()</span> <span class="o">-</span> <span class="n">lastReportTimestamp</span> <span class="o">&gt;=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// There may be multiple threads trying to decrease droppedEventsCounter.
+</span>        <span class="c1">// Use "compareAndSet" to make sure only one thread can win.
+</span>        <span class="c1">// And if another thread is increasing droppedEventsCounter, "compareAndSet" will fail and
+</span>        <span class="c1">// then that thread will update it.
+</span>        <span class="k">if</span> <span class="o">(</span><span class="n">droppedEventsCounter</span><span class="o">.</span><span class="n">compareAndSet</span><span class="o">(</span><span class="n">droppedCount</span><span class="o">,</span> <span class="mi">0</span><span class="o">))</span> <span class="o">{</span>
+          <span class="k">val</span> <span class="n">prevLastReportTimestamp</span> <span class="k">=</span> <span class="n">lastReportTimestamp</span>
+          <span class="n">lastReportTimestamp</span> <span class="k">=</span> <span class="nc">System</span><span class="o">.</span><span class="n">currentTimeMillis</span><span class="o">()</span>
+          <span class="k">val</span> <span class="n">previous</span> <span class="k">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Date</span><span class="o">(</span><span class="n">prevLastReportTimestamp</span><span class="o">)</span>
+          <span class="n">logWarning</span><span class="o">(</span><span class="n">s</span><span class="s">"Dropped $droppedCount events from $name since $previous."</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  
+<span class="c1">// ListenerBus中postToAll方法  
+</span><span class="k">def</span> <span class="n">postToAll</span><span class="o">(</span><span class="n">event</span><span class="k">:</span> <span class="kt">E</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// JavaConverters can create a JIterableWrapper if we use asScala.
+</span>    <span class="c1">// However, this method will be called frequently. To avoid the wrapper cost, here we use
+</span>    <span class="c1">// Java Iterator directly.
+</span>    <span class="k">val</span> <span class="n">iter</span> <span class="k">=</span> <span class="n">listenersPlusTimers</span><span class="o">.</span><span class="n">iterator</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">iter</span><span class="o">.</span><span class="n">hasNext</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">listenerAndMaybeTimer</span> <span class="k">=</span> <span class="n">iter</span><span class="o">.</span><span class="n">next</span><span class="o">()</span>
+      <span class="k">val</span> <span class="n">listener</span> <span class="k">=</span> <span class="n">listenerAndMaybeTimer</span><span class="o">.</span><span class="n">_1</span>
+      <span class="k">val</span> <span class="n">maybeTimer</span> <span class="k">=</span> <span class="n">listenerAndMaybeTimer</span><span class="o">.</span><span class="n">_2</span>
+      <span class="k">val</span> <span class="n">maybeTimerContext</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">maybeTimer</span><span class="o">.</span><span class="n">isDefined</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">maybeTimer</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">time</span><span class="o">()</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="kc">null</span>
+      <span class="o">}</span>
+      <span class="k">try</span> <span class="o">{</span>
+        <span class="n">doPostEvent</span><span class="o">(</span><span class="n">listener</span><span class="o">,</span> <span class="n">event</span><span class="o">)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">Thread</span><span class="o">.</span><span class="n">interrupted</span><span class="o">())</span> <span class="o">{</span>
+          <span class="c1">// We want to throw the InterruptedException right away so we can associate the interrupt
+</span>          <span class="c1">// with this listener, as opposed to waiting for a queue.take() etc. to detect it.
+</span>          <span class="k">throw</span> <span class="k">new</span> <span class="nc">InterruptedException</span><span class="o">()</span>
+        <span class="o">}</span>
+      <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">ie</span><span class="k">:</span> <span class="kt">InterruptedException</span> <span class="o">=&gt;</span>
+          <span class="n">logError</span><span class="o">(</span><span class="n">s</span><span class="s">"Interrupted while posting to ${Utils.getFormattedClassName(listener)}.  "</span> <span class="o">+</span>
+            <span class="n">s</span><span class="s">"Removing that listener."</span><span class="o">,</span> <span class="n">ie</span><span class="o">)</span>
+          <span class="n">removeListenerOnError</span><span class="o">(</span><span class="n">listener</span><span class="o">)</span>
+        <span class="k">case</span> <span class="nc">NonFatal</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span>
+          <span class="n">logError</span><span class="o">(</span><span class="n">s</span><span class="s">"Listener ${Utils.getFormattedClassName(listener)} threw an exception"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">maybeTimerContext</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">maybeTimerContext</span><span class="o">.</span><span class="n">stop</span><span class="o">()</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>差不多就是Spark的整个的监听了，很多细节还是没有讲到，需要大家自己挖掘。用户可以自己实现自定义监听器，例如Job失败发送邮件告警之类，自定义监听器需要设置到SparkConf中，SparkContext加载时会判断是否有自定义监听器</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/06/03/SparkListener', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
