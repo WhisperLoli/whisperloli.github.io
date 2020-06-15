@@ -169,49 +169,217 @@ var _hmt = _hmt || [];
 
   <p>主要用到的类如下</p>
 
-  <p>Dispatcher: 用作消息转发，和Inbox一起用，发送InboxMessage消息，验证endpoint是否存在等</p>
+  <p>Dispatcher: 用作消息转发，和Inbox一起用，发送InboxMessage消息，验证endpoint是否存在等，采用的是策略模式，InboxMessage为最上层抽象Message，OneWayMessage,RpcMessage,OnStart,OnStop,RemoteProcessConnected等Message均继承自InboxMessage</p>
 
-  <p>```scala
-	/** Thread pool used for dispatching messages. */
-  private val threadpool: ThreadPoolExecutor = {
-    val availableCores =
-      if (numUsableCores &gt; 0) numUsableCores else Runtime.getRuntime.availableProcessors()
-    val numThreads = nettyEnv.conf.getInt(“spark.rpc.netty.dispatcher.numThreads”,
-      math.max(2, availableCores))
-    val pool = ThreadUtils.newDaemonFixedThreadPool(numThreads, “dispatcher-event-loop”)
-    for (i &lt;- 0 until numThreads) {
-      pool.execute(new MessageLoop)
-    }
-    pool
-  }
-  /** Message loop used for dispatching messages. */
-  private class MessageLoop extends Runnable {
-    override def run(): Unit = {
-      try {
-        while (true) {
-          try {
-            val data = receivers.take()
-            if (data == PoisonPill) {
-              // Put PoisonPill back so that other MessageLoops can see it.
-              receivers.offer(PoisonPill)
-              return
-            }
-            data.inbox.process(Dispatcher.this)
-          } catch {
-            case NonFatal(e) =&gt; logError(e.getMessage, e)
-          }
-        }
-      } catch {
-        case ie: InterruptedException =&gt; // exit
-      }
-    }
-  }</p>
-</blockquote>
+  <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="cm">/** Thread pool used for dispatching messages. */</span>
+  <span class="k">private</span> <span class="k">val</span> <span class="n">threadpool</span><span class="k">:</span> <span class="kt">ThreadPoolExecutor</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">availableCores</span> <span class="k">=</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">numUsableCores</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="n">numUsableCores</span> <span class="k">else</span> <span class="nc">Runtime</span><span class="o">.</span><span class="n">getRuntime</span><span class="o">.</span><span class="n">availableProcessors</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">numThreads</span> <span class="k">=</span> <span class="n">nettyEnv</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="s">"spark.rpc.netty.dispatcher.numThreads"</span><span class="o">,</span>
+      <span class="n">math</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">availableCores</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">pool</span> <span class="k">=</span> <span class="nc">ThreadUtils</span><span class="o">.</span><span class="n">newDaemonFixedThreadPool</span><span class="o">(</span><span class="n">numThreads</span><span class="o">,</span> <span class="s">"dispatcher-event-loop"</span><span class="o">)</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">numThreads</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">pool</span><span class="o">.</span><span class="n">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">MessageLoop</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">pool</span>
+  <span class="o">}</span>
+  <span class="cm">/** Message loop used for dispatching messages. */</span>
+  <span class="k">private</span> <span class="k">class</span> <span class="nc">MessageLoop</span> <span class="k">extends</span> <span class="nc">Runnable</span> <span class="o">{</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">try</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">try</span> <span class="o">{</span>
+            <span class="k">val</span> <span class="n">data</span> <span class="k">=</span> <span class="n">receivers</span><span class="o">.</span><span class="n">take</span><span class="o">()</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="o">==</span> <span class="nc">PoisonPill</span><span class="o">)</span> <span class="o">{</span>
+              <span class="c1">// Put PoisonPill back so that other MessageLoops can see it.
+</span>              <span class="n">receivers</span><span class="o">.</span><span class="n">offer</span><span class="o">(</span><span class="nc">PoisonPill</span><span class="o">)</span>
+              <span class="k">return</span>
+            <span class="o">}</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">inbox</span><span class="o">.</span><span class="n">process</span><span class="o">(</span><span class="nc">Dispatcher</span><span class="o">.</span><span class="k">this</span><span class="o">)</span>
+          <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+            <span class="k">case</span> <span class="nc">NonFatal</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">logError</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getMessage</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">ie</span><span class="k">:</span> <span class="kt">InterruptedException</span> <span class="o">=&gt;</span> <span class="c1">// exit
+</span>      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+ <span class="cm">/** Inbox中process代码
+   * Process stored messages.
+   */</span>
+  <span class="k">def</span> <span class="n">process</span><span class="o">(</span><span class="n">dispatcher</span><span class="k">:</span> <span class="kt">Dispatcher</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">message</span><span class="k">:</span> <span class="kt">InboxMessage</span> <span class="o">=</span> <span class="kc">null</span>
+    <span class="n">inbox</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">enableConcurrent</span> <span class="o">&amp;&amp;</span> <span class="n">numActiveThreads</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span>
+      <span class="o">}</span>
+      <span class="n">message</span> <span class="k">=</span> <span class="n">messages</span><span class="o">.</span><span class="n">poll</span><span class="o">()</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">message</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">numActiveThreads</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">return</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">safelyCall</span><span class="o">(</span><span class="n">endpoint</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">message</span> <span class="k">match</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="nc">RpcMessage</span><span class="o">(</span><span class="nc">_sender</span><span class="o">,</span> <span class="n">content</span><span class="o">,</span> <span class="n">context</span><span class="o">)</span> <span class="k">=&gt;</span>
+            <span class="k">try</span> <span class="o">{</span>
+              <span class="n">endpoint</span><span class="o">.</span><span class="n">receiveAndReply</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="n">applyOrElse</span><span class="o">[</span><span class="kt">Any</span>, <span class="kt">Unit</span><span class="o">](</span><span class="n">content</span><span class="o">,</span> <span class="o">{</span> <span class="n">msg</span> <span class="k">=&gt;</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Unsupported message $message from ${_sender}"</span><span class="o">)</span>
+              <span class="o">})</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+              <span class="k">case</span> <span class="nc">NonFatal</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">sendFailure</span><span class="o">(</span><span class="n">e</span><span class="o">)</span>
+                <span class="c1">// Throw the exception -- this exception will be caught by the safelyCall function.
+</span>                <span class="c1">// The endpoint's onError function will be called.
+</span>                <span class="k">throw</span> <span class="n">e</span>
+            <span class="o">}</span>
+          <span class="k">case</span> <span class="nc">OneWayMessage</span><span class="o">(</span><span class="nc">_sender</span><span class="o">,</span> <span class="n">content</span><span class="o">)</span> <span class="k">=&gt;</span>
+            <span class="n">endpoint</span><span class="o">.</span><span class="n">receive</span><span class="o">.</span><span class="n">applyOrElse</span><span class="o">[</span><span class="kt">Any</span>, <span class="kt">Unit</span><span class="o">](</span><span class="n">content</span><span class="o">,</span> <span class="o">{</span> <span class="n">msg</span> <span class="k">=&gt;</span>
+              <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Unsupported message $message from ${_sender}"</span><span class="o">)</span>
+            <span class="o">})</span>
+          <span class="k">case</span> <span class="nc">OnStart</span> <span class="k">=&gt;</span>
+            <span class="n">endpoint</span><span class="o">.</span><span class="n">onStart</span><span class="o">()</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">endpoint</span><span class="o">.</span><span class="n">isInstanceOf</span><span class="o">[</span><span class="kt">ThreadSafeRpcEndpoint</span><span class="o">])</span> <span class="o">{</span>
+              <span class="n">inbox</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(!</span><span class="n">stopped</span><span class="o">)</span> <span class="o">{</span>
+                  <span class="n">enableConcurrent</span> <span class="k">=</span> <span class="kc">true</span>
+                <span class="o">}</span>
+              <span class="o">}</span>
+            <span class="o">}</span>
+          <span class="k">case</span> <span class="nc">OnStop</span> <span class="k">=&gt;</span>
+            <span class="k">val</span> <span class="n">activeThreads</span> <span class="k">=</span> <span class="n">inbox</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span> <span class="n">inbox</span><span class="o">.</span><span class="n">numActiveThreads</span> <span class="o">}</span>
+            <span class="n">assert</span><span class="o">(</span><span class="n">activeThreads</span> <span class="o">==</span> <span class="mi">1</span><span class="o">,</span>
+              <span class="n">s</span><span class="s">"There should be only a single active thread but found $activeThreads threads."</span><span class="o">)</span>
+            <span class="n">dispatcher</span><span class="o">.</span><span class="n">removeRpcEndpointRef</span><span class="o">(</span><span class="n">endpoint</span><span class="o">)</span>
+            <span class="n">endpoint</span><span class="o">.</span><span class="n">onStop</span><span class="o">()</span>
+            <span class="n">assert</span><span class="o">(</span><span class="n">isEmpty</span><span class="o">,</span> <span class="s">"OnStop should be the last message"</span><span class="o">)</span>
+          <span class="k">case</span> <span class="nc">RemoteProcessConnected</span><span class="o">(</span><span class="n">remoteAddress</span><span class="o">)</span> <span class="k">=&gt;</span>
+            <span class="n">endpoint</span><span class="o">.</span><span class="n">onConnected</span><span class="o">(</span><span class="n">remoteAddress</span><span class="o">)</span>
+          <span class="k">case</span> <span class="nc">RemoteProcessDisconnected</span><span class="o">(</span><span class="n">remoteAddress</span><span class="o">)</span> <span class="k">=&gt;</span>
+            <span class="n">endpoint</span><span class="o">.</span><span class="n">onDisconnected</span><span class="o">(</span><span class="n">remoteAddress</span><span class="o">)</span>
+          <span class="k">case</span> <span class="nc">RemoteProcessConnectionError</span><span class="o">(</span><span class="n">cause</span><span class="o">,</span> <span class="n">remoteAddress</span><span class="o">)</span> <span class="k">=&gt;</span>
+            <span class="n">endpoint</span><span class="o">.</span><span class="n">onNetworkError</span><span class="o">(</span><span class="n">cause</span><span class="o">,</span> <span class="n">remoteAddress</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+      <span class="n">inbox</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+        <span class="c1">// "enableConcurrent" will be set to false after `onStop` is called, so we should check it
+</span>        <span class="c1">// every time.
+</span>        <span class="k">if</span> <span class="o">(!</span><span class="n">enableConcurrent</span> <span class="o">&amp;&amp;</span> <span class="n">numActiveThreads</span> <span class="o">!=</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+          <span class="c1">// If we are not the only one worker, exit
+</span>          <span class="n">numActiveThreads</span> <span class="o">-=</span> <span class="mi">1</span>
+          <span class="k">return</span>
+        <span class="o">}</span>
+        <span class="n">message</span> <span class="k">=</span> <span class="n">messages</span><span class="o">.</span><span class="n">poll</span><span class="o">()</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">message</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">numActiveThreads</span> <span class="o">-=</span> <span class="mi">1</span>
+          <span class="k">return</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>  </div>
+  <p>InBox、InBoxMessage：NettyRpcEnv中send/ask方法发送至本地rpc endpoint使用，由endpoint处理接收到rpc消息，EndpointRef中的ask、send方法底层就是调用NettyRpcEvn中的ask、send方法</p>
 
-<blockquote>
-  <p>```</p>
+  <p>OutBox、OutBoxMessage: NettyRpcEnv中send/ask方法发送至远程rpc endpoint使用，底层通过TransportClient发送，由RpcHandler处理接收到的rpc消息，当发送请求的client和server在同一台机器上则使用inbox，否则使用outbox</p>
 
-  <p>TransportContext，NettyRpcHandler，InBox，OutBox</p>
+  <p>RequestMessage中包含了InBoxMessage，OutBoxMessage需要的属性，可以用RequestMessage中的属性生成后面的对象，其并不是继承关系</p>
+
+  <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">private</span><span class="o">[</span><span class="kt">netty</span><span class="o">]</span> <span class="k">def</span> <span class="n">send</span><span class="o">(</span><span class="n">message</span><span class="k">:</span> <span class="kt">RequestMessage</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">remoteAddr</span> <span class="k">=</span> <span class="n">message</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">address</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">remoteAddr</span> <span class="o">==</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// Message to a local RPC endpoint.
+</span>      <span class="k">try</span> <span class="o">{</span>
+        <span class="n">dispatcher</span><span class="o">.</span><span class="n">postOneWayMessage</span><span class="o">(</span><span class="n">message</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">RpcEnvStoppedException</span> <span class="o">=&gt;</span> <span class="n">logDebug</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getMessage</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="c1">// Message to a remote RPC endpoint.
+</span>      <span class="n">postToOutbox</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="n">receiver</span><span class="o">,</span> <span class="nc">OneWayOutboxMessage</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="n">serialize</span><span class="o">(</span><span class="k">this</span><span class="o">)))</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>  </div>
+  <p>TransportContext：创建TransportContext时需要参数NettyRpcHandler，而创建NettyRpcHandler需要Dispatcher</p>
+
+  <p>NettyRpcHandler继承RpcHandler，该类用于处理TransportClient中方法sendRPC()发送的RPC请求，即client通过netty rpc发送到server的请求</p>
+
+  <p>TransportClient用于和netty server通信</p>
+
+  <p>NettyRpcEnv为主要入口类，类中有startServer方法用于启动服务，使用TransportContext创建server, Dispatcher注册RpcEndpoint， setupEndpoint方法也是用Dispatcher注册RpcEndpoint，调用Dispatcher的registerRpcEndpoint，asyncSetupEndpointRefByURI方法用于创建EndPointRef，在SparkEnv中有使用到，当不是driver端时，使用RpcUtils.makeDriverRef方法</p>
+
+  <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="n">registerOrLookupEndpoint</span><span class="o">(</span>
+	    <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">endpointCreator</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">RpcEndpoint</span><span class="o">)</span><span class="k">:</span>
+	  <span class="kt">RpcEndpointRef</span> <span class="o">=</span> <span class="o">{</span>
+	  <span class="k">if</span> <span class="o">(</span><span class="n">isDriver</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Registering "</span> <span class="o">+</span> <span class="n">name</span><span class="o">)</span>
+	    <span class="n">rpcEnv</span><span class="o">.</span><span class="n">setupEndpoint</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">endpointCreator</span><span class="o">)</span>
+	  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+	    <span class="nc">RpcUtils</span><span class="o">.</span><span class="n">makeDriverRef</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">conf</span><span class="o">,</span> <span class="n">rpcEnv</span><span class="o">)</span>
+	  <span class="o">}</span>
+	<span class="o">}</span>
+	<span class="cm">/**
+	*  RpcUtils.makeDriverRef方法
+   * Retrieve a `RpcEndpointRef` which is located in the driver via its name.
+   */</span>
+  <span class="k">def</span> <span class="n">makeDriverRef</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">conf</span><span class="k">:</span> <span class="kt">SparkConf</span><span class="o">,</span> <span class="n">rpcEnv</span><span class="k">:</span> <span class="kt">RpcEnv</span><span class="o">)</span><span class="k">:</span> <span class="kt">RpcEndpointRef</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">driverHost</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.driver.host"</span><span class="o">,</span> <span class="s">"localhost"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">driverPort</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="s">"spark.driver.port"</span><span class="o">,</span> <span class="mi">7077</span><span class="o">)</span>
+    <span class="nc">Utils</span><span class="o">.</span><span class="n">checkHost</span><span class="o">(</span><span class="n">driverHost</span><span class="o">)</span>
+    <span class="n">rpcEnv</span><span class="o">.</span><span class="n">setupEndpointRef</span><span class="o">(</span><span class="nc">RpcAddress</span><span class="o">(</span><span class="n">driverHost</span><span class="o">,</span> <span class="n">driverPort</span><span class="o">),</span> <span class="n">name</span><span class="o">)</span>
+  <span class="o">}</span>
+ <span class="cm">/**
+   * Retrieve the [[RpcEndpointRef]] represented by `address` and `endpointName`.
+   * This is a blocking action.
+   */</span>
+  <span class="k">def</span> <span class="n">setupEndpointRef</span><span class="o">(</span><span class="n">address</span><span class="k">:</span> <span class="kt">RpcAddress</span><span class="o">,</span> <span class="n">endpointName</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">RpcEndpointRef</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">setupEndpointRefByURI</span><span class="o">(</span><span class="nc">RpcEndpointAddress</span><span class="o">(</span><span class="n">address</span><span class="o">,</span> <span class="n">endpointName</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+  <span class="o">}</span>
+ <span class="cm">/**
+   * Retrieve the [[RpcEndpointRef]] represented by `uri`. This is a blocking action.
+   */</span>
+  <span class="k">def</span> <span class="n">setupEndpointRefByURI</span><span class="o">(</span><span class="n">uri</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">RpcEndpointRef</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">defaultLookupTimeout</span><span class="o">.</span><span class="n">awaitResult</span><span class="o">(</span><span class="n">asyncSetupEndpointRefByURI</span><span class="o">(</span><span class="n">uri</span><span class="o">))</span>
+  <span class="o">}</span>
+  <span class="c1">// 会调用NettyRpcEnv中的实现
+</span>  <span class="k">def</span> <span class="n">asyncSetupEndpointRefByURI</span><span class="o">(</span><span class="n">uri</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">RpcEndpointRef</span><span class="o">]</span>
+</code></pre></div>  </div>
+
+  <p>再讲讲EndPoint和EndPointRef吧，刚开始看我也有点懵，不知道是什么概念，其实就是EndPoint存在于driver端，EndPointRef存在于executor中，是EndPoint的一个引用，使用registerRpcEndpoint会将endpoint和endpointRef都封装到map中，可以根据endpoint找到与之对应的endpointRef</p>
+
+  <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">class</span> <span class="nc">EndpointData</span><span class="o">(</span>
+      <span class="k">val</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+      <span class="k">val</span> <span class="n">endpoint</span><span class="k">:</span> <span class="kt">RpcEndpoint</span><span class="o">,</span>
+      <span class="k">val</span> <span class="n">ref</span><span class="k">:</span> <span class="kt">NettyRpcEndpointRef</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">inbox</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Inbox</span><span class="o">(</span><span class="n">ref</span><span class="o">,</span> <span class="n">endpoint</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="k">private</span> <span class="k">val</span> <span class="n">endpoints</span><span class="k">:</span> <span class="kt">ConcurrentMap</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">EndpointData</span><span class="o">]</span> <span class="k">=</span>
+    <span class="k">new</span> <span class="nc">ConcurrentHashMap</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">EndpointData</span><span class="o">]</span>
+<span class="k">private</span> <span class="k">val</span> <span class="n">endpointRefs</span><span class="k">:</span> <span class="kt">ConcurrentMap</span><span class="o">[</span><span class="kt">RpcEndpoint</span>, <span class="kt">RpcEndpointRef</span><span class="o">]</span> <span class="k">=</span>
+    <span class="k">new</span> <span class="nc">ConcurrentHashMap</span><span class="o">[</span><span class="kt">RpcEndpoint</span>, <span class="kt">RpcEndpointRef</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">registerRpcEndpoint</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">endpoint</span><span class="k">:</span> <span class="kt">RpcEndpoint</span><span class="o">)</span><span class="k">:</span> <span class="kt">NettyRpcEndpointRef</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">addr</span> <span class="k">=</span> <span class="nc">RpcEndpointAddress</span><span class="o">(</span><span class="n">nettyEnv</span><span class="o">.</span><span class="n">address</span><span class="o">,</span> <span class="n">name</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">endpointRef</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">NettyRpcEndpointRef</span><span class="o">(</span><span class="n">nettyEnv</span><span class="o">.</span><span class="n">conf</span><span class="o">,</span> <span class="n">addr</span><span class="o">,</span> <span class="n">nettyEnv</span><span class="o">)</span>
+    <span class="n">synchronized</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">stopped</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">(</span><span class="s">"RpcEnv has been stopped"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">endpoints</span><span class="o">.</span><span class="n">putIfAbsent</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="k">new</span> <span class="nc">EndpointData</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">endpoint</span><span class="o">,</span> <span class="n">endpointRef</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="n">s</span><span class="s">"There is already an RpcEndpoint called $name"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="k">val</span> <span class="n">data</span> <span class="k">=</span> <span class="n">endpoints</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">name</span><span class="o">)</span>
+      <span class="n">endpointRefs</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="n">endpoint</span><span class="o">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ref</span><span class="o">)</span>
+      <span class="n">receivers</span><span class="o">.</span><span class="n">offer</span><span class="o">(</span><span class="n">data</span><span class="o">)</span>  <span class="c1">// for the OnStart message
+</span>    <span class="o">}</span>
+    <span class="n">endpointRef</span>
+  <span class="o">}</span>
+  <span class="k">def</span> <span class="n">getRpcEndpointRef</span><span class="o">(</span><span class="n">endpoint</span><span class="k">:</span> <span class="kt">RpcEndpoint</span><span class="o">)</span><span class="k">:</span> <span class="kt">RpcEndpointRef</span> <span class="o">=</span> <span class="n">endpointRefs</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">endpoint</span><span class="o">)</span>
+</code></pre></div>  </div>
+
+  <p>整个的大体流程就是EndpointRef发送消息出去，会调用NettyRpcEnv中的send/ask方法，在NettyRpcEnv中会判断当前是否是消息接收者和当前的address是否相同，如果相同则使用inbox消息，dispather直接转发给inbox处理；如果address不同，则使用outbox消息，底层使用TransportClient发送消息，NettyRpcHandler会处理接收到的消息，然后使用dispather转发给inbox处理
+outbox用于client端，inbox用于server端</p>
 </blockquote>
 
   <!-- 引入share模块 -->

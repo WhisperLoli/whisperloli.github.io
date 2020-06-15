@@ -127,9 +127,9 @@ subtitle: 'Netty RPC机制'
     }
   }
 > ```
-> InBox、InBoxMessage：NettyRpcEnv中send方法，ask方法发送至本地rpc endpoint使用，由endpoint处理接收到rpc消息，EndpointRef中的ask、send方法底层就是调用NettyRpcEvn中的ask、send方法
+> InBox、InBoxMessage：NettyRpcEnv中send/ask方法发送至本地rpc endpoint使用，由endpoint处理接收到rpc消息，EndpointRef中的ask、send方法底层就是调用NettyRpcEvn中的ask、send方法
 > 
-> OutBox、OutBoxMessage: NettyRpcEnv中send方法，ask方法发送至远程rpc endpoint使用，底层通过TransportClient发送，由RpcHandler处理接收到的rpc消息
+> OutBox、OutBoxMessage: NettyRpcEnv中send/ask方法发送至远程rpc endpoint使用，底层通过TransportClient发送，由RpcHandler处理接收到的rpc消息，当发送请求的client和server在同一台机器上则使用inbox，否则使用outbox
 > 
 > RequestMessage中包含了InBoxMessage，OutBoxMessage需要的属性，可以用RequestMessage中的属性生成后面的对象，其并不是继承关系
 > 
@@ -152,6 +152,8 @@ subtitle: 'Netty RPC机制'
 > TransportContext：创建TransportContext时需要参数NettyRpcHandler，而创建NettyRpcHandler需要Dispatcher
 > 
 > NettyRpcHandler继承RpcHandler，该类用于处理TransportClient中方法sendRPC()发送的RPC请求，即client通过netty rpc发送到server的请求
+> 
+> TransportClient用于和netty server通信
 >
 >NettyRpcEnv为主要入口类，类中有startServer方法用于启动服务，使用TransportContext创建server, Dispatcher注册RpcEndpoint， setupEndpoint方法也是用Dispatcher注册RpcEndpoint，调用Dispatcher的registerRpcEndpoint，asyncSetupEndpointRefByURI方法用于创建EndPointRef，在SparkEnv中有使用到，当不是driver端时，使用RpcUtils.makeDriverRef方法
 >
@@ -225,5 +227,5 @@ private val endpoints: ConcurrentMap[String, EndpointData] =
   def getRpcEndpointRef(endpoint: RpcEndpoint): RpcEndpointRef = endpointRefs.get(endpoint)
 >```
 >
->整个的大体流程就是发送EndpointRef发送消息出去，会调用NettyRpcEnv中的send/ask方法，在NettyRpcEnv中会判断当前是否是消息接收者和当前的address是否相同，如果相同则使用inbox消息，dispather直接转发给inbox处理；如果address不同，则使用outbox消息，底层使用TransportClient发送消息，TransportClient用于和netty server通信，NettyRpcHandler会处理接收到的消息，然后使用dispather转发给inbox处理
+>整个的大体流程就是EndpointRef发送消息出去，会调用NettyRpcEnv中的send/ask方法，在NettyRpcEnv中会判断当前是否是消息接收者和当前的address是否相同，如果相同则使用inbox消息，dispather直接转发给inbox处理；如果address不同，则使用outbox消息，底层使用TransportClient发送消息，NettyRpcHandler会处理接收到的消息，然后使用dispather转发给inbox处理
 > outbox用于client端，inbox用于server端
