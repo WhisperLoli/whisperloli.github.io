@@ -1,4 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-03T23:25:06+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark源码学习笔记（五）</title><link href="http://localhost:4000/2020/06/03/SparkListener.html" rel="alternate" type="text/html" title="Spark源码学习笔记（五）" /><published>2020-06-03T22:40:21+08:00</published><updated>2020-06-03T22:40:21+08:00</updated><id>http://localhost:4000/2020/06/03/SparkListener</id><content type="html" xml:base="http://localhost:4000/2020/06/03/SparkListener.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-11T16:47:15+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark源码学习笔记（六）</title><link href="http://localhost:4000/2020/06/11/spark_netty_rpc.html" rel="alternate" type="text/html" title="Spark源码学习笔记（六）" /><published>2020-06-11T00:11:56+08:00</published><updated>2020-06-11T00:11:56+08:00</updated><id>http://localhost:4000/2020/06/11/spark_netty_rpc</id><content type="html" xml:base="http://localhost:4000/2020/06/11/spark_netty_rpc.html">&lt;blockquote&gt;
+  &lt;p&gt;spark 1.6之前通信采用的是Akka框架，并不是netty，从2.0版本开始，切换成了netty，关于这方面的原因，官方给的回答是社区中建议比较多，因为akka版本兼容性差，不同版本之间可能会有无法通信情况，给使用者造成了很大的困扰，基于这个原因，切换成了netty。&lt;/p&gt;
+
+  &lt;p&gt;RPC方面的知识点会比较多，我也看了挺久。按照之前的思路，我们跟着SparkContext创建流程走，在SparkEnv中会使用NettyRpcEnvFactory创建NettyRpcEnv，启动driver的rpc服务&lt;/p&gt;
+
+  &lt;p&gt;主要用到的类如下&lt;/p&gt;
+
+  &lt;p&gt;Dispatcher: 用作消息转发，和Inbox一起用，发送InboxMessage消息，验证endpoint是否存在等&lt;/p&gt;
+
+  &lt;p&gt;```scala
+	/** Thread pool used for dispatching messages. */
+  private val threadpool: ThreadPoolExecutor = {
+    val availableCores =
+      if (numUsableCores &amp;gt; 0) numUsableCores else Runtime.getRuntime.availableProcessors()
+    val numThreads = nettyEnv.conf.getInt(“spark.rpc.netty.dispatcher.numThreads”,
+      math.max(2, availableCores))
+    val pool = ThreadUtils.newDaemonFixedThreadPool(numThreads, “dispatcher-event-loop”)
+    for (i &amp;lt;- 0 until numThreads) {
+      pool.execute(new MessageLoop)
+    }
+    pool
+  }
+  /** Message loop used for dispatching messages. */
+  private class MessageLoop extends Runnable {
+    override def run(): Unit = {
+      try {
+        while (true) {
+          try {
+            val data = receivers.take()
+            if (data == PoisonPill) {
+              // Put PoisonPill back so that other MessageLoops can see it.
+              receivers.offer(PoisonPill)
+              return
+            }
+            data.inbox.process(Dispatcher.this)
+          } catch {
+            case NonFatal(e) =&amp;gt; logError(e.getMessage, e)
+          }
+        }
+      } catch {
+        case ie: InterruptedException =&amp;gt; // exit
+      }
+    }
+  }&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;```&lt;/p&gt;
+
+  &lt;p&gt;TransportContext，NettyRpcHandler，InBox，OutBox&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><summary type="html">spark 1.6之前通信采用的是Akka框架，并不是netty，从2.0版本开始，切换成了netty，关于这方面的原因，官方给的回答是社区中建议比较多，因为akka版本兼容性差，不同版本之间可能会有无法通信情况，给使用者造成了很大的困扰，基于这个原因，切换成了netty。 RPC方面的知识点会比较多，我也看了挺久。按照之前的思路，我们跟着SparkContext创建流程走，在SparkEnv中会使用NettyRpcEnvFactory创建NettyRpcEnv，启动driver的rpc服务 主要用到的类如下 Dispatcher: 用作消息转发，和Inbox一起用，发送InboxMessage消息，验证endpoint是否存在等 ```scala /** Thread pool used for dispatching messages. */ private val threadpool: ThreadPoolExecutor = { val availableCores = if (numUsableCores &amp;gt; 0) numUsableCores else Runtime.getRuntime.availableProcessors() val numThreads = nettyEnv.conf.getInt(“spark.rpc.netty.dispatcher.numThreads”, math.max(2, availableCores)) val pool = ThreadUtils.newDaemonFixedThreadPool(numThreads, “dispatcher-event-loop”) for (i &amp;lt;- 0 until numThreads) { pool.execute(new MessageLoop) } pool } /** Message loop used for dispatching messages. */ private class MessageLoop extends Runnable { override def run(): Unit = { try { while (true) { try { val data = receivers.take() if (data == PoisonPill) { // Put PoisonPill back so that other MessageLoops can see it. receivers.offer(PoisonPill) return } data.inbox.process(Dispatcher.this) } catch { case NonFatal(e) =&amp;gt; logError(e.getMessage, e) } } } catch { case ie: InterruptedException =&amp;gt; // exit } } }</summary></entry><entry><title type="html">Spark源码学习笔记（五）</title><link href="http://localhost:4000/2020/06/03/SparkListener.html" rel="alternate" type="text/html" title="Spark源码学习笔记（五）" /><published>2020-06-03T22:40:21+08:00</published><updated>2020-06-03T22:40:21+08:00</updated><id>http://localhost:4000/2020/06/03/SparkListener</id><content type="html" xml:base="http://localhost:4000/2020/06/03/SparkListener.html">&lt;blockquote&gt;
   &lt;p&gt;之前已经粗略的研究SparkContext启动的整个流程，那么现在细细的研究下里面使用到的监听相关类&lt;/p&gt;
 
   &lt;p&gt;LiveListenerBus，该类主要用于监听SparkListenerEvent事件&lt;/p&gt;
@@ -1032,71 +1082,4 @@ chromedriver下载地址：http://chromedriver.storage.googleapis.com/index.html
 
 &lt;p&gt;代码还是有很多需要改进的地方，有实际应用才好改进，也就是bug复现&lt;/p&gt;
 
-&lt;p&gt;完整代码参见&lt;a href=&quot;https://github.com/WhisperLoli/DaMai&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="python" /><category term="selenium" /><summary type="html">废话不多说，大部分都是为了把妹才研究的！ 如README里面写的，首先需要安装selenium，我使用的浏览器及环境如下</summary></entry><entry><title type="html">Spark SQL窗口函数使用</title><link href="http://localhost:4000/2019/11/07/spark-sql-window-function.html" rel="alternate" type="text/html" title="Spark SQL窗口函数使用" /><published>2019-11-07T20:36:49+08:00</published><updated>2019-11-07T20:36:49+08:00</updated><id>http://localhost:4000/2019/11/07/spark-sql-window-function</id><content type="html" xml:base="http://localhost:4000/2019/11/07/spark-sql-window-function.html">&lt;p&gt;数据集&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csv&quot;&gt;year,class,student,score
-2010,语文,A,84
-2010,数学,A,59
-2010,英语,A,30
-2010,语文,B,44
-2010,数学,B,76
-2010,英语,B,68
-2011,语文,A,51
-2011,数学,A,94
-2011,英语,A,71
-2011,语文,B,87
-2011,数学,B,44
-2011,英语,B,40
-2012,语文,A,91
-2012,数学,A,50
-2012,英语,A,81
-2012,语文,B,81
-2012,数学,B,84
-2012,英语,B,98
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;问题一：每学年每门学科的第一名？&lt;/p&gt;
-
-&lt;p&gt;问题二：每年总成绩都有提升的学生？&lt;/p&gt;
-
-&lt;p&gt;如上两个问题使用普通SQL都不好解决，这时就该窗口函数登场了，第一个问题其实不通过窗口函数也可以解决，但会存在缺点，解法一通过SQL操作，解法二通过窗口函数，事先通过spark将数据集读入DataFrame，即为df，第二个问题则要复杂很多&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;问题一 
-
-解法一
-思路：根据成绩排序，高分排在前，低分在后，然后根据学年、学科两个字段去重，会去除掉同学年、
-同学科成绩低于最高分的记录
-缺点：如果有学科并列第一，也会被去掉一条记录，只保留一条记录
-df.orderBy(desc(&quot;score&quot;))
-  .dropDuplicates(&quot;year&quot;,&quot;class&quot;)
-  .orderBy(&quot;year&quot;)
-  .show()
-      
-解法二
-思路：通过窗口函数获取每学年、每学科的最高成绩，创建新的一列，该列的值为当前学年、当前学科
-的最高成绩，之后过滤出成绩与最高成绩相等的记录，该操作不会存在上面方法的缺点
-df.withColumn(&quot;max&quot;, max(&quot;score&quot;).over(Window.partitionBy(&quot;year&quot;,&quot;class&quot;)))
-  .filter($&quot;score&quot; === $&quot;max&quot;)
-  .orderBy(&quot;year&quot;)
-  .drop(&quot;max&quot;)
-  .show()
-      
-问题二
-思路：先通过窗口函数计算每学年每个学生的总成绩，然后只保留 学年、学生、总成绩 三列，筛选完
-字段会有重复记录需要去重，之后通过窗口函数lag添加新的一列previous，该列的值为该学生去年的
-总成绩，第一个学年的上一学年的总成绩为null，当上一学年的总成绩为null或者当前年的总成绩大于
-上一学年的总成绩，对应新列flag相应的值置为1，否则置为0，最后通过窗口函数判断每一位学生的
-flag列的平均值，如果平均值还是1，则该学生每年的总成绩都比上一年总成绩高
-df.withColumn(&quot;sum&quot;, sum(&quot;score&quot;).over(Window.partitionBy(&quot;student&quot;,&quot;year&quot;)))
-  .select(&quot;year&quot;,&quot;student&quot;, &quot;sum&quot;)
-  .distinct()
-  .withColumn(&quot;previous&quot;, lag(&quot;sum&quot;,1).over(Window.partitionBy(&quot;student&quot;).orderBy(&quot;student&quot;,&quot;year&quot;)))
-  .withColumn(&quot;flag&quot;, when(($&quot;previous&quot;.isNull).or($&quot;sum&quot; &amp;gt; $&quot;previous&quot;),1).otherwise(0))
-  .drop(&quot;sum&quot;, &quot;previous&quot;)
-  .withColumn(&quot;avg&quot;, avg(&quot;flag&quot;).over(Window.partitionBy(&quot;student&quot;)))
-  .filter($&quot;avg&quot; === 1)
-  .dropDuplicates(&quot;student&quot;)
-  .select(&quot;student&quot;)
-  .show()
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>true</name></author><category term="Spark SQL" /><category term="SQL" /><category term="Spark" /><summary type="html">数据集</summary></entry></feed>
+&lt;p&gt;完整代码参见&lt;a href=&quot;https://github.com/WhisperLoli/DaMai&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>true</name></author><category term="python" /><category term="selenium" /><summary type="html">废话不多说，大部分都是为了把妹才研究的！ 如README里面写的，首先需要安装selenium，我使用的浏览器及环境如下</summary></entry></feed>
