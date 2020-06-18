@@ -273,6 +273,15 @@ var _hmt = _hmt || [];
   <span class="o">}</span>
 </code></pre></div></div>
 <blockquote>
+  <p>sparkEnv中会关联master的endpoint与worker的endpointRef</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mapOutputTracker</span><span class="o">.</span><span class="n">trackerEndpoint</span> <span class="k">=</span> <span class="n">registerOrLookupEndpoint</span><span class="o">(</span><span class="nc">MapOutputTracker</span><span class="o">.</span><span class="nc">ENDPOINT_NAME</span><span class="o">,</span>
+      <span class="k">new</span> <span class="nc">MapOutputTrackerMasterEndpoint</span><span class="o">(</span>
+        <span class="n">rpcEnv</span><span class="o">,</span> <span class="n">mapOutputTracker</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">MapOutputTrackerMaster</span><span class="o">],</span> <span class="n">conf</span><span class="o">))</span>
+</code></pre></div></div>
+
+<blockquote>
   <p>简单来说，就是MapOutputTrackerWorker发送RPC请求向MapOutputTrackerMaster获取指定shuffleId的MapStatus数据，MapOutputTrackerMaster消费请求消息，获取数据并序列化传输给MapOutputTrackerWorker的一个流程</p>
 </blockquote>
 

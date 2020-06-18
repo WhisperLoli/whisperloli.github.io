@@ -117,4 +117,12 @@ private class MessageLoop extends Runnable {
     }
   }
 ```
+> sparkEnv中会关联master的endpoint与worker的endpointRef
+
+```scala
+mapOutputTracker.trackerEndpoint = registerOrLookupEndpoint(MapOutputTracker.ENDPOINT_NAME,
+      new MapOutputTrackerMasterEndpoint(
+        rpcEnv, mapOutputTracker.asInstanceOf[MapOutputTrackerMaster], conf))
+```
+
 > 简单来说，就是MapOutputTrackerWorker发送RPC请求向MapOutputTrackerMaster获取指定shuffleId的MapStatus数据，MapOutputTrackerMaster消费请求消息，获取数据并序列化传输给MapOutputTrackerWorker的一个流程
