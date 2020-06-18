@@ -1,0 +1,360 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（七）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（七）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（七）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/06/11/spark_netty_rpc.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（六）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/06/11/spark_netty_rpc.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（六）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        Broadcast与BroadcastManager
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>spark中常用的一个就是广播变量，直接使用sc.broadcast创建广播变量。究其源码，使用的是BroadcastManager创建，BroadcastManager使用TorrentBroadcastFactory创建一个TorrentBroadcast对象，TorrentBroadcast使用的是类似BitTorrent技术实现</p>
+
+  <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">broadcast</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">Broadcast</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">assertNotStopped</span><span class="o">()</span>
+    <span class="n">require</span><span class="o">(!</span><span class="n">classOf</span><span class="o">[</span><span class="kt">RDD</span><span class="o">[</span><span class="k">_</span><span class="o">]].</span><span class="n">isAssignableFrom</span><span class="o">(</span><span class="n">classTag</span><span class="o">[</span><span class="kt">T</span><span class="o">].</span><span class="n">runtimeClass</span><span class="o">),</span>
+      <span class="s">"Can not directly broadcast RDDs; instead, call collect() and broadcast the result."</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">bc</span> <span class="k">=</span> <span class="n">env</span><span class="o">.</span><span class="n">broadcastManager</span><span class="o">.</span><span class="n">newBroadcast</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">value</span><span class="o">,</span> <span class="n">isLocal</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">callSite</span> <span class="k">=</span> <span class="n">getCallSite</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Created broadcast "</span> <span class="o">+</span> <span class="n">bc</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s">" from "</span> <span class="o">+</span> <span class="n">callSite</span><span class="o">.</span><span class="n">shortForm</span><span class="o">)</span>
+    <span class="n">cleaner</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">registerBroadcastForCleanup</span><span class="o">(</span><span class="n">bc</span><span class="o">))</span>
+    <span class="n">bc</span>
+  <span class="o">}</span>
+</code></pre></div>  </div>
+  <p>TorrentBroadcast使用BlockManager将数据存储到block中，读的话也是使用BlockManager读取,先从本地读取、如果读不到使用BlockManager拉取远程block，从远程读取到后，会在本地block再存一份，下次就可以不用再从远程拉取</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">readBroadcastBlock</span><span class="o">()</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">tryOrIOException</span> <span class="o">{</span>
+    <span class="nc">TorrentBroadcast</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">broadcastCache</span> <span class="k">=</span> <span class="nc">SparkEnv</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">broadcastManager</span><span class="o">.</span><span class="n">cachedValues</span>
+
+      <span class="nc">Option</span><span class="o">(</span><span class="n">broadcastCache</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">broadcastId</span><span class="o">)).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">T</span><span class="o">]).</span><span class="n">getOrElse</span> <span class="o">{</span>
+        <span class="n">setConf</span><span class="o">(</span><span class="nc">SparkEnv</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">conf</span><span class="o">)</span>
+        <span class="k">val</span> <span class="n">blockManager</span> <span class="k">=</span> <span class="nc">SparkEnv</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">blockManager</span>
+        <span class="n">blockManager</span><span class="o">.</span><span class="n">getLocalValues</span><span class="o">(</span><span class="n">broadcastId</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">blockResult</span><span class="o">)</span> <span class="k">=&gt;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">blockResult</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">hasNext</span><span class="o">)</span> <span class="o">{</span>
+              <span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="n">blockResult</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">next</span><span class="o">().</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+              <span class="n">releaseLock</span><span class="o">(</span><span class="n">broadcastId</span><span class="o">)</span>
+
+              <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">broadcastCache</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">broadcastId</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span>
+              <span class="o">}</span>
+
+              <span class="n">x</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+              <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Failed to get locally stored broadcast data: $broadcastId"</span><span class="o">)</span>
+            <span class="o">}</span>
+          <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+            <span class="n">logInfo</span><span class="o">(</span><span class="s">"Started reading broadcast variable "</span> <span class="o">+</span> <span class="n">id</span><span class="o">)</span>
+            <span class="k">val</span> <span class="n">startTimeMs</span> <span class="k">=</span> <span class="nc">System</span><span class="o">.</span><span class="n">currentTimeMillis</span><span class="o">()</span>
+            <span class="k">val</span> <span class="n">blocks</span> <span class="k">=</span> <span class="n">readBlocks</span><span class="o">()</span>
+            <span class="n">logInfo</span><span class="o">(</span><span class="s">"Reading broadcast variable "</span> <span class="o">+</span> <span class="n">id</span> <span class="o">+</span> <span class="s">" took"</span> <span class="o">+</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">getUsedTimeMs</span><span class="o">(</span><span class="n">startTimeMs</span><span class="o">))</span>
+
+            <span class="k">try</span> <span class="o">{</span>
+              <span class="k">val</span> <span class="n">obj</span> <span class="k">=</span> <span class="nc">TorrentBroadcast</span><span class="o">.</span><span class="n">unBlockifyObject</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span>
+                <span class="n">blocks</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">toInputStream</span><span class="o">()),</span> <span class="nc">SparkEnv</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">serializer</span><span class="o">,</span> <span class="n">compressionCodec</span><span class="o">)</span>
+              <span class="c1">// Store the merged copy in BlockManager so other tasks on this executor don't
+</span>              <span class="c1">// need to re-fetch it.
+</span>              <span class="k">val</span> <span class="n">storageLevel</span> <span class="k">=</span> <span class="nc">StorageLevel</span><span class="o">.</span><span class="nc">MEMORY_AND_DISK</span>
+              <span class="k">if</span> <span class="o">(!</span><span class="n">blockManager</span><span class="o">.</span><span class="n">putSingle</span><span class="o">(</span><span class="n">broadcastId</span><span class="o">,</span> <span class="n">obj</span><span class="o">,</span> <span class="n">storageLevel</span><span class="o">,</span> <span class="n">tellMaster</span> <span class="k">=</span> <span class="kc">false</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Failed to store $broadcastId in BlockManager"</span><span class="o">)</span>
+              <span class="o">}</span>
+
+              <span class="k">if</span> <span class="o">(</span><span class="n">obj</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">broadcastCache</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">broadcastId</span><span class="o">,</span> <span class="n">obj</span><span class="o">)</span>
+              <span class="o">}</span>
+
+              <span class="n">obj</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+              <span class="n">blocks</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">dispose</span><span class="o">())</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/06/15/spark_broadcast', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
