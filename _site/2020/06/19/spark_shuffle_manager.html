@@ -1,0 +1,410 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（九）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（九）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（九）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/06/18/spark_map_output_tracker.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（八）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/06/18/spark_map_output_tracker.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（八）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        ShuffleManager
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>目前spark中自带ShuffleManager仅有SortShuffleManager，默认为sort，当用户指定shuffle manager为tungsen-sort，其使用的还是SortShuffleManager类</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">shortShuffleMgrNames</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span>
+      <span class="s">"sort"</span> <span class="o">-&gt;</span> <span class="n">classOf</span><span class="o">[</span><span class="kt">org.apache.spark.shuffle.sort.SortShuffleManager</span><span class="o">].</span><span class="n">getName</span><span class="o">,</span>
+      <span class="s">"tungsten-sort"</span> <span class="o">-&gt;</span> <span class="n">classOf</span><span class="o">[</span><span class="kt">org.apache.spark.shuffle.sort.SortShuffleManager</span><span class="o">].</span><span class="n">getName</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">shuffleMgrName</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.shuffle.manager"</span><span class="o">,</span> <span class="s">"sort"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>ShuffleWriter的getWriter方法会在ShuffleMapTask中被调用，SortShuffleManager根据handle类型选择对应的writer，代码如下</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="n">getWriter</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">](</span>
+      <span class="n">handle</span><span class="k">:</span> <span class="kt">ShuffleHandle</span><span class="o">,</span>
+      <span class="n">mapId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">context</span><span class="k">:</span> <span class="kt">TaskContext</span><span class="o">)</span><span class="k">:</span> <span class="kt">ShuffleWriter</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">numMapsForShuffle</span><span class="o">.</span><span class="n">putIfAbsent</span><span class="o">(</span>
+      <span class="n">handle</span><span class="o">.</span><span class="n">shuffleId</span><span class="o">,</span> <span class="n">handle</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">BaseShuffleHandle</span><span class="o">[</span><span class="k">_</span>, <span class="k">_</span>, <span class="k">_</span><span class="o">]].</span><span class="n">numMaps</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">env</span> <span class="k">=</span> <span class="nc">SparkEnv</span><span class="o">.</span><span class="n">get</span>
+    <span class="n">handle</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">unsafeShuffleHandle</span><span class="k">:</span> <span class="kt">SerializedShuffleHandle</span><span class="o">[</span><span class="kt">K</span> <span class="kt">@unchecked</span>, <span class="kt">V</span> <span class="kt">@unchecked</span><span class="o">]</span> <span class="k">=&gt;</span>
+        <span class="k">new</span> <span class="nc">UnsafeShuffleWriter</span><span class="o">(</span>
+          <span class="n">env</span><span class="o">.</span><span class="n">blockManager</span><span class="o">,</span>
+          <span class="n">shuffleBlockResolver</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">IndexShuffleBlockResolver</span><span class="o">],</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">taskMemoryManager</span><span class="o">(),</span>
+          <span class="n">unsafeShuffleHandle</span><span class="o">,</span>
+          <span class="n">mapId</span><span class="o">,</span>
+          <span class="n">context</span><span class="o">,</span>
+          <span class="n">env</span><span class="o">.</span><span class="n">conf</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">bypassMergeSortHandle</span><span class="k">:</span> <span class="kt">BypassMergeSortShuffleHandle</span><span class="o">[</span><span class="kt">K</span> <span class="kt">@unchecked</span>, <span class="kt">V</span> <span class="kt">@unchecked</span><span class="o">]</span> <span class="k">=&gt;</span>
+        <span class="k">new</span> <span class="nc">BypassMergeSortShuffleWriter</span><span class="o">(</span>
+          <span class="n">env</span><span class="o">.</span><span class="n">blockManager</span><span class="o">,</span>
+          <span class="n">shuffleBlockResolver</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">IndexShuffleBlockResolver</span><span class="o">],</span>
+          <span class="n">bypassMergeSortHandle</span><span class="o">,</span>
+          <span class="n">mapId</span><span class="o">,</span>
+          <span class="n">context</span><span class="o">,</span>
+          <span class="n">env</span><span class="o">.</span><span class="n">conf</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">other</span><span class="k">:</span> <span class="kt">BaseShuffleHandle</span><span class="o">[</span><span class="kt">K</span> <span class="kt">@unchecked</span>, <span class="kt">V</span> <span class="kt">@unchecked</span>, <span class="k">_</span><span class="o">]</span> <span class="k">=&gt;</span>
+        <span class="k">new</span> <span class="nc">SortShuffleWriter</span><span class="o">(</span><span class="n">shuffleBlockResolver</span><span class="o">,</span> <span class="n">other</span><span class="o">,</span> <span class="n">mapId</span><span class="o">,</span> <span class="n">context</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>ShuffleHandle的选择策略在registerShuffle阶段就会判断抉择，</p>
+
+  <p>当mapSideCombine为false（不需要map端聚合）且partitions数量不大于spark.shuffle.sort.bypassMergeThreshold值时，会采用BypassMergeSortShuffleHandle</p>
+
+  <p>canUseSerializedShuffle方法用于判断是否使用SerializedShuffleHandle，需要满足如下条件，不需要map端聚合，partition数量不能大于指定的阈值((2^24) -1)，Serializer支持relocation，Serializer支持relocation是指Serializer可以对已经序列化的对象进行排序，这种排序起到的效果和先对数据排序再序列化一致。支持relocation的Serializer是KryoSerializer，Spark默认使用JavaSerializer</p>
+
+  <p>如果不满足BypassMergeSortShuffleHandle、SerializedShuffleHandle的要求，则使用BaseShuffleHandle</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="n">registerShuffle</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span>, <span class="kt">C</span><span class="o">](</span>
+      <span class="n">shuffleId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">numMaps</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">dependency</span><span class="k">:</span> <span class="kt">ShuffleDependency</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span>, <span class="kt">C</span><span class="o">])</span><span class="k">:</span> <span class="kt">ShuffleHandle</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">SortShuffleWriter</span><span class="o">.</span><span class="n">shouldBypassMergeSort</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="n">dependency</span><span class="o">))</span> <span class="o">{</span>
+      <span class="c1">// If there are fewer than spark.shuffle.sort.bypassMergeThreshold partitions and we don't
+</span>      <span class="c1">// need map-side aggregation, then write numPartitions files directly and just concatenate
+</span>      <span class="c1">// them at the end. This avoids doing serialization and deserialization twice to merge
+</span>      <span class="c1">// together the spilled files, which would happen with the normal code path. The downside is
+</span>      <span class="c1">// having multiple files open at a time and thus more memory allocated to buffers.
+</span>      <span class="k">new</span> <span class="nc">BypassMergeSortShuffleHandle</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">](</span>
+        <span class="n">shuffleId</span><span class="o">,</span> <span class="n">numMaps</span><span class="o">,</span> <span class="n">dependency</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">ShuffleDependency</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span>, <span class="kt">V</span><span class="o">]])</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="nc">SortShuffleManager</span><span class="o">.</span><span class="n">canUseSerializedShuffle</span><span class="o">(</span><span class="n">dependency</span><span class="o">))</span> <span class="o">{</span>
+      <span class="c1">// Otherwise, try to buffer map outputs in a serialized form, since this is more efficient:
+</span>      <span class="k">new</span> <span class="nc">SerializedShuffleHandle</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">](</span>
+        <span class="n">shuffleId</span><span class="o">,</span> <span class="n">numMaps</span><span class="o">,</span> <span class="n">dependency</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">ShuffleDependency</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span>, <span class="kt">V</span><span class="o">]])</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="c1">// Otherwise, buffer map outputs in a deserialized form:
+</span>      <span class="k">new</span> <span class="nc">BaseShuffleHandle</span><span class="o">(</span><span class="n">shuffleId</span><span class="o">,</span> <span class="n">numMaps</span><span class="o">,</span> <span class="n">dependency</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>三种Writer实现了各自的write方法</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>writer</th>
+      <th>优点</th>
+      <th>缺点</th>
+      <th>特点</th>
+      <th>对应handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BypassMergeSortShuffleWriter</td>
+      <td>根据numPartitions数量生成对等的n个文件，避免了两次序列化和反序列化来合并spilled files</td>
+      <td>numPartitions数量太多会一次打开多个文件，需要更多内存分配给缓冲区</td>
+      <td>直接写磁盘，没有sort/spill阶段，最后会merge文件</td>
+      <td>BypassMergeSortShuffleHandle</td>
+    </tr>
+    <tr>
+      <td>SortShuffleWriter</td>
+      <td>可以map端聚合</td>
+      <td>无</td>
+      <td>需要经历sort/spill/merge，使用ExternalSorter</td>
+      <td>BaseShuffleHandle</td>
+    </tr>
+    <tr>
+      <td>UnsafeShuffleWriter</td>
+      <td>操作序列化的数据，效率高</td>
+      <td>serializer需要支持relocation才行，numPartitions大小也有限制</td>
+      <td>写入内存buffer中，经历sort/spill/merge，使用ShuffleExternalSorter</td>
+      <td>SerializedShuffleHandle</td>
+    </tr>
+  </tbody>
+</table>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/06/19/spark_shuffle_manager', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
