@@ -1,0 +1,359 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（十）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/06/19/spark_shuffle_manager.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（九）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/06/19/spark_shuffle_manager.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（九）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        内存模型之MemoryManager
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>如果想使用1.5及之前版本的内存管理，可以通过参数spark.memory.useLegacyMode控制，默认值是false，该传统模式使用的是StaticMemoryManager，传统模式将堆空间严格划分为固定大小的区域，需要注意的是，现在很多网上博客关于参数调优都会给如下几个参数，这几个参数在新版的内存管理中是无效的，除非使用的是StaticMemoryManager</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spark.shuffle.memoryFraction
+spark.storage.memoryFraction
+spark.storage.unrollFraction
+</code></pre></div>  </div>
+</blockquote>
+
+<blockquote>
+  <p>spark目前版本的内存管理使用的是UnifiedMemoryManager，在该内存模型中，spark需要提供RESERVED_SYSTEM_MEMORY_BYTES，该块空间为非存储，非执行目的留出一定数量的内存，大小是300M
+spark默认的内存比例spark.memory.fraction是0.6，存储内存比例spark.memory.storageFraction为0.5</p>
+
+  <p>executory总内存就是用户通过设置spark.executor.memory的内存，加入设置1G，spark代码中会获取运行时的最大可用内存Runtime.getRuntime.maxMemory，不考虑其他损耗，那么该最大可用内存也是1G，减去reserved memory需要的300M，最后分配给memory区域的只有(1024-300)*0.6=434.4M可用，storage memory占用0.5，那么最后用于spark计算的内存只有217.2M，用于storage的也只有217.2M，当内存不够时，就会溢写到磁盘中，如果代码中没有使用到大量的存储，可以调低该值</p>
+
+  <p><img src="/blog/spark_source_code/source_code_10/memory.svg" alt="image" /></p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+   * Return the total amount of memory shared between execution and storage, in bytes.
+   */</span>
+  <span class="k">private</span> <span class="k">def</span> <span class="n">getMaxMemory</span><span class="o">(</span><span class="n">conf</span><span class="k">:</span> <span class="kt">SparkConf</span><span class="o">)</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">systemMemory</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getLong</span><span class="o">(</span><span class="s">"spark.testing.memory"</span><span class="o">,</span> <span class="nc">Runtime</span><span class="o">.</span><span class="n">getRuntime</span><span class="o">.</span><span class="n">maxMemory</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">reservedMemory</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getLong</span><span class="o">(</span><span class="s">"spark.testing.reservedMemory"</span><span class="o">,</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">conf</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">"spark.testing"</span><span class="o">))</span> <span class="mi">0</span> <span class="k">else</span> <span class="nc">RESERVED_SYSTEM_MEMORY_BYTES</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">minSystemMemory</span> <span class="k">=</span> <span class="o">(</span><span class="n">reservedMemory</span> <span class="o">*</span> <span class="mf">1.5</span><span class="o">).</span><span class="n">ceil</span><span class="o">.</span><span class="n">toLong</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">systemMemory</span> <span class="o">&lt;</span> <span class="n">minSystemMemory</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="n">s</span><span class="s">"System memory $systemMemory must "</span> <span class="o">+</span>
+        <span class="n">s</span><span class="s">"be at least $minSystemMemory. Please increase heap size using the --driver-memory "</span> <span class="o">+</span>
+        <span class="n">s</span><span class="s">"option or spark.driver.memory in Spark configuration."</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="c1">// SPARK-12759 Check executor memory to fail fast if memory is insufficient
+</span>    <span class="k">if</span> <span class="o">(</span><span class="n">conf</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">"spark.executor.memory"</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">executorMemory</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getSizeAsBytes</span><span class="o">(</span><span class="s">"spark.executor.memory"</span><span class="o">)</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">executorMemory</span> <span class="o">&lt;</span> <span class="n">minSystemMemory</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="n">s</span><span class="s">"Executor memory $executorMemory must be at least "</span> <span class="o">+</span>
+          <span class="n">s</span><span class="s">"$minSystemMemory. Please increase executor memory using the "</span> <span class="o">+</span>
+          <span class="n">s</span><span class="s">"--executor-memory option or spark.executor.memory in Spark configuration."</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">usableMemory</span> <span class="k">=</span> <span class="n">systemMemory</span> <span class="o">-</span> <span class="n">reservedMemory</span>
+    <span class="k">val</span> <span class="n">memoryFraction</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getDouble</span><span class="o">(</span><span class="s">"spark.memory.fraction"</span><span class="o">,</span> <span class="mf">0.6</span><span class="o">)</span>
+    <span class="o">(</span><span class="n">usableMemory</span> <span class="o">*</span> <span class="n">memoryFraction</span><span class="o">).</span><span class="n">toLong</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>所谓 Unified 的意思是 Storgae 和 Execution 在适当时候可以借用彼此的 Memory，需要注意的是，当 Execution 空间不足而且 Storage 空间也不足的情况下，Storage 空间如果曾经使用了超过 Unified 默认的 50% 空间的话则超过部份会被强制 drop 掉一部份数据来解决 Execution 空间不足的问题 (注意：drop 后数据会不会丢失主要是看你在程序设置的 storage_level 来决定你是 Drop 到那里，可能 Drop 到磁盘上)，这是因为执行(Execution) 比缓存 (Storage) 是更重要的事情。</p>
+
+  <p>Execution 向 Storage 借空间有两种情况：</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>第一种情况：Storage 曾经向 Execution 借了空间，它缓存的数据可能是非常的多，然后 Execution 又不需要那么大的空间 (默认情况下各占 50%)，假设现在 Storage 占了 80%，Execution 占了 20%，然后 Execution 说自己空间不足，Execution 会向内存管理器发信号把 Storgae 曾经占用的超过 50％数据的那部份强制挤掉，
+第二种情况：Execution 可以向 Storage Memory 借空间，在 Storage Memory 不足 50% 的情况下，Storgae Memory 会很乐意地把剩余空间借给 Execution。相反当 Execution 有剩余空间的时候，Storage 也可以找 Execution 借空间。
+</code></pre></div>  </div>
+</blockquote>
+
+<blockquote>
+  <p>In this context, execution memory refers to that used for computation in shuffles, joins,
+sorts and aggregations, while storage memory refers to that used for caching and propagating
+internal data across the cluster. There exists one MemoryManager per JVM.</p>
+</blockquote>
+
+<blockquote>
+  <p>execution memory用于shuffle等计算，storage memory用于缓存数据</p>
+</blockquote>
+
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/06/21/spark_memory_manager', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
