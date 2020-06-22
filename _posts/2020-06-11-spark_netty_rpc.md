@@ -127,7 +127,7 @@ subtitle: 'Netty RPC机制'
     }
   }
 > ```
-> InBox、InBoxMessage：NettyRpcEnv中send/ask方法发送至本地rpc endpoint使用，由endpoint处理接收到rpc消息，EndpointRef中的ask、send方法底层就是调用NettyRpcEvn中的ask、send方法
+> InBox、InBoxMessage：NettyRpcEnv中send/ask方法发送至本地rpc endpoint使用，由endpoint处理接收到rpc消息，EndpointRef中的ask、send方法底层就是调用NettyRpcEvn中的ask、send方法，但是消息的receiver会是自身this
 > 
 > OutBox、OutBoxMessage: NettyRpcEnv中send/ask方法发送至远程rpc endpoint使用，底层通过TransportClient发送，由RpcHandler处理接收到的rpc消息，当发送请求的client和server在同一台机器上则使用inbox，否则使用outbox
 > 
@@ -228,4 +228,4 @@ private val endpoints: ConcurrentMap[String, EndpointData] =
 >```
 >
 >整个的大体流程就是EndpointRef发送消息出去，会调用NettyRpcEnv中的send/ask方法，在NettyRpcEnv中会判断当前是否是消息接收者和当前的address是否相同，如果相同则使用inbox消息，dispather直接转发给inbox处理；如果address不同，则使用outbox消息，底层使用TransportClient发送消息，NettyRpcHandler会处理接收到的消息，然后使用dispather转发给inbox处理
-> outbox用于client端，inbox用于server端
+>
