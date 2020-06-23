@@ -227,5 +227,5 @@ private val endpoints: ConcurrentMap[String, EndpointData] =
   def getRpcEndpointRef(endpoint: RpcEndpoint): RpcEndpointRef = endpointRefs.get(endpoint)
 >```
 >
->整个的大体流程就是EndpointRef发送消息出去，会调用NettyRpcEnv中的send/ask方法，在NettyRpcEnv中会判断当前是否是消息接收者和当前的address是否相同，如果相同则使用inbox消息，dispather直接转发给inbox处理；如果address不同，则使用outbox消息，底层使用TransportClient发送消息，NettyRpcHandler会处理接收到的消息，然后使用dispather转发给inbox处理
+>整个的大体流程就是EndpointRef发送消息出去，会调用NettyRpcEnv中的send/ask方法，注意消息的receiver仍然是EndpointRef，在NettyRpcEnv中会判断当前是否是消息接收者和当前的address是否相同，如果相同则使用inbox消息，dispather直接转发给inbox处理；如果address不同，则使用outbox消息，底层使用TransportClient发送消息，NettyRpcHandler会处理接收到的消息，然后使用dispather转发给inbox处理，此时会用EndpointData获取receiver(EndpointRef)对应的Endpoint，并使用endpoint处理请求消息
 >
