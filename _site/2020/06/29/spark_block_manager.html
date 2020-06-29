@@ -1,0 +1,348 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（十一）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十一）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十一）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/06/21/spark_memory_manager.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（十）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/06/21/spark_memory_manager.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（十）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        BlockManager
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>BlockManagerMaster作用：使用driverEndpoint(RpcEndpointRef)发送请求处理某件事物registerBlockManager，updateBlockInfo等等，BlockManagerMasterEndpoint中会收到消息并做出对应的处理，有些处理（比如removeRdd、removeShuffle等操作）会涉及executor，就会调用到slaveEndpoint(RpcEndpointRef)发送请求给executor，BlockManagerSlaveEndpoint收到消息会在executor上做出对应的处理</p>
+
+  <p>BlockManagerMaster中的部分方法会被BlockManager调用到，例如registerBlockManager、updateBlockInfo之类，其他的方法会被外界调用，如dagScheduler等</p>
+
+  <p>BlockId用于标识一个block是何种类型的block数据，会给每种不同类型的block分配不同的id，产生唯一的一组键，我们常见的就是RDD block,SHUFFLE block,BROADCAST block,BlockId也提供了方法可以判断是一个blockId是不是RDDBlockID、ShuffleBlockId、BroadcastBlockId</p>
+
+  <p>BlockManagerId：BlockManager的ID，唯一标识符，类似BlockId与Block的关系，每个executor都会有一个单独的blockManager</p>
+
+  <p>BlockInfoManager：用于跟踪每个block metadata及管理block的锁，readLocksByTask/writeLocksByTask会记录所有task读写加锁操作</p>
+
+  <p>NettyBlockTransferService：用于fetch/upload数据，会使用到NettyBlockRpcServer，NettyBlockRpcServer也继承自RpcHandler，发送的上传/下载block消息都会被NettyBlockRpcServer处，NettyBlockTransferService中的fetchBlocks/uploadBlock都会使用到NettyBlockRpcServer生成的client发送消息</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">override</span> <span class="k">def</span> <span class="n">receive</span><span class="o">(</span>
+      <span class="n">client</span><span class="k">:</span> <span class="kt">TransportClient</span><span class="o">,</span>
+      <span class="n">rpcMessage</span><span class="k">:</span> <span class="kt">ByteBuffer</span><span class="o">,</span>
+      <span class="n">responseContext</span><span class="k">:</span> <span class="kt">RpcResponseCallback</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">message</span> <span class="k">=</span> <span class="nc">BlockTransferMessage</span><span class="o">.</span><span class="nc">Decoder</span><span class="o">.</span><span class="n">fromByteBuffer</span><span class="o">(</span><span class="n">rpcMessage</span><span class="o">)</span>
+    <span class="n">logTrace</span><span class="o">(</span><span class="n">s</span><span class="s">"Received request: $message"</span><span class="o">)</span>
+
+    <span class="n">message</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">openBlocks</span><span class="k">:</span> <span class="kt">OpenBlocks</span> <span class="o">=&gt;</span>
+        <span class="k">val</span> <span class="n">blocksNum</span> <span class="k">=</span> <span class="n">openBlocks</span><span class="o">.</span><span class="n">blockIds</span><span class="o">.</span><span class="n">length</span>
+        <span class="k">val</span> <span class="n">blocks</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="o">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">blocksNum</span><span class="o">).</span><span class="n">view</span><span class="o">)</span>
+          <span class="k">yield</span> <span class="n">blockManager</span><span class="o">.</span><span class="n">getBlockData</span><span class="o">(</span><span class="nc">BlockId</span><span class="o">.</span><span class="n">apply</span><span class="o">(</span><span class="n">openBlocks</span><span class="o">.</span><span class="n">blockIds</span><span class="o">(</span><span class="n">i</span><span class="o">)))</span>
+        <span class="k">val</span> <span class="n">streamId</span> <span class="k">=</span> <span class="n">streamManager</span><span class="o">.</span><span class="n">registerStream</span><span class="o">(</span><span class="n">appId</span><span class="o">,</span> <span class="n">blocks</span><span class="o">.</span><span class="n">iterator</span><span class="o">.</span><span class="n">asJava</span><span class="o">)</span>
+        <span class="n">logTrace</span><span class="o">(</span><span class="n">s</span><span class="s">"Registered streamId $streamId with $blocksNum buffers"</span><span class="o">)</span>
+        <span class="n">responseContext</span><span class="o">.</span><span class="n">onSuccess</span><span class="o">(</span><span class="k">new</span> <span class="nc">StreamHandle</span><span class="o">(</span><span class="n">streamId</span><span class="o">,</span> <span class="n">blocksNum</span><span class="o">).</span><span class="n">toByteBuffer</span><span class="o">)</span>
+
+      <span class="k">case</span> <span class="n">uploadBlock</span><span class="k">:</span> <span class="kt">UploadBlock</span> <span class="o">=&gt;</span>
+        <span class="c1">// StorageLevel and ClassTag are serialized as bytes using our JavaSerializer.
+</span>        <span class="k">val</span> <span class="o">(</span><span class="n">level</span><span class="k">:</span> <span class="kt">StorageLevel</span><span class="o">,</span> <span class="n">classTag</span><span class="k">:</span> <span class="kt">ClassTag</span><span class="o">[</span><span class="k">_</span><span class="o">])</span> <span class="k">=</span> <span class="o">{</span>
+          <span class="n">serializer</span>
+            <span class="o">.</span><span class="n">newInstance</span><span class="o">()</span>
+            <span class="o">.</span><span class="n">deserialize</span><span class="o">(</span><span class="nc">ByteBuffer</span><span class="o">.</span><span class="n">wrap</span><span class="o">(</span><span class="n">uploadBlock</span><span class="o">.</span><span class="n">metadata</span><span class="o">))</span>
+            <span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[(</span><span class="kt">StorageLevel</span>, <span class="kt">ClassTag</span><span class="o">[</span><span class="k">_</span><span class="o">])]</span>
+        <span class="o">}</span>
+        <span class="k">val</span> <span class="n">data</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">NioManagedBuffer</span><span class="o">(</span><span class="nc">ByteBuffer</span><span class="o">.</span><span class="n">wrap</span><span class="o">(</span><span class="n">uploadBlock</span><span class="o">.</span><span class="n">blockData</span><span class="o">))</span>
+        <span class="k">val</span> <span class="n">blockId</span> <span class="k">=</span> <span class="nc">BlockId</span><span class="o">(</span><span class="n">uploadBlock</span><span class="o">.</span><span class="n">blockId</span><span class="o">)</span>
+        <span class="n">blockManager</span><span class="o">.</span><span class="n">putBlockData</span><span class="o">(</span><span class="n">blockId</span><span class="o">,</span> <span class="n">data</span><span class="o">,</span> <span class="n">level</span><span class="o">,</span> <span class="n">classTag</span><span class="o">)</span>
+        <span class="n">responseContext</span><span class="o">.</span><span class="n">onSuccess</span><span class="o">(</span><span class="nc">ByteBuffer</span><span class="o">.</span><span class="n">allocate</span><span class="o">(</span><span class="mi">0</span><span class="o">))</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>BlockManager：需要注册到BlockManagerMaster中，该类会运行在每一个节点（driver和executor）中
+，并对外提供了接口供get/put blocks，block在本地或者远程均可。还有就是对BlockInfo中的方法做了一层封装，通过该类才能调用BlockInfo中的方法对block加锁</p>
+</blockquote>
+
+<blockquote>
+  <p>BlockManager中虽然方法很多，但是很多都是会被spark内部其他部分调用，类似于SparkContext提供很多方法，被用户调用一样，Spark内部其他部分就是BlockManager的用户</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/06/29/spark_block_manager', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
