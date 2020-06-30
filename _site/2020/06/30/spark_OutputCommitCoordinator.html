@@ -1,0 +1,385 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（十三）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十三）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十三）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/06/30/spark_metrics_system.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（十二）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/06/30/spark_metrics_system.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（十二）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        OutputCommitCoordinator
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>OutputCommitCoordinator主要用于判断task是否有权限提交输出到HDFS，canCommit用于判断task是否有提交权限，使用endpointRef发送消息给endpoint</p>
+
+  <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">canCommit</span><span class="o">(</span>
+      <span class="n">stage</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">stageAttempt</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">partition</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">attemptNumber</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">msg</span> <span class="k">=</span> <span class="nc">AskPermissionToCommitOutput</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="n">stageAttempt</span><span class="o">,</span> <span class="n">partition</span><span class="o">,</span> <span class="n">attemptNumber</span><span class="o">)</span>
+    <span class="n">coordinatorRef</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">endpointRef</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="nc">ThreadUtils</span><span class="o">.</span><span class="n">awaitResult</span><span class="o">(</span><span class="n">endpointRef</span><span class="o">.</span><span class="n">ask</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">](</span><span class="n">msg</span><span class="o">),</span>
+          <span class="nc">RpcUtils</span><span class="o">.</span><span class="n">askRpcTimeout</span><span class="o">(</span><span class="n">conf</span><span class="o">).</span><span class="n">duration</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+        <span class="n">logError</span><span class="o">(</span>
+          <span class="s">"canCommit called after coordinator was stopped (is SparkEnv shutdown in progress)?"</span><span class="o">)</span>
+        <span class="kc">false</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>  </div>
+</blockquote>
+
+<blockquote>
+  <p>endpoint接收到消息后判断能否提交，如果task被标记为失败，则没有权限，提交过或者stage已经结束也会导致失败</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">scheduler</span><span class="o">]</span> <span class="k">def</span> <span class="n">handleAskPermissionToCommit</span><span class="o">(</span>
+      <span class="n">stage</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">stageAttempt</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">partition</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">attemptNumber</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="n">stageStates</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">stage</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">state</span><span class="o">)</span> <span class="k">if</span> <span class="n">attemptFailed</span><span class="o">(</span><span class="n">state</span><span class="o">,</span> <span class="n">stageAttempt</span><span class="o">,</span> <span class="n">partition</span><span class="o">,</span> <span class="n">attemptNumber</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Commit denied for stage=$stage.$stageAttempt, partition=$partition: "</span> <span class="o">+</span>
+          <span class="n">s</span><span class="s">"task attempt $attemptNumber already marked as failed."</span><span class="o">)</span>
+        <span class="kc">false</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">state</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">existing</span> <span class="k">=</span> <span class="n">state</span><span class="o">.</span><span class="n">authorizedCommitters</span><span class="o">(</span><span class="n">partition</span><span class="o">)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">existing</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Commit allowed for stage=$stage.$stageAttempt, partition=$partition, "</span> <span class="o">+</span>
+            <span class="n">s</span><span class="s">"task attempt $attemptNumber"</span><span class="o">)</span>
+          <span class="n">state</span><span class="o">.</span><span class="n">authorizedCommitters</span><span class="o">(</span><span class="n">partition</span><span class="o">)</span> <span class="k">=</span> <span class="nc">TaskIdentifier</span><span class="o">(</span><span class="n">stageAttempt</span><span class="o">,</span> <span class="n">attemptNumber</span><span class="o">)</span>
+          <span class="kc">true</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Commit denied for stage=$stage.$stageAttempt, partition=$partition: "</span> <span class="o">+</span>
+            <span class="n">s</span><span class="s">"already committed by $existing"</span><span class="o">)</span>
+          <span class="kc">false</span>
+        <span class="o">}</span>
+      <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+        <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Commit denied for stage=$stage.$stageAttempt, partition=$partition: "</span> <span class="o">+</span>
+          <span class="s">"stage already marked as completed."</span><span class="o">)</span>
+        <span class="kc">false</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>其他的就是stage开始和结束会调用该类中的stageStart/stageEnd方法，添加/移除相应的stageId及相关信息</p>
+
+  <p>当task完成时DAGScheduler会调用taskCompleted方法，如果状态是失败，stage会做记录</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">scheduler</span><span class="o">]</span> <span class="k">def</span> <span class="n">taskCompleted</span><span class="o">(</span>
+      <span class="n">stage</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">stageAttempt</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">partition</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">attemptNumber</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">reason</span><span class="k">:</span> <span class="kt">TaskEndReason</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">stageState</span> <span class="k">=</span> <span class="n">stageStates</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="o">{</span>
+      <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Ignoring task completion for completed stage"</span><span class="o">)</span>
+      <span class="k">return</span>
+    <span class="o">})</span>
+    <span class="n">reason</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Success</span> <span class="k">=&gt;</span>
+      <span class="c1">// The task output has been committed successfully
+</span>      <span class="k">case</span> <span class="k">_:</span> <span class="kt">TaskCommitDenied</span> <span class="o">=&gt;</span>
+        <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Task was denied committing, stage: $stage.$stageAttempt, "</span> <span class="o">+</span>
+          <span class="n">s</span><span class="s">"partition: $partition, attempt: $attemptNumber"</span><span class="o">)</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span>
+        <span class="c1">// Mark the attempt as failed to blacklist from future commit protocol
+</span>        <span class="k">val</span> <span class="n">taskId</span> <span class="k">=</span> <span class="nc">TaskIdentifier</span><span class="o">(</span><span class="n">stageAttempt</span><span class="o">,</span> <span class="n">attemptNumber</span><span class="o">)</span>
+        <span class="n">stageState</span><span class="o">.</span><span class="n">failures</span><span class="o">.</span><span class="n">getOrElseUpdate</span><span class="o">(</span><span class="n">partition</span><span class="o">,</span> <span class="n">mutable</span><span class="o">.</span><span class="nc">Set</span><span class="o">())</span> <span class="o">+=</span> <span class="n">taskId</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">stageState</span><span class="o">.</span><span class="n">authorizedCommitters</span><span class="o">(</span><span class="n">partition</span><span class="o">)</span> <span class="o">==</span> <span class="n">taskId</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Authorized committer (attemptNumber=$attemptNumber, stage=$stage, "</span> <span class="o">+</span>
+            <span class="n">s</span><span class="s">"partition=$partition) failed; clearing lock"</span><span class="o">)</span>
+          <span class="n">stageState</span><span class="o">.</span><span class="n">authorizedCommitters</span><span class="o">(</span><span class="n">partition</span><span class="o">)</span> <span class="k">=</span> <span class="kc">null</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>这块的东西比较简单，没有涉及到其他的东西，主要就是判断task是否有提交输出权限到hdfs</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/06/30/spark_OutputCommitCoordinator', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
