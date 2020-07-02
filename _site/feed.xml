@@ -1,4 +1,147 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-30T23:44:08+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark源码学习笔记（十三）</title><link href="http://localhost:4000/2020/06/30/spark_OutputCommitCoordinator.html" rel="alternate" type="text/html" title="Spark源码学习笔记（十三）" /><published>2020-06-30T23:14:13+08:00</published><updated>2020-06-30T23:14:13+08:00</updated><id>http://localhost:4000/2020/06/30/spark_OutputCommitCoordinator</id><content type="html" xml:base="http://localhost:4000/2020/06/30/spark_OutputCommitCoordinator.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-07-03T00:58:59+08:00</updated><id>http://localhost:4000/</id><title type="html">Loli</title><subtitle>For dream</subtitle><author><name>true</name></author><entry><title type="html">Spark源码学习笔记（十四）</title><link href="http://localhost:4000/2020/07/03/spark_heart_beat.html" rel="alternate" type="text/html" title="Spark源码学习笔记（十四）" /><published>2020-07-03T00:05:13+08:00</published><updated>2020-07-03T00:05:13+08:00</updated><id>http://localhost:4000/2020/07/03/spark_heart_beat</id><content type="html" xml:base="http://localhost:4000/2020/07/03/spark_heart_beat.html">&lt;blockquote&gt;
+  &lt;p&gt;心跳是从executor发送到driver，driver根据心跳判断executor是否存活&lt;/p&gt;
+
+  &lt;p&gt;HeartbeatReceiver类实现了SparkListener，也实现了ThreadSafeRpcEndpoint，所以既是一个监听器，也是一个endpoint，身兼多职
+当该类创建后，就会被添加到监听队列中，接下来的活就需要监听器和endpoint一起处理了
+onStart方法在Inbox中会被调用，RPC章节创建EndPointRef时，需要创建EndpointData，每个EndpointData对象都有自己单独的Inbox对象，Inbox对象初始化时会立马将OnStart方法添加到messages中，下述方法用线程池定时调度固定的线程，默认是60s，每60s询问一次executor是否存活，&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;override def onStart(): Unit = {
+    timeoutCheckingTask = eventLoopThread.scheduleAtFixedRate(new Runnable {
+      override def run(): Unit = Utils.tryLogNonFatalError {
+        Option(self).foreach(_.ask[Boolean](ExpireDeadHosts))
+      }
+    }, 0, checkTimeoutIntervalMs, TimeUnit.MILLISECONDS)
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;driver收到消息后会执行expireDeadHosts方法，该方法中会判断executor是否存活，如果长时间（大于心跳检测60s）没有响应，则会移除当前executor，并使用线程池执行sc.killAndReplaceExecutor方法，sc中会用ExecutorAllocationClient中的方法killExecutor&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expireDeadHosts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;logTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Checking for hosts with no recent heartbeats in HeartbeatReceiver.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;now&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getTimeMillis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastSeenMs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executorLastSeen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastSeenMs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executorTimeoutMs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;logWarning&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Removing executor $executorId with no recent heartbeats: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;${now - lastSeenMs} ms exceeds timeout $executorTimeoutMs ms&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;scheduler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorLost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SlaveLost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Executor heartbeat &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;timed out after ${now - lastSeenMs} ms&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+          &lt;span class=&quot;c1&quot;&gt;// Asynchronously kill the executor to avoid blocking the current thread
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;killExecutorThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;submit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tryLogNonFatalError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// Note: we want to get an executor back after expiring this one,
+&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// so do not simply call `sc.killExecutor` here (SPARK-8119)
+&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;killAndReplaceExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;executorLastSeen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;每次收到executor的Heartbeat消息时都会更新为最新通信的时间，除了这些，当ExecutorRegistered，ExecutorRemoved，endpoint都需要做相应的操作并给出答复，而发送这些消息的就是本身，因为它自身是个listener，监听executor相关事件，当executor注册/移除后，可以立马执行相应的操作，获取endpointRef发消息给endpoint（自己）,自己就可以做相对应的操作&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;receiveAndReply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;RpcCallContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PartialFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Any&lt;/span&gt;, &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Messages sent and received locally
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExecutorRegistered&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;executorLastSeen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getTimeMillis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExecutorRemoved&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;executorLastSeen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TaskSchedulerIsSet&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;scheduler&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taskScheduler&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExpireDeadHosts&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expireDeadHosts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Messages received from executors
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;heartbeat&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Heartbeat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accumUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockManagerId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scheduler&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorLastSeen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;executorLastSeen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getTimeMillis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;eventLoopThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;submit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tryLogNonFatalError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+              &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unknownExecutor&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scheduler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorHeartbeatReceived&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accumUpdates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockManagerId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+              &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HeartbeatResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reregisterBlockManager&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unknownExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+              &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;c1&quot;&gt;// This may happen if we get an executor's in-flight heartbeat immediately
+&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// after we just removed it. It's not really an error condition so we should
+&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// not log warning here. Otherwise there may be a lot of noise especially if
+&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// we explicitly remove executors (SPARK-4134).
+&lt;/span&gt;          &lt;span class=&quot;n&quot;&gt;logDebug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Received heartbeat from unknown executor $executorId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;HeartbeatResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reregisterBlockManager&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Because Executor will sleep several seconds before sending the first &quot;Heartbeat&quot;, this
+&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;// case rarely happens. However, if it really happens, log it and ask the executor to
+&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;// register itself again.
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;logWarning&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Dropping $heartbeat because TaskScheduler is not ready yet&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;HeartbeatResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reregisterBlockManager&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;监听executor事件并发消息给endpointRef代码如下&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;cm&quot;&gt;/**
+   * Send ExecutorRegistered to the event loop to add a new executor. Only for test.
+   *
+   * @return if HeartbeatReceiver is stopped, return None. Otherwise, return a Some(Future) that
+   *         indicate if this operation is successful.
+   */&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Future&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ask&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ExecutorRegistered&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;cm&quot;&gt;/**
+   * If the heartbeat receiver is not stopped, notify it of executor registrations.
+   */&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;onExecutorAdded&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorAdded&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SparkListenerExecutorAdded&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;addExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorAdded&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;cm&quot;&gt;/**
+   * Send ExecutorRemoved to the event loop to remove an executor. Only for test.
+   *
+   * @return if HeartbeatReceiver is stopped, return None. Otherwise, return a Some(Future) that
+   *         indicate if this operation is successful.
+   */&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;removeExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Future&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ask&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ExecutorRemoved&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;cm&quot;&gt;/**
+   * If the heartbeat receiver is not stopped, notify it of executor removals so it doesn't
+   * log superfluous errors.
+   *
+   * Note that we must do this after the executor is actually removed to guard against the
+   * following race condition: if we remove an executor's metadata from our data structure
+   * prematurely, we may get an in-flight heartbeat from the executor before the executor is
+   * actually removed, in which case we will still mark the executor as a dead host later
+   * and expire it with loud error messages.
+   */&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;onExecutorRemoved&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorRemoved&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SparkListenerExecutorRemoved&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;removeExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorRemoved&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executorId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;当taskScheduler创建完成后，endpointRef也会发TaskSchedulerIsSet消息给endpoint&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><summary type="html">心跳是从executor发送到driver，driver根据心跳判断executor是否存活 HeartbeatReceiver类实现了SparkListener，也实现了ThreadSafeRpcEndpoint，所以既是一个监听器，也是一个endpoint，身兼多职 当该类创建后，就会被添加到监听队列中，接下来的活就需要监听器和endpoint一起处理了 onStart方法在Inbox中会被调用，RPC章节创建EndPointRef时，需要创建EndpointData，每个EndpointData对象都有自己单独的Inbox对象，Inbox对象初始化时会立马将OnStart方法添加到messages中，下述方法用线程池定时调度固定的线程，默认是60s，每60s询问一次executor是否存活，</summary></entry><entry><title type="html">Spark源码学习笔记（十三）</title><link href="http://localhost:4000/2020/06/30/spark_OutputCommitCoordinator.html" rel="alternate" type="text/html" title="Spark源码学习笔记（十三）" /><published>2020-06-30T23:14:13+08:00</published><updated>2020-06-30T23:14:13+08:00</updated><id>http://localhost:4000/2020/06/30/spark_OutputCommitCoordinator</id><content type="html" xml:base="http://localhost:4000/2020/06/30/spark_OutputCommitCoordinator.html">&lt;blockquote&gt;
   &lt;p&gt;OutputCommitCoordinator主要用于判断task是否有权限提交输出到HDFS，canCommit用于判断task是否有提交权限，使用endpointRef发送消息给endpoint&lt;/p&gt;
 
   &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canCommit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
@@ -1046,47 +1189,4 @@ internal data across the cluster. There exists one MemoryManager per JVM.&lt;/p&
 
 &lt;blockquote&gt;
   &lt;p&gt;差不多就是Spark的整个的监听了，很多细节还是没有讲到，需要大家自己挖掘。用户可以自己实现自定义监听器，例如Job失败发送邮件告警之类，自定义监听器需要设置到SparkConf中，SparkContext加载时会判断是否有自定义监听器&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><summary type="html">之前已经粗略的研究SparkContext启动的整个流程，那么现在细细的研究下里面使用到的监听相关类 LiveListenerBus，该类主要用于监听SparkListenerEvent事件 先讲下相关联的类吧，本来想画类图的，偷个懒，哈哈 MetricRegistry，没啥好说的，就是做个监控，比如总共产生了多少个event的计数之类 AsyncEventQueue继承自SparkListenerBus，类中eventQueue采用了阻塞队列，使用metrics获取当前队列中有多少个事件，总共shared、appStatus、executorManagement、eventLog四种类型的异步事件队列，分别用于存放对应的监听事件 SparkListenerBus继承自ListenerBus ListenrBuss主要用于添加监听，及向所有已注册的监听发送event SparkListenerEvent，是所有其他事件的父类，子类诸如SparkListenerStageCompleted，SparkListenerTaskStart，SparkListenerUnpersistRDD等等，子类含括了所有的监听事件 SparkListenerInterface，监听事件接口 SparkListener，继承自SparkListenerInterface，实现当某个event发生时，listener应当做什么操作 SparkFirehoseListener，同SparkListener类似，实现了SparkListenerInterface中的方法 在SparkContext初始化中，会执行setupAndStartListenerBus()方法，该方法中会调用LiveListenerBus中的start()方法，用于启动LiveListenerBus</summary></entry><entry><title type="html">Spark源码学习笔记（四）</title><link href="http://localhost:4000/2020/06/01/sparkContext.html" rel="alternate" type="text/html" title="Spark源码学习笔记（四）" /><published>2020-06-01T23:17:34+08:00</published><updated>2020-06-01T23:17:34+08:00</updated><id>http://localhost:4000/2020/06/01/sparkContext</id><content type="html" xml:base="http://localhost:4000/2020/06/01/sparkContext.html">&lt;blockquote&gt;
-  &lt;p&gt;开始正式进入spark源码研究阶段了，这段时间也一直在研究这块东西，主要是里面的类、特质太多，各种跳转吧，比较费时间，然后最后也没明白里面各个细节。想到个策略，还是先粗粒度的学习整个流程，之后再深入研究各个细分类。暂时先不研究SparkContext中的方法，SparkContext文件中将近3000行代码，不可能都研究一遍，先大致了解流程吧，等以后再慢慢了解。&lt;/p&gt;
-
-  &lt;p&gt;分享下我在研究源码中的策略&lt;/p&gt;
-
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 有些方法看不懂代码，就直接写一个主函数，调用一下这个方法，看输入输出大致就能明白方法的功能。
-2. debug，直接new SparkContext，进入单步调试模式，巧妙设置断点，看代码是如何运行的
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;p&gt;spark源码学习中会涉及到metrics(监控工具)，Future/Await（Scala异步编程特性）等知识点，参考&lt;a href=&quot;https://github.com/WhisperLoli/spark-learing&quot;&gt;github demo&lt;/a&gt;&lt;/p&gt;
-
-  &lt;p&gt;进入正题，差不多在SparkContext.scala文件362行附近，之后这一大块都是对变量赋值，首先克隆config给_conf对象，之后基于_conf对象操作，进行校验，较验完设置其他参数，比较重要的就是生成_listenerBus，_statusStore等监听对象。&lt;/p&gt;
-
-  &lt;p&gt;在这之后使用SparkEnv伴生对象的createDriverEnv方法创建SparkEnv对象，这个方法里面创建了各种Spark需要的对象，目前就不细看里面的类，讲一下各个变量吧。&lt;/p&gt;
-
-  &lt;p&gt;rpcEnv：RpcEnv的实例，根据名字就能知道是rpc环境，其内部可以启动NettyRpc server，后续的通信都会使用到他&lt;/p&gt;
-
-  &lt;p&gt;broadcastManager：Broadcast管理器，内部可以创建broadcast，broadcast创建底层使用的是TorrentBroadcastFactory创建TorrentBroadcast，也十分复杂&lt;/p&gt;
-
-  &lt;p&gt;mapOutputTracker：keeps track of the location of the map output of a stage&lt;/p&gt;
-
-  &lt;p&gt;shuffleManager：shuffle管理器，默认使用的是SortShuffleManager&lt;/p&gt;
-
-  &lt;p&gt;memoryManager：内存管理器，默认使用的是UnifiedMemoryManager，官方不建议使用StaticMemoryManager&lt;/p&gt;
-
-  &lt;p&gt;blockTransferService：用于拉数据操作，uses Netty to fetch a set of blocks at time&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;blockManager：block管理器，用于将块缓存到各种存储（内存，磁盘和堆外）中&lt;/p&gt;
-
-  &lt;p&gt;metricsSystem：监控指标系统，例如spark ui中看到的各种指标都是从这里获取&lt;/p&gt;
-
-  &lt;p&gt;outputCommitCoordinator：提交任务到hdfs&lt;/p&gt;
-
-  &lt;p&gt;根据这些变量，创建SparkEnv对象，真的超复杂&lt;/p&gt;
-
-  &lt;p&gt;接着回到SparkContext中，会继续创建各种对象，例如ui，hadoopConfiguration等等，_heartbeatReceiver用于心跳检测，分布式系统中都会有存在心跳检查
-taskScheduler，dagScheduler也会在SparkContext中创建，我们在web ui中看见的application id、AttemptId也是由taskScheduler生成&lt;/p&gt;
-
-  &lt;p&gt;如果开启了动态生成Executor，则ExecutorAllocationManager会根据资源情况自动添加移除
-最后还会由ShutdownHookManager添加个shutdownHook，猜都能知道shutdownHook内部肯定是关闭各种资源，清理生成的临时文件
-至此，SparkContext初始化完成，看了好久，涉及的东西非常多，加油！&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><summary type="html">开始正式进入spark源码研究阶段了，这段时间也一直在研究这块东西，主要是里面的类、特质太多，各种跳转吧，比较费时间，然后最后也没明白里面各个细节。想到个策略，还是先粗粒度的学习整个流程，之后再深入研究各个细分类。暂时先不研究SparkContext中的方法，SparkContext文件中将近3000行代码，不可能都研究一遍，先大致了解流程吧，等以后再慢慢了解。 分享下我在研究源码中的策略 1. 有些方法看不懂代码，就直接写一个主函数，调用一下这个方法，看输入输出大致就能明白方法的功能。 2. debug，直接new SparkContext，进入单步调试模式，巧妙设置断点，看代码是如何运行的 spark源码学习中会涉及到metrics(监控工具)，Future/Await（Scala异步编程特性）等知识点，参考github demo 进入正题，差不多在SparkContext.scala文件362行附近，之后这一大块都是对变量赋值，首先克隆config给_conf对象，之后基于_conf对象操作，进行校验，较验完设置其他参数，比较重要的就是生成_listenerBus，_statusStore等监听对象。 在这之后使用SparkEnv伴生对象的createDriverEnv方法创建SparkEnv对象，这个方法里面创建了各种Spark需要的对象，目前就不细看里面的类，讲一下各个变量吧。 rpcEnv：RpcEnv的实例，根据名字就能知道是rpc环境，其内部可以启动NettyRpc server，后续的通信都会使用到他 broadcastManager：Broadcast管理器，内部可以创建broadcast，broadcast创建底层使用的是TorrentBroadcastFactory创建TorrentBroadcast，也十分复杂 mapOutputTracker：keeps track of the location of the map output of a stage shuffleManager：shuffle管理器，默认使用的是SortShuffleManager memoryManager：内存管理器，默认使用的是UnifiedMemoryManager，官方不建议使用StaticMemoryManager blockTransferService：用于拉数据操作，uses Netty to fetch a set of blocks at time</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name>true</name></author><category term="Spark" /><summary type="html">之前已经粗略的研究SparkContext启动的整个流程，那么现在细细的研究下里面使用到的监听相关类 LiveListenerBus，该类主要用于监听SparkListenerEvent事件 先讲下相关联的类吧，本来想画类图的，偷个懒，哈哈 MetricRegistry，没啥好说的，就是做个监控，比如总共产生了多少个event的计数之类 AsyncEventQueue继承自SparkListenerBus，类中eventQueue采用了阻塞队列，使用metrics获取当前队列中有多少个事件，总共shared、appStatus、executorManagement、eventLog四种类型的异步事件队列，分别用于存放对应的监听事件 SparkListenerBus继承自ListenerBus ListenrBuss主要用于添加监听，及向所有已注册的监听发送event SparkListenerEvent，是所有其他事件的父类，子类诸如SparkListenerStageCompleted，SparkListenerTaskStart，SparkListenerUnpersistRDD等等，子类含括了所有的监听事件 SparkListenerInterface，监听事件接口 SparkListener，继承自SparkListenerInterface，实现当某个event发生时，listener应当做什么操作 SparkFirehoseListener，同SparkListener类似，实现了SparkListenerInterface中的方法 在SparkContext初始化中，会执行setupAndStartListenerBus()方法，该方法中会调用LiveListenerBus中的start()方法，用于启动LiveListenerBus</summary></entry></feed>
