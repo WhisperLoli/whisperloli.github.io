@@ -1,0 +1,491 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（十五）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十五）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十五）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/03/spark_heart_beat.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（十四）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/03/spark_heart_beat.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（十四）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        TaskScheduler
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>一开始以为任务调度挺简单的，后来看了源码才发现这块涉及的东西非常多，比想象的复杂的多</p>
+
+  <p>先说下Spark的基本概念吧，用户提交的任务在spark中被称为Application，一个Application会被划分成多个Job执行，每个Action蒜子会提交一个Job，Job里面又会划分Stage，这块根据宽依赖划分，而一个Stage里面会产生一个TaskSet，TaskSet包含了所有的Task，每个task的建议大小是100kb内</p>
+
+  <p>Task分为ShuffleMapTask和ResultTask两种，二者均继承自Task特质，重写了runTask方法。ShuffleMapTask的作用是划分task output到多个bucket中，基于task的partitioner，底层最终使用的是ShuffleDependency的partitioner，task的partitioner会使用上一个task的partitioner，如果没有，则使用默认的HashPartitioner；ResultTask的作用是发送task output给driver</p>
+
+  <p>TaskInfo存储task详细信息，例如运行的executor,host，启动时间、结束时间等信息等</p>
+
+  <p>TaskContextImpl：实现了TaskContext，内部包含了Task需要的所有信息，stageId、partitionId、taskAttemptId等等，还可以判断task是否完成，添加完成监听器/失败监听器，可以用markTaskCompleted强行将task置于完成状态并触发监听事件，同样也可以置于失败，会在Task的runTask中被调用</p>
+
+  <p>TaskSetManager：当TaskSet被提交运行时，TaskSetManager负责跟踪TaskSet中的每一次Task，如果有失败的，则重试，resourceOffer返回将要传递给executor执行的task描述</p>
+
+  <p>TaskDescription：传递给executor执行的task的描述，提供了encode/decode方法序列化/反序列化TaskDescription，序列化的时间和序列化后的大小都很重要，所以使用自身的方法，可以避免序列化一些不必要的字段</p>
+
+  <p>SchedulableBuilder: 构建调度池，添加TaskSetManager，现有的调度策略是FIFO和FAIR策略，TaskScheduler使用的默认策略是FIFO</p>
+
+  <p>Pool: 可执行的实体，TaskSetManagers的集合，该类中会创建相应的调度算法，每个TaskSetManager也会被添加到待调度的队列中，提供getSortedTaskSetQueue方法使用调度算法给TaskSet队列排序</p>
+
+  <p>TaskSchedulerImpl: 继承自TaskScheduler, SparkContext中创建完taskScheduler后，会调用initialize方法，初始化backend和判断调度策略并创建相应的SchedulableBuilder对象, 最重要的方法submitTasks，提交一系列的task（也就是一个TaskSet）到SchedulableBuilder调度池中, resourceOffer会排除黑名单中的executor，获取调度池中根据调度策略排序后的任务队列，随机为每个executor分配任务，避免任务总在同一个worker上</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">override</span> <span class="k">def</span> <span class="n">submitTasks</span><span class="o">(</span><span class="n">taskSet</span><span class="k">:</span> <span class="kt">TaskSet</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">tasks</span> <span class="k">=</span> <span class="n">taskSet</span><span class="o">.</span><span class="n">tasks</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Adding task set "</span> <span class="o">+</span> <span class="n">taskSet</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s">" with "</span> <span class="o">+</span> <span class="n">tasks</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="s">" tasks"</span><span class="o">)</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">manager</span> <span class="k">=</span> <span class="n">createTaskSetManager</span><span class="o">(</span><span class="n">taskSet</span><span class="o">,</span> <span class="n">maxTaskFailures</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">stage</span> <span class="k">=</span> <span class="n">taskSet</span><span class="o">.</span><span class="n">stageId</span>
+      <span class="k">val</span> <span class="n">stageTaskSets</span> <span class="k">=</span>
+        <span class="n">taskSetsByStageIdAndAttempt</span><span class="o">.</span><span class="n">getOrElseUpdate</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">TaskSetManager</span><span class="o">])</span>
+      <span class="n">stageTaskSets</span><span class="o">(</span><span class="n">taskSet</span><span class="o">.</span><span class="n">stageAttemptId</span><span class="o">)</span> <span class="k">=</span> <span class="n">manager</span>
+      <span class="k">val</span> <span class="n">conflictingTaskSet</span> <span class="k">=</span> <span class="n">stageTaskSets</span><span class="o">.</span><span class="n">exists</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">ts</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">taskSet</span> <span class="o">!=</span> <span class="n">taskSet</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">ts</span><span class="o">.</span><span class="n">isZombie</span>
+      <span class="o">}</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">conflictingTaskSet</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">(</span><span class="n">s</span><span class="s">"more than one active taskSet for stage $stage:"</span> <span class="o">+</span>
+          <span class="n">s</span><span class="s">" ${stageTaskSets.toSeq.map{_._2.taskSet.id}.mkString("</span><span class="o">,</span><span class="s">")}"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="n">schedulableBuilder</span><span class="o">.</span><span class="n">addTaskSetManager</span><span class="o">(</span><span class="n">manager</span><span class="o">,</span> <span class="n">manager</span><span class="o">.</span><span class="n">taskSet</span><span class="o">.</span><span class="n">properties</span><span class="o">)</span>
+
+      <span class="k">if</span> <span class="o">(!</span><span class="n">isLocal</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">hasReceivedTask</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">starvationTimer</span><span class="o">.</span><span class="n">scheduleAtFixedRate</span><span class="o">(</span><span class="k">new</span> <span class="nc">TimerTask</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">hasLaunchedTask</span><span class="o">)</span> <span class="o">{</span>
+              <span class="n">logWarning</span><span class="o">(</span><span class="s">"Initial job has not accepted any resources; "</span> <span class="o">+</span>
+                <span class="s">"check your cluster UI to ensure that workers are registered "</span> <span class="o">+</span>
+                <span class="s">"and have sufficient resources"</span><span class="o">)</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+              <span class="k">this</span><span class="o">.</span><span class="n">cancel</span><span class="o">()</span>
+            <span class="o">}</span>
+          <span class="o">}</span>
+        <span class="o">},</span> <span class="nc">STARVATION_TIMEOUT_MS</span><span class="o">,</span> <span class="nc">STARVATION_TIMEOUT_MS</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="n">hasReceivedTask</span> <span class="k">=</span> <span class="kc">true</span>
+    <span class="o">}</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">reviveOffers</span><span class="o">()</span>
+  <span class="o">}</span>
+  
+  
+  <span class="k">def</span> <span class="n">resourceOffers</span><span class="o">(</span><span class="n">offers</span><span class="k">:</span> <span class="kt">IndexedSeq</span><span class="o">[</span><span class="kt">WorkerOffer</span><span class="o">])</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Seq</span><span class="o">[</span><span class="kt">TaskDescription</span><span class="o">]]</span> <span class="k">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="c1">// Mark each slave as alive and remember its hostname
+</span>    <span class="c1">// Also track if new executor is added
+</span>    <span class="k">var</span> <span class="n">newExecAvail</span> <span class="k">=</span> <span class="kc">false</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">o</span> <span class="k">&lt;-</span> <span class="n">offers</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">hostToExecutors</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">host</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">hostToExecutors</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">host</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">[</span><span class="kt">String</span><span class="o">]()</span>
+      <span class="o">}</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">executorIdToRunningTaskIds</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">executorId</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">hostToExecutors</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">host</span><span class="o">)</span> <span class="o">+=</span> <span class="n">o</span><span class="o">.</span><span class="n">executorId</span>
+        <span class="n">executorAdded</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">executorId</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="n">host</span><span class="o">)</span>
+        <span class="n">executorIdToHost</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">executorId</span><span class="o">)</span> <span class="k">=</span> <span class="n">o</span><span class="o">.</span><span class="n">host</span>
+        <span class="n">executorIdToRunningTaskIds</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">executorId</span><span class="o">)</span> <span class="k">=</span> <span class="nc">HashSet</span><span class="o">[</span><span class="kt">Long</span><span class="o">]()</span>
+        <span class="n">newExecAvail</span> <span class="k">=</span> <span class="kc">true</span>
+      <span class="o">}</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">rack</span> <span class="k">&lt;-</span> <span class="n">getRackForHost</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">host</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">hostsByRack</span><span class="o">.</span><span class="n">getOrElseUpdate</span><span class="o">(</span><span class="n">rack</span><span class="o">,</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">[</span><span class="kt">String</span><span class="o">]())</span> <span class="o">+=</span> <span class="n">o</span><span class="o">.</span><span class="n">host</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Before making any offers, remove any nodes from the blacklist whose blacklist has expired. Do
+</span>    <span class="c1">// this here to avoid a separate thread and added synchronization overhead, and also because
+</span>    <span class="c1">// updating the blacklist is only relevant when task offers are being made.
+</span>    <span class="n">blacklistTrackerOpt</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">applyBlacklistTimeout</span><span class="o">())</span>
+
+    <span class="k">val</span> <span class="n">filteredOffers</span> <span class="k">=</span> <span class="n">blacklistTrackerOpt</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">blacklistTracker</span> <span class="k">=&gt;</span>
+      <span class="n">offers</span><span class="o">.</span><span class="n">filter</span> <span class="o">{</span> <span class="n">offer</span> <span class="k">=&gt;</span>
+        <span class="o">!</span><span class="n">blacklistTracker</span><span class="o">.</span><span class="n">isNodeBlacklisted</span><span class="o">(</span><span class="n">offer</span><span class="o">.</span><span class="n">host</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+          <span class="o">!</span><span class="n">blacklistTracker</span><span class="o">.</span><span class="n">isExecutorBlacklisted</span><span class="o">(</span><span class="n">offer</span><span class="o">.</span><span class="n">executorId</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">offers</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">shuffledOffers</span> <span class="k">=</span> <span class="n">shuffleOffers</span><span class="o">(</span><span class="n">filteredOffers</span><span class="o">)</span>
+    <span class="c1">// Build a list of tasks to assign to each worker.
+</span>    <span class="k">val</span> <span class="n">tasks</span> <span class="k">=</span> <span class="n">shuffledOffers</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">o</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">TaskDescription</span><span class="o">](</span><span class="n">o</span><span class="o">.</span><span class="n">cores</span> <span class="o">/</span> <span class="nc">CPUS_PER_TASK</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">availableCpus</span> <span class="k">=</span> <span class="n">shuffledOffers</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">o</span> <span class="k">=&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">cores</span><span class="o">).</span><span class="n">toArray</span>
+    <span class="k">val</span> <span class="n">sortedTaskSets</span> <span class="k">=</span> <span class="n">rootPool</span><span class="o">.</span><span class="n">getSortedTaskSetQueue</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">taskSet</span> <span class="k">&lt;-</span> <span class="n">sortedTaskSets</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logDebug</span><span class="o">(</span><span class="s">"parentName: %s, name: %s, runningTasks: %s"</span><span class="o">.</span><span class="n">format</span><span class="o">(</span>
+        <span class="n">taskSet</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span><span class="o">,</span> <span class="n">taskSet</span><span class="o">.</span><span class="n">name</span><span class="o">,</span> <span class="n">taskSet</span><span class="o">.</span><span class="n">runningTasks</span><span class="o">))</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">newExecAvail</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">taskSet</span><span class="o">.</span><span class="n">executorAdded</span><span class="o">()</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Take each TaskSet in our scheduling order, and then offer it each node in increasing order
+</span>    <span class="c1">// of locality levels so that it gets a chance to launch local tasks on all of them.
+</span>    <span class="c1">// NOTE: the preferredLocality order: PROCESS_LOCAL, NODE_LOCAL, NO_PREF, RACK_LOCAL, ANY
+</span>    <span class="k">for</span> <span class="o">(</span><span class="n">taskSet</span> <span class="k">&lt;-</span> <span class="n">sortedTaskSets</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">var</span> <span class="n">launchedAnyTask</span> <span class="k">=</span> <span class="kc">false</span>
+      <span class="k">var</span> <span class="n">launchedTaskAtCurrentMaxLocality</span> <span class="k">=</span> <span class="kc">false</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">currentMaxLocality</span> <span class="k">&lt;-</span> <span class="n">taskSet</span><span class="o">.</span><span class="n">myLocalityLevels</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">do</span> <span class="o">{</span>
+          <span class="n">launchedTaskAtCurrentMaxLocality</span> <span class="k">=</span> <span class="n">resourceOfferSingleTaskSet</span><span class="o">(</span>
+            <span class="n">taskSet</span><span class="o">,</span> <span class="n">currentMaxLocality</span><span class="o">,</span> <span class="n">shuffledOffers</span><span class="o">,</span> <span class="n">availableCpus</span><span class="o">,</span> <span class="n">tasks</span><span class="o">)</span>
+          <span class="n">launchedAnyTask</span> <span class="o">|=</span> <span class="n">launchedTaskAtCurrentMaxLocality</span>
+        <span class="o">}</span> <span class="k">while</span> <span class="o">(</span><span class="n">launchedTaskAtCurrentMaxLocality</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">launchedAnyTask</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">taskSet</span><span class="o">.</span><span class="n">abortIfCompletelyBlacklisted</span><span class="o">(</span><span class="n">hostToExecutors</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">tasks</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">hasLaunchedTask</span> <span class="k">=</span> <span class="kc">true</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">tasks</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>说了这么多，TaskScheduler只是做了明面上的工作，而真正启动task的是SchedulerBackend对象</p>
+
+  <p>SchedulerBackend的实现有LocalSchedulerBackend，CoarseGrainedSchedulerBackend，前者用于本地模式，后者应用于集群模式，StandaloneSchedulerBackend继承CoarseGrainedSchedulerBackend</p>
+
+  <p>先讲讲LocalSchedulerBackend，TaskScheduler的start方法会调用SchedulerBackend的start方法，创建endpoint和endpointRef，killTask/statusUpdate/reviveOffers都会发送RPC消息给endpointRef，真正的执行task交由executor操作</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">reviveOffers</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">offers</span> <span class="k">=</span> <span class="nc">IndexedSeq</span><span class="o">(</span><span class="k">new</span> <span class="nc">WorkerOffer</span><span class="o">(</span><span class="n">localExecutorId</span><span class="o">,</span> <span class="n">localExecutorHostname</span><span class="o">,</span> <span class="n">freeCores</span><span class="o">))</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">task</span> <span class="k">&lt;-</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">resourceOffers</span><span class="o">(</span><span class="n">offers</span><span class="o">).</span><span class="n">flatten</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">freeCores</span> <span class="o">-=</span> <span class="n">scheduler</span><span class="o">.</span><span class="nc">CPUS_PER_TASK</span>
+      <span class="n">executor</span><span class="o">.</span><span class="n">launchTask</span><span class="o">(</span><span class="n">executorBackend</span><span class="o">,</span> <span class="n">task</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>CoarseGrainedSchedulerBackend会比local的实现复杂很多，会涉及到网络间的通信，同local方式类似，在start方法中会创建endpoint和endpointRef，endpoint的onStart方法会创建定时线程池，每秒钟去获取一次task，其他的也都类似，集群中Task交由特定的executor执行，CoarseGrainedExecutorBackend该类负责接收executor发送的RPC消息，执行Task，注意ExecutorData中的executorEndpoint是他自身的executorEndpoint，不是driver的，所以如下代码，会发送task到executor上执行</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">launchTasks</span><span class="o">(</span><span class="n">tasks</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Seq</span><span class="o">[</span><span class="kt">TaskDescription</span><span class="o">]])</span> <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">task</span> <span class="k">&lt;-</span> <span class="n">tasks</span><span class="o">.</span><span class="n">flatten</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">serializedTask</span> <span class="k">=</span> <span class="nc">TaskDescription</span><span class="o">.</span><span class="n">encode</span><span class="o">(</span><span class="n">task</span><span class="o">)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">serializedTask</span><span class="o">.</span><span class="n">limit</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="n">maxRpcMessageSize</span><span class="o">)</span> <span class="o">{</span>
+          <span class="nc">Option</span><span class="o">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">taskIdToTaskSetManager</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">task</span><span class="o">.</span><span class="n">taskId</span><span class="o">)).</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">taskSetMgr</span> <span class="k">=&gt;</span>
+            <span class="k">try</span> <span class="o">{</span>
+              <span class="k">var</span> <span class="n">msg</span> <span class="k">=</span> <span class="s">"Serialized task %s:%d was %d bytes, which exceeds max allowed: "</span> <span class="o">+</span>
+                <span class="s">"spark.rpc.message.maxSize (%d bytes). Consider increasing "</span> <span class="o">+</span>
+                <span class="s">"spark.rpc.message.maxSize or using broadcast variables for large values."</span>
+              <span class="n">msg</span> <span class="k">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="n">task</span><span class="o">.</span><span class="n">taskId</span><span class="o">,</span> <span class="n">task</span><span class="o">.</span><span class="n">index</span><span class="o">,</span> <span class="n">serializedTask</span><span class="o">.</span><span class="n">limit</span><span class="o">(),</span> <span class="n">maxRpcMessageSize</span><span class="o">)</span>
+              <span class="n">taskSetMgr</span><span class="o">.</span><span class="n">abort</span><span class="o">(</span><span class="n">msg</span><span class="o">)</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+              <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span> <span class="n">logError</span><span class="o">(</span><span class="s">"Exception in error callback"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+            <span class="o">}</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="o">{</span>
+          <span class="k">val</span> <span class="n">executorData</span> <span class="k">=</span> <span class="n">executorDataMap</span><span class="o">(</span><span class="n">task</span><span class="o">.</span><span class="n">executorId</span><span class="o">)</span>
+          <span class="n">executorData</span><span class="o">.</span><span class="n">freeCores</span> <span class="o">-=</span> <span class="n">scheduler</span><span class="o">.</span><span class="nc">CPUS_PER_TASK</span>
+
+          <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Launching task ${task.taskId} on executor id: ${task.executorId} hostname: "</span> <span class="o">+</span>
+            <span class="n">s</span><span class="s">"${executorData.executorHost}."</span><span class="o">)</span>
+
+          <span class="n">executorData</span><span class="o">.</span><span class="n">executorEndpoint</span><span class="o">.</span><span class="n">send</span><span class="o">(</span><span class="nc">LaunchTask</span><span class="o">(</span><span class="k">new</span> <span class="nc">SerializableBuffer</span><span class="o">(</span><span class="n">serializedTask</span><span class="o">)))</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+
+  <p>ExecutorData用于封装executor的相关信息</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">cluster</span><span class="o">]</span> <span class="k">class</span> <span class="nc">ExecutorData</span><span class="o">(</span>
+   <span class="k">val</span> <span class="n">executorEndpoint</span><span class="k">:</span> <span class="kt">RpcEndpointRef</span><span class="o">,</span>
+   <span class="k">val</span> <span class="n">executorAddress</span><span class="k">:</span> <span class="kt">RpcAddress</span><span class="o">,</span>
+   <span class="k">override</span> <span class="k">val</span> <span class="n">executorHost</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+   <span class="k">var</span> <span class="n">freeCores</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+   <span class="k">override</span> <span class="k">val</span> <span class="n">totalCores</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+   <span class="k">override</span> <span class="k">val</span> <span class="n">logUrlMap</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">String</span><span class="o">]</span>
+<span class="o">)</span> <span class="k">extends</span> <span class="nc">ExecutorInfo</span><span class="o">(</span><span class="n">executorHost</span><span class="o">,</span> <span class="n">totalCores</span><span class="o">,</span> <span class="n">logUrlMap</span><span class="o">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>StandaloneSchedulerBackend继承CoarseGrainedSchedulerBackend，在start方法中调用父类start方法后，会创建自己的StandaloneAppClient，做一些通信相关的实现</p>
+
+  <p>基于Mesos也有一套SchedulerBackend，这里就不展开了</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/07/05/spark_task_scheduler', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
