@@ -1,0 +1,712 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（十六）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十六）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十六）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/05/spark_task_scheduler.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（十五）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/05/spark_task_scheduler.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（十五）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        DAGScheduler
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>DAG属于TaskScheduler更上一层的概念，负责分析用户提交的Job，并根据计算任务的依赖关系建立DAG，将DAG划分为不同的Stage，每个Stage对应一个TaskSet，将TaskSet发送到TaskScheduler上执行</p>
+
+  <p>与DAGScheduler对应一起使用的是EventLoop，DAGSchedulerEventProcessLoop继承EventLoop，EventLoop中启动一个线程消费eventQueue中的事件，外部的事件调用都会先将事件提交到eventQueue阻塞队列中，再由线程调用执行对应的方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">override</span> <span class="k">def</span> <span class="n">onReceive</span><span class="o">(</span><span class="n">event</span><span class="k">:</span> <span class="kt">DAGSchedulerEvent</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">timerContext</span> <span class="k">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">time</span><span class="o">()</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">doOnReceive</span><span class="o">(</span><span class="n">event</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="n">timerContext</span><span class="o">.</span><span class="n">stop</span><span class="o">()</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">private</span> <span class="k">def</span> <span class="n">doOnReceive</span><span class="o">(</span><span class="n">event</span><span class="k">:</span> <span class="kt">DAGSchedulerEvent</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">event</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">JobSubmitted</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">rdd</span><span class="o">,</span> <span class="n">func</span><span class="o">,</span> <span class="n">partitions</span><span class="o">,</span> <span class="n">callSite</span><span class="o">,</span> <span class="n">listener</span><span class="o">,</span> <span class="n">properties</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleJobSubmitted</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">rdd</span><span class="o">,</span> <span class="n">func</span><span class="o">,</span> <span class="n">partitions</span><span class="o">,</span> <span class="n">callSite</span><span class="o">,</span> <span class="n">listener</span><span class="o">,</span> <span class="n">properties</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">MapStageSubmitted</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">dependency</span><span class="o">,</span> <span class="n">callSite</span><span class="o">,</span> <span class="n">listener</span><span class="o">,</span> <span class="n">properties</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleMapStageSubmitted</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">dependency</span><span class="o">,</span> <span class="n">callSite</span><span class="o">,</span> <span class="n">listener</span><span class="o">,</span> <span class="n">properties</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">StageCancelled</span><span class="o">(</span><span class="n">stageId</span><span class="o">,</span> <span class="n">reason</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleStageCancellation</span><span class="o">(</span><span class="n">stageId</span><span class="o">,</span> <span class="n">reason</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">JobCancelled</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">reason</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleJobCancellation</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">reason</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">JobGroupCancelled</span><span class="o">(</span><span class="n">groupId</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleJobGroupCancelled</span><span class="o">(</span><span class="n">groupId</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">AllJobsCancelled</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">doCancelAllJobs</span><span class="o">()</span>
+
+    <span class="k">case</span> <span class="nc">ExecutorAdded</span><span class="o">(</span><span class="n">execId</span><span class="o">,</span> <span class="n">host</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleExecutorAdded</span><span class="o">(</span><span class="n">execId</span><span class="o">,</span> <span class="n">host</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">ExecutorLost</span><span class="o">(</span><span class="n">execId</span><span class="o">,</span> <span class="n">reason</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="k">val</span> <span class="n">workerLost</span> <span class="k">=</span> <span class="n">reason</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="nc">SlaveLost</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="kc">true</span>
+        <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="kc">false</span>
+      <span class="o">}</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleExecutorLost</span><span class="o">(</span><span class="n">execId</span><span class="o">,</span> <span class="n">workerLost</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">WorkerRemoved</span><span class="o">(</span><span class="n">workerId</span><span class="o">,</span> <span class="n">host</span><span class="o">,</span> <span class="n">message</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleWorkerRemoved</span><span class="o">(</span><span class="n">workerId</span><span class="o">,</span> <span class="n">host</span><span class="o">,</span> <span class="n">message</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">BeginEvent</span><span class="o">(</span><span class="n">task</span><span class="o">,</span> <span class="n">taskInfo</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleBeginEvent</span><span class="o">(</span><span class="n">task</span><span class="o">,</span> <span class="n">taskInfo</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">SpeculativeTaskSubmitted</span><span class="o">(</span><span class="n">task</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleSpeculativeTaskSubmitted</span><span class="o">(</span><span class="n">task</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">GettingResultEvent</span><span class="o">(</span><span class="n">taskInfo</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleGetTaskResult</span><span class="o">(</span><span class="n">taskInfo</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="n">completion</span><span class="k">:</span> <span class="kt">CompletionEvent</span> <span class="o">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleTaskCompletion</span><span class="o">(</span><span class="n">completion</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">TaskSetFailed</span><span class="o">(</span><span class="n">taskSet</span><span class="o">,</span> <span class="n">reason</span><span class="o">,</span> <span class="n">exception</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">handleTaskSetFailed</span><span class="o">(</span><span class="n">taskSet</span><span class="o">,</span> <span class="n">reason</span><span class="o">,</span> <span class="n">exception</span><span class="o">)</span>
+
+    <span class="k">case</span> <span class="nc">ResubmitFailedStages</span> <span class="k">=&gt;</span>
+      <span class="n">dagScheduler</span><span class="o">.</span><span class="n">resubmitFailedStages</span><span class="o">()</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>DAGScheduler主要是为了运行Job，runJob方法里面也调用了submitJob，不管是runJob还是submitJob，在SparkContext中都会被调用，SparkContext中调用submitJob主要是做一些异步的处理，不用过多关注，runJob -&gt; submitJob -&gt; eventProcessLoop.post(JobSubmitted)，提交JobSubmitted事件，EventLoop会调用dagScheduler.handleJobSubmitted方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">runJob</span><span class="o">[</span><span class="kt">T</span>, <span class="kt">U</span><span class="o">](</span>
+      <span class="n">rdd</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span>
+      <span class="n">func</span><span class="k">:</span> <span class="o">(</span><span class="kt">TaskContext</span><span class="o">,</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">U</span><span class="o">,</span>
+      <span class="n">partitions</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span>
+      <span class="n">callSite</span><span class="k">:</span> <span class="kt">CallSite</span><span class="o">,</span>
+      <span class="n">resultHandler</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">U</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Unit</span><span class="o">,</span>
+      <span class="n">properties</span><span class="k">:</span> <span class="kt">Properties</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">start</span> <span class="k">=</span> <span class="nc">System</span><span class="o">.</span><span class="n">nanoTime</span>
+    <span class="k">val</span> <span class="n">waiter</span> <span class="k">=</span> <span class="n">submitJob</span><span class="o">(</span><span class="n">rdd</span><span class="o">,</span> <span class="n">func</span><span class="o">,</span> <span class="n">partitions</span><span class="o">,</span> <span class="n">callSite</span><span class="o">,</span> <span class="n">resultHandler</span><span class="o">,</span> <span class="n">properties</span><span class="o">)</span>
+    <span class="nc">ThreadUtils</span><span class="o">.</span><span class="n">awaitReady</span><span class="o">(</span><span class="n">waiter</span><span class="o">.</span><span class="n">completionFuture</span><span class="o">,</span> <span class="nc">Duration</span><span class="o">.</span><span class="nc">Inf</span><span class="o">)</span>
+    <span class="n">waiter</span><span class="o">.</span><span class="n">completionFuture</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">get</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">scala</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Success</span><span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">logInfo</span><span class="o">(</span><span class="s">"Job %d finished: %s, took %f s"</span><span class="o">.</span><span class="n">format</span>
+          <span class="o">(</span><span class="n">waiter</span><span class="o">.</span><span class="n">jobId</span><span class="o">,</span> <span class="n">callSite</span><span class="o">.</span><span class="n">shortForm</span><span class="o">,</span> <span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="n">nanoTime</span> <span class="o">-</span> <span class="n">start</span><span class="o">)</span> <span class="o">/</span> <span class="mi">1</span><span class="n">e9</span><span class="o">))</span>
+      <span class="k">case</span> <span class="n">scala</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Failure</span><span class="o">(</span><span class="n">exception</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">logInfo</span><span class="o">(</span><span class="s">"Job %d failed: %s, took %f s"</span><span class="o">.</span><span class="n">format</span>
+          <span class="o">(</span><span class="n">waiter</span><span class="o">.</span><span class="n">jobId</span><span class="o">,</span> <span class="n">callSite</span><span class="o">.</span><span class="n">shortForm</span><span class="o">,</span> <span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="n">nanoTime</span> <span class="o">-</span> <span class="n">start</span><span class="o">)</span> <span class="o">/</span> <span class="mi">1</span><span class="n">e9</span><span class="o">))</span>
+        <span class="c1">// SPARK-8644: Include user stack trace in exceptions coming from DAGScheduler.
+</span>        <span class="k">val</span> <span class="n">callerStackTrace</span> <span class="k">=</span> <span class="nc">Thread</span><span class="o">.</span><span class="n">currentThread</span><span class="o">().</span><span class="n">getStackTrace</span><span class="o">.</span><span class="n">tail</span>
+        <span class="n">exception</span><span class="o">.</span><span class="n">setStackTrace</span><span class="o">(</span><span class="n">exception</span><span class="o">.</span><span class="n">getStackTrace</span> <span class="o">++</span> <span class="n">callerStackTrace</span><span class="o">)</span>
+        <span class="k">throw</span> <span class="n">exception</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="k">def</span> <span class="n">submitJob</span><span class="o">[</span><span class="kt">T</span>, <span class="kt">U</span><span class="o">](</span>
+      <span class="n">rdd</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span>
+      <span class="n">func</span><span class="k">:</span> <span class="o">(</span><span class="kt">TaskContext</span><span class="o">,</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">U</span><span class="o">,</span>
+      <span class="n">partitions</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span>
+      <span class="n">callSite</span><span class="k">:</span> <span class="kt">CallSite</span><span class="o">,</span>
+      <span class="n">resultHandler</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">U</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Unit</span><span class="o">,</span>
+      <span class="n">properties</span><span class="k">:</span> <span class="kt">Properties</span><span class="o">)</span><span class="k">:</span> <span class="kt">JobWaiter</span><span class="o">[</span><span class="kt">U</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="c1">// Check to make sure we are not launching a task on a partition that does not exist.
+</span>    <span class="k">val</span> <span class="n">maxPartitions</span> <span class="k">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">length</span>
+    <span class="n">partitions</span><span class="o">.</span><span class="n">find</span><span class="o">(</span><span class="n">p</span> <span class="k">=&gt;</span> <span class="n">p</span> <span class="o">&gt;=</span> <span class="n">maxPartitions</span> <span class="o">||</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">).</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">p</span> <span class="k">=&gt;</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span>
+        <span class="s">"Attempting to access a non-existent partition: "</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="s">". "</span> <span class="o">+</span>
+          <span class="s">"Total number of partitions: "</span> <span class="o">+</span> <span class="n">maxPartitions</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">val</span> <span class="n">jobId</span> <span class="k">=</span> <span class="n">nextJobId</span><span class="o">.</span><span class="n">getAndIncrement</span><span class="o">()</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">partitions</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// Return immediately if the job is running 0 tasks
+</span>      <span class="k">return</span> <span class="k">new</span> <span class="nc">JobWaiter</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span><span class="k">this</span><span class="o">,</span> <span class="n">jobId</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">resultHandler</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="n">assert</span><span class="o">(</span><span class="n">partitions</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">func2</span> <span class="k">=</span> <span class="n">func</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[(</span><span class="kt">TaskContext</span>, <span class="kt">Iterator</span><span class="o">[</span><span class="k">_</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="k">_</span><span class="o">]</span>
+    <span class="k">val</span> <span class="n">waiter</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JobWaiter</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">partitions</span><span class="o">.</span><span class="n">size</span><span class="o">,</span> <span class="n">resultHandler</span><span class="o">)</span>
+    <span class="n">eventProcessLoop</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">JobSubmitted</span><span class="o">(</span>
+      <span class="n">jobId</span><span class="o">,</span> <span class="n">rdd</span><span class="o">,</span> <span class="n">func2</span><span class="o">,</span> <span class="n">partitions</span><span class="o">.</span><span class="n">toArray</span><span class="o">,</span> <span class="n">callSite</span><span class="o">,</span> <span class="n">waiter</span><span class="o">,</span>
+      <span class="nc">SerializationUtils</span><span class="o">.</span><span class="n">clone</span><span class="o">(</span><span class="n">properties</span><span class="o">)))</span>
+    <span class="n">waiter</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>开始进入重要的地方了，handleJobSubmitted方法会调用createResultStage方法创建ResultStage，createResultStage中会调用getOrCreateParentStages创建父Stage，创建父Stage时，如果是宽依赖，直接添加到HashSet中，如果不是宽依赖，则继续向上寻找宽依赖，然后对所有父级宽依赖创建ShuffleMapStage，ShuffleMapStage还需要注册到mapOutputTracker上，最后再创建ResultStage</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">private</span><span class="o">[</span><span class="kt">scheduler</span><span class="o">]</span> <span class="k">def</span> <span class="n">handleJobSubmitted</span><span class="o">(</span><span class="n">jobId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">finalRDD</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="k">_</span><span class="o">],</span>
+      <span class="n">func</span><span class="k">:</span> <span class="o">(</span><span class="kt">TaskContext</span><span class="o">,</span> <span class="kt">Iterator</span><span class="o">[</span><span class="k">_</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="k">_</span><span class="o">,</span>
+      <span class="n">partitions</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span>
+      <span class="n">callSite</span><span class="k">:</span> <span class="kt">CallSite</span><span class="o">,</span>
+      <span class="n">listener</span><span class="k">:</span> <span class="kt">JobListener</span><span class="o">,</span>
+      <span class="n">properties</span><span class="k">:</span> <span class="kt">Properties</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">finalStage</span><span class="k">:</span> <span class="kt">ResultStage</span> <span class="o">=</span> <span class="kc">null</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// New stage creation may throw an exception if, for example, jobs are run on a
+</span>      <span class="c1">// HadoopRDD whose underlying HDFS files have been deleted.
+</span>      <span class="n">finalStage</span> <span class="k">=</span> <span class="n">createResultStage</span><span class="o">(</span><span class="n">finalRDD</span><span class="o">,</span> <span class="n">func</span><span class="o">,</span> <span class="n">partitions</span><span class="o">,</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">callSite</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+        <span class="n">logWarning</span><span class="o">(</span><span class="s">"Creating new stage failed due to exception - job: "</span> <span class="o">+</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+        <span class="n">listener</span><span class="o">.</span><span class="n">jobFailed</span><span class="o">(</span><span class="n">e</span><span class="o">)</span>
+        <span class="k">return</span>
+    <span class="o">}</span>
+
+    <span class="k">val</span> <span class="n">job</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ActiveJob</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">finalStage</span><span class="o">,</span> <span class="n">callSite</span><span class="o">,</span> <span class="n">listener</span><span class="o">,</span> <span class="n">properties</span><span class="o">)</span>
+    <span class="n">clearCacheLocs</span><span class="o">()</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Got job %s (%s) with %d output partitions"</span><span class="o">.</span><span class="n">format</span><span class="o">(</span>
+      <span class="n">job</span><span class="o">.</span><span class="n">jobId</span><span class="o">,</span> <span class="n">callSite</span><span class="o">.</span><span class="n">shortForm</span><span class="o">,</span> <span class="n">partitions</span><span class="o">.</span><span class="n">length</span><span class="o">))</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Final stage: "</span> <span class="o">+</span> <span class="n">finalStage</span> <span class="o">+</span> <span class="s">" ("</span> <span class="o">+</span> <span class="n">finalStage</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">")"</span><span class="o">)</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Parents of final stage: "</span> <span class="o">+</span> <span class="n">finalStage</span><span class="o">.</span><span class="n">parents</span><span class="o">)</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Missing parents: "</span> <span class="o">+</span> <span class="n">getMissingParentStages</span><span class="o">(</span><span class="n">finalStage</span><span class="o">))</span>
+
+    <span class="k">val</span> <span class="n">jobSubmissionTime</span> <span class="k">=</span> <span class="n">clock</span><span class="o">.</span><span class="n">getTimeMillis</span><span class="o">()</span>
+    <span class="n">jobIdToActiveJob</span><span class="o">(</span><span class="n">jobId</span><span class="o">)</span> <span class="k">=</span> <span class="n">job</span>
+    <span class="n">activeJobs</span> <span class="o">+=</span> <span class="n">job</span>
+    <span class="n">finalStage</span><span class="o">.</span><span class="n">setActiveJob</span><span class="o">(</span><span class="n">job</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">stageIds</span> <span class="k">=</span> <span class="n">jobIdToStageIds</span><span class="o">(</span><span class="n">jobId</span><span class="o">).</span><span class="n">toArray</span>
+    <span class="k">val</span> <span class="n">stageInfos</span> <span class="k">=</span> <span class="n">stageIds</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">id</span> <span class="k">=&gt;</span> <span class="n">stageIdToStage</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">id</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">))</span>
+    <span class="n">listenerBus</span><span class="o">.</span><span class="n">post</span><span class="o">(</span>
+      <span class="nc">SparkListenerJobStart</span><span class="o">(</span><span class="n">job</span><span class="o">.</span><span class="n">jobId</span><span class="o">,</span> <span class="n">jobSubmissionTime</span><span class="o">,</span> <span class="n">stageInfos</span><span class="o">,</span> <span class="n">properties</span><span class="o">))</span>
+    <span class="n">submitStage</span><span class="o">(</span><span class="n">finalStage</span><span class="o">)</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">createResultStage</span><span class="o">(</span>
+      <span class="n">rdd</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="k">_</span><span class="o">],</span>
+      <span class="n">func</span><span class="k">:</span> <span class="o">(</span><span class="kt">TaskContext</span><span class="o">,</span> <span class="kt">Iterator</span><span class="o">[</span><span class="k">_</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="k">_</span><span class="o">,</span>
+      <span class="n">partitions</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span>
+      <span class="n">jobId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">callSite</span><span class="k">:</span> <span class="kt">CallSite</span><span class="o">)</span><span class="k">:</span> <span class="kt">ResultStage</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">parents</span> <span class="k">=</span> <span class="n">getOrCreateParentStages</span><span class="o">(</span><span class="n">rdd</span><span class="o">,</span> <span class="n">jobId</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">id</span> <span class="k">=</span> <span class="n">nextStageId</span><span class="o">.</span><span class="n">getAndIncrement</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">stage</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ResultStage</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">rdd</span><span class="o">,</span> <span class="n">func</span><span class="o">,</span> <span class="n">partitions</span><span class="o">,</span> <span class="n">parents</span><span class="o">,</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">callSite</span><span class="o">)</span>
+    <span class="n">stageIdToStage</span><span class="o">(</span><span class="n">id</span><span class="o">)</span> <span class="k">=</span> <span class="n">stage</span>
+    <span class="n">updateJobIdStageIdMaps</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">stage</span><span class="o">)</span>
+    <span class="n">stage</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">getOrCreateParentStages</span><span class="o">(</span><span class="n">rdd</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="k">_</span><span class="o">],</span> <span class="n">firstJobId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Stage</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">getShuffleDependencies</span><span class="o">(</span><span class="n">rdd</span><span class="o">).</span><span class="n">map</span> <span class="o">{</span> <span class="n">shuffleDep</span> <span class="k">=&gt;</span>
+      <span class="n">getOrCreateShuffleMapStage</span><span class="o">(</span><span class="n">shuffleDep</span><span class="o">,</span> <span class="n">firstJobId</span><span class="o">)</span>
+    <span class="o">}.</span><span class="n">toList</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span><span class="o">[</span><span class="kt">scheduler</span><span class="o">]</span> <span class="k">def</span> <span class="n">getShuffleDependencies</span><span class="o">(</span>
+      <span class="n">rdd</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="k">_</span><span class="o">])</span><span class="k">:</span> <span class="kt">HashSet</span><span class="o">[</span><span class="kt">ShuffleDependency</span><span class="o">[</span><span class="k">_</span>, <span class="k">_</span>, <span class="k">_</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">parents</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">[</span><span class="kt">ShuffleDependency</span><span class="o">[</span><span class="k">_</span>, <span class="k">_</span>, <span class="k">_</span><span class="o">]]</span>
+    <span class="k">val</span> <span class="n">visited</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">[</span><span class="kt">RDD</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span>
+    <span class="k">val</span> <span class="n">waitingForVisit</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrayStack</span><span class="o">[</span><span class="kt">RDD</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span>
+    <span class="n">waitingForVisit</span><span class="o">.</span><span class="n">push</span><span class="o">(</span><span class="n">rdd</span><span class="o">)</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">waitingForVisit</span><span class="o">.</span><span class="n">nonEmpty</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">toVisit</span> <span class="k">=</span> <span class="n">waitingForVisit</span><span class="o">.</span><span class="n">pop</span><span class="o">()</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">visited</span><span class="o">(</span><span class="n">toVisit</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">visited</span> <span class="o">+=</span> <span class="n">toVisit</span>
+        <span class="n">toVisit</span><span class="o">.</span><span class="n">dependencies</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="n">shuffleDep</span><span class="k">:</span> <span class="kt">ShuffleDependency</span><span class="o">[</span><span class="k">_</span>, <span class="k">_</span>, <span class="k">_</span><span class="o">]</span> <span class="k">=&gt;</span>
+            <span class="n">parents</span> <span class="o">+=</span> <span class="n">shuffleDep</span>
+          <span class="k">case</span> <span class="n">dependency</span> <span class="k">=&gt;</span>
+            <span class="n">waitingForVisit</span><span class="o">.</span><span class="n">push</span><span class="o">(</span><span class="n">dependency</span><span class="o">.</span><span class="n">rdd</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">parents</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">getOrCreateShuffleMapStage</span><span class="o">(</span>
+      <span class="n">shuffleDep</span><span class="k">:</span> <span class="kt">ShuffleDependency</span><span class="o">[</span><span class="k">_</span>, <span class="k">_</span>, <span class="k">_</span><span class="o">],</span>
+      <span class="n">firstJobId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">ShuffleMapStage</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">shuffleIdToMapStage</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">shuffleDep</span><span class="o">.</span><span class="n">shuffleId</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">stage</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">stage</span>
+
+      <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+        <span class="c1">// Create stages for all missing ancestor shuffle dependencies.
+</span>        <span class="n">getMissingAncestorShuffleDependencies</span><span class="o">(</span><span class="n">shuffleDep</span><span class="o">.</span><span class="n">rdd</span><span class="o">).</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">dep</span> <span class="k">=&gt;</span>
+          <span class="c1">// Even though getMissingAncestorShuffleDependencies only returns shuffle dependencies
+</span>          <span class="c1">// that were not already in shuffleIdToMapStage, it's possible that by the time we
+</span>          <span class="c1">// get to a particular dependency in the foreach loop, it's been added to
+</span>          <span class="c1">// shuffleIdToMapStage by the stage creation process for an earlier dependency. See
+</span>          <span class="c1">// SPARK-13902 for more information.
+</span>          <span class="k">if</span> <span class="o">(!</span><span class="n">shuffleIdToMapStage</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">dep</span><span class="o">.</span><span class="n">shuffleId</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">createShuffleMapStage</span><span class="o">(</span><span class="n">dep</span><span class="o">,</span> <span class="n">firstJobId</span><span class="o">)</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">// Finally, create a stage for the given shuffle dependency.
+</span>        <span class="n">createShuffleMapStage</span><span class="o">(</span><span class="n">shuffleDep</span><span class="o">,</span> <span class="n">firstJobId</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>接着handleJobSubmitted方法，创建完ResultStage后，开始创建ActiveJob，listenerBus发送JobStart监听事件，接下来执行submitStage方法，该方法会判断父Stage有没有执行，如果没有执行则循环执行父Stage</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">submitStage</span><span class="o">(</span><span class="n">stage</span><span class="k">:</span> <span class="kt">Stage</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">jobId</span> <span class="k">=</span> <span class="n">activeJobForStage</span><span class="o">(</span><span class="n">stage</span><span class="o">)</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">jobId</span><span class="o">.</span><span class="n">isDefined</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logDebug</span><span class="o">(</span><span class="s">"submitStage("</span> <span class="o">+</span> <span class="n">stage</span> <span class="o">+</span> <span class="s">")"</span><span class="o">)</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">waitingStages</span><span class="o">(</span><span class="n">stage</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">runningStages</span><span class="o">(</span><span class="n">stage</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">failedStages</span><span class="o">(</span><span class="n">stage</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">missing</span> <span class="k">=</span> <span class="n">getMissingParentStages</span><span class="o">(</span><span class="n">stage</span><span class="o">).</span><span class="n">sortBy</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+        <span class="n">logDebug</span><span class="o">(</span><span class="s">"missing: "</span> <span class="o">+</span> <span class="n">missing</span><span class="o">)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">missing</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">logInfo</span><span class="o">(</span><span class="s">"Submitting "</span> <span class="o">+</span> <span class="n">stage</span> <span class="o">+</span> <span class="s">" ("</span> <span class="o">+</span> <span class="n">stage</span><span class="o">.</span><span class="n">rdd</span> <span class="o">+</span> <span class="s">"), which has no missing parents"</span><span class="o">)</span>
+          <span class="n">submitMissingTasks</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="n">jobId</span><span class="o">.</span><span class="n">get</span><span class="o">)</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="k">for</span> <span class="o">(</span><span class="n">parent</span> <span class="k">&lt;-</span> <span class="n">missing</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">submitStage</span><span class="o">(</span><span class="n">parent</span><span class="o">)</span>
+          <span class="o">}</span>
+          <span class="n">waitingStages</span> <span class="o">+=</span> <span class="n">stage</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">abortStage</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="s">"No active job for stage "</span> <span class="o">+</span> <span class="n">stage</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="nc">None</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>接着就该提交task了，根据对应的Stage类型，创建对应的Task，ShuffleMapStage对应ShuffleMapTask，ResultStage对应ResultTask，对每一个partition都创建一个Task，需要注意的是Stage中的RDD以及其他需要的属性已经被序列化广播成taskBinary，创建Task的时候直接使用广播变量，如果最后所有的tasks的数量大于0，则使用TaskScheduler的submitTasks方法提交TaskSet(tasks)到集群中运行</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">submitMissingTasks</span><span class="o">(</span><span class="n">stage</span><span class="k">:</span> <span class="kt">Stage</span><span class="o">,</span> <span class="n">jobId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"submitMissingTasks("</span> <span class="o">+</span> <span class="n">stage</span> <span class="o">+</span> <span class="s">")"</span><span class="o">)</span>
+
+    <span class="c1">// First figure out the indexes of partition ids to compute.
+</span>    <span class="k">val</span> <span class="n">partitionsToCompute</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">stage</span><span class="o">.</span><span class="n">findMissingPartitions</span><span class="o">()</span>
+
+    <span class="c1">// Use the scheduling pool, job group, description, etc. from an ActiveJob associated
+</span>    <span class="c1">// with this Stage
+</span>    <span class="k">val</span> <span class="n">properties</span> <span class="k">=</span> <span class="n">jobIdToActiveJob</span><span class="o">(</span><span class="n">jobId</span><span class="o">).</span><span class="n">properties</span>
+
+    <span class="n">runningStages</span> <span class="o">+=</span> <span class="n">stage</span>
+    <span class="c1">// SparkListenerStageSubmitted should be posted before testing whether tasks are
+</span>    <span class="c1">// serializable. If tasks are not serializable, a SparkListenerStageCompleted event
+</span>    <span class="c1">// will be posted, which should always come after a corresponding SparkListenerStageSubmitted
+</span>    <span class="c1">// event.
+</span>    <span class="n">stage</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">s</span><span class="k">:</span> <span class="kt">ShuffleMapStage</span> <span class="o">=&gt;</span>
+        <span class="n">outputCommitCoordinator</span><span class="o">.</span><span class="n">stageStart</span><span class="o">(</span><span class="n">stage</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">maxPartitionId</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">numPartitions</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">s</span><span class="k">:</span> <span class="kt">ResultStage</span> <span class="o">=&gt;</span>
+        <span class="n">outputCommitCoordinator</span><span class="o">.</span><span class="n">stageStart</span><span class="o">(</span>
+          <span class="n">stage</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">maxPartitionId</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">taskIdToLocations</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">Seq</span><span class="o">[</span><span class="kt">TaskLocation</span><span class="o">]]</span> <span class="k">=</span> <span class="k">try</span> <span class="o">{</span>
+      <span class="n">stage</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">s</span><span class="k">:</span> <span class="kt">ShuffleMapStage</span> <span class="o">=&gt;</span>
+          <span class="n">partitionsToCompute</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">id</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">getPreferredLocs</span><span class="o">(</span><span class="n">stage</span><span class="o">.</span><span class="n">rdd</span><span class="o">,</span> <span class="n">id</span><span class="o">))}.</span><span class="n">toMap</span>
+        <span class="k">case</span> <span class="n">s</span><span class="k">:</span> <span class="kt">ResultStage</span> <span class="o">=&gt;</span>
+          <span class="n">partitionsToCompute</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">id</span> <span class="k">=&gt;</span>
+            <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">partitions</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+            <span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">getPreferredLocs</span><span class="o">(</span><span class="n">stage</span><span class="o">.</span><span class="n">rdd</span><span class="o">,</span> <span class="n">p</span><span class="o">))</span>
+          <span class="o">}.</span><span class="n">toMap</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">NonFatal</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">stage</span><span class="o">.</span><span class="n">makeNewStageAttempt</span><span class="o">(</span><span class="n">partitionsToCompute</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
+        <span class="n">listenerBus</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">SparkListenerStageSubmitted</span><span class="o">(</span><span class="n">stage</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">,</span> <span class="n">properties</span><span class="o">))</span>
+        <span class="n">abortStage</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="n">s</span><span class="s">"Task creation failed: $e\n${Utils.exceptionString(e)}"</span><span class="o">,</span> <span class="nc">Some</span><span class="o">(</span><span class="n">e</span><span class="o">))</span>
+        <span class="n">runningStages</span> <span class="o">-=</span> <span class="n">stage</span>
+        <span class="k">return</span>
+    <span class="o">}</span>
+
+    <span class="n">stage</span><span class="o">.</span><span class="n">makeNewStageAttempt</span><span class="o">(</span><span class="n">partitionsToCompute</span><span class="o">.</span><span class="n">size</span><span class="o">,</span> <span class="n">taskIdToLocations</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">toSeq</span><span class="o">)</span>
+
+    <span class="c1">// If there are tasks to execute, record the submission time of the stage. Otherwise,
+</span>    <span class="c1">// post the even without the submission time, which indicates that this stage was
+</span>    <span class="c1">// skipped.
+</span>    <span class="k">if</span> <span class="o">(</span><span class="n">partitionsToCompute</span><span class="o">.</span><span class="n">nonEmpty</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">stage</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">.</span><span class="n">submissionTime</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">clock</span><span class="o">.</span><span class="n">getTimeMillis</span><span class="o">())</span>
+    <span class="o">}</span>
+    <span class="n">listenerBus</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">SparkListenerStageSubmitted</span><span class="o">(</span><span class="n">stage</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">,</span> <span class="n">properties</span><span class="o">))</span>
+
+    <span class="c1">// TODO: Maybe we can keep the taskBinary in Stage to avoid serializing it multiple times.
+</span>    <span class="c1">// Broadcasted binary for the task, used to dispatch tasks to executors. Note that we broadcast
+</span>    <span class="c1">// the serialized copy of the RDD and for each task we will deserialize it, which means each
+</span>    <span class="c1">// task gets a different copy of the RDD. This provides stronger isolation between tasks that
+</span>    <span class="c1">// might modify state of objects referenced in their closures. This is necessary in Hadoop
+</span>    <span class="c1">// where the JobConf/Configuration object is not thread-safe.
+</span>    <span class="k">var</span> <span class="n">taskBinary</span><span class="k">:</span> <span class="kt">Broadcast</span><span class="o">[</span><span class="kt">Array</span><span class="o">[</span><span class="kt">Byte</span><span class="o">]]</span> <span class="k">=</span> <span class="kc">null</span>
+    <span class="k">var</span> <span class="n">partitions</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Partition</span><span class="o">]</span> <span class="k">=</span> <span class="kc">null</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// For ShuffleMapTask, serialize and broadcast (rdd, shuffleDep).
+</span>      <span class="c1">// For ResultTask, serialize and broadcast (rdd, func).
+</span>      <span class="k">var</span> <span class="n">taskBinaryBytes</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Byte</span><span class="o">]</span> <span class="k">=</span> <span class="kc">null</span>
+      <span class="c1">// taskBinaryBytes and partitions are both effected by the checkpoint status. We need
+</span>      <span class="c1">// this synchronization in case another concurrent job is checkpointing this RDD, so we get a
+</span>      <span class="c1">// consistent view of both variables.
+</span>      <span class="nc">RDDCheckpointData</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+        <span class="n">taskBinaryBytes</span> <span class="k">=</span> <span class="n">stage</span> <span class="k">match</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="n">stage</span><span class="k">:</span> <span class="kt">ShuffleMapStage</span> <span class="o">=&gt;</span>
+            <span class="nc">JavaUtils</span><span class="o">.</span><span class="n">bufferToArray</span><span class="o">(</span>
+              <span class="n">closureSerializer</span><span class="o">.</span><span class="n">serialize</span><span class="o">((</span><span class="n">stage</span><span class="o">.</span><span class="n">rdd</span><span class="o">,</span> <span class="n">stage</span><span class="o">.</span><span class="n">shuffleDep</span><span class="o">)</span><span class="k">:</span> <span class="kt">AnyRef</span><span class="o">))</span>
+          <span class="k">case</span> <span class="n">stage</span><span class="k">:</span> <span class="kt">ResultStage</span> <span class="o">=&gt;</span>
+            <span class="nc">JavaUtils</span><span class="o">.</span><span class="n">bufferToArray</span><span class="o">(</span><span class="n">closureSerializer</span><span class="o">.</span><span class="n">serialize</span><span class="o">((</span><span class="n">stage</span><span class="o">.</span><span class="n">rdd</span><span class="o">,</span> <span class="n">stage</span><span class="o">.</span><span class="n">func</span><span class="o">)</span><span class="k">:</span> <span class="kt">AnyRef</span><span class="o">))</span>
+        <span class="o">}</span>
+
+        <span class="n">partitions</span> <span class="k">=</span> <span class="n">stage</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">partitions</span>
+      <span class="o">}</span>
+
+      <span class="n">taskBinary</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">broadcast</span><span class="o">(</span><span class="n">taskBinaryBytes</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="c1">// In the case of a failure during serialization, abort the stage.
+</span>      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">NotSerializableException</span> <span class="o">=&gt;</span>
+        <span class="n">abortStage</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="s">"Task not serializable: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">toString</span><span class="o">,</span> <span class="nc">Some</span><span class="o">(</span><span class="n">e</span><span class="o">))</span>
+        <span class="n">runningStages</span> <span class="o">-=</span> <span class="n">stage</span>
+
+        <span class="c1">// Abort execution
+</span>        <span class="k">return</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Throwable</span> <span class="o">=&gt;</span>
+        <span class="n">abortStage</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="n">s</span><span class="s">"Task serialization failed: $e\n${Utils.exceptionString(e)}"</span><span class="o">,</span> <span class="nc">Some</span><span class="o">(</span><span class="n">e</span><span class="o">))</span>
+        <span class="n">runningStages</span> <span class="o">-=</span> <span class="n">stage</span>
+
+        <span class="c1">// Abort execution
+</span>        <span class="k">return</span>
+    <span class="o">}</span>
+
+    <span class="k">val</span> <span class="n">tasks</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Task</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="k">=</span> <span class="k">try</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">serializedTaskMetrics</span> <span class="k">=</span> <span class="n">closureSerializer</span><span class="o">.</span><span class="n">serialize</span><span class="o">(</span><span class="n">stage</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">.</span><span class="n">taskMetrics</span><span class="o">).</span><span class="n">array</span><span class="o">()</span>
+      <span class="n">stage</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">stage</span><span class="k">:</span> <span class="kt">ShuffleMapStage</span> <span class="o">=&gt;</span>
+          <span class="n">stage</span><span class="o">.</span><span class="n">pendingPartitions</span><span class="o">.</span><span class="n">clear</span><span class="o">()</span>
+          <span class="n">partitionsToCompute</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">id</span> <span class="k">=&gt;</span>
+            <span class="k">val</span> <span class="n">locs</span> <span class="k">=</span> <span class="n">taskIdToLocations</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+            <span class="k">val</span> <span class="n">part</span> <span class="k">=</span> <span class="n">partitions</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+            <span class="n">stage</span><span class="o">.</span><span class="n">pendingPartitions</span> <span class="o">+=</span> <span class="n">id</span>
+            <span class="k">new</span> <span class="nc">ShuffleMapTask</span><span class="o">(</span><span class="n">stage</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">stage</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">.</span><span class="n">attemptNumber</span><span class="o">,</span>
+              <span class="n">taskBinary</span><span class="o">,</span> <span class="n">part</span><span class="o">,</span> <span class="n">locs</span><span class="o">,</span> <span class="n">properties</span><span class="o">,</span> <span class="n">serializedTaskMetrics</span><span class="o">,</span> <span class="nc">Option</span><span class="o">(</span><span class="n">jobId</span><span class="o">),</span>
+              <span class="nc">Option</span><span class="o">(</span><span class="n">sc</span><span class="o">.</span><span class="n">applicationId</span><span class="o">),</span> <span class="n">sc</span><span class="o">.</span><span class="n">applicationAttemptId</span><span class="o">)</span>
+          <span class="o">}</span>
+
+        <span class="k">case</span> <span class="n">stage</span><span class="k">:</span> <span class="kt">ResultStage</span> <span class="o">=&gt;</span>
+          <span class="n">partitionsToCompute</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">id</span> <span class="k">=&gt;</span>
+            <span class="k">val</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">stage</span><span class="o">.</span><span class="n">partitions</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+            <span class="k">val</span> <span class="n">part</span> <span class="k">=</span> <span class="n">partitions</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
+            <span class="k">val</span> <span class="n">locs</span> <span class="k">=</span> <span class="n">taskIdToLocations</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+            <span class="k">new</span> <span class="nc">ResultTask</span><span class="o">(</span><span class="n">stage</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">stage</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">.</span><span class="n">attemptNumber</span><span class="o">,</span>
+              <span class="n">taskBinary</span><span class="o">,</span> <span class="n">part</span><span class="o">,</span> <span class="n">locs</span><span class="o">,</span> <span class="n">id</span><span class="o">,</span> <span class="n">properties</span><span class="o">,</span> <span class="n">serializedTaskMetrics</span><span class="o">,</span>
+              <span class="nc">Option</span><span class="o">(</span><span class="n">jobId</span><span class="o">),</span> <span class="nc">Option</span><span class="o">(</span><span class="n">sc</span><span class="o">.</span><span class="n">applicationId</span><span class="o">),</span> <span class="n">sc</span><span class="o">.</span><span class="n">applicationAttemptId</span><span class="o">)</span>
+          <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">NonFatal</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">abortStage</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="n">s</span><span class="s">"Task creation failed: $e\n${Utils.exceptionString(e)}"</span><span class="o">,</span> <span class="nc">Some</span><span class="o">(</span><span class="n">e</span><span class="o">))</span>
+        <span class="n">runningStages</span> <span class="o">-=</span> <span class="n">stage</span>
+        <span class="k">return</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">tasks</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Submitting ${tasks.size} missing tasks from $stage (${stage.rdd}) (first 15 "</span> <span class="o">+</span>
+        <span class="n">s</span><span class="s">"tasks are for partitions ${tasks.take(15).map(_.partitionId)})"</span><span class="o">)</span>
+      <span class="n">taskScheduler</span><span class="o">.</span><span class="n">submitTasks</span><span class="o">(</span><span class="k">new</span> <span class="nc">TaskSet</span><span class="o">(</span>
+        <span class="n">tasks</span><span class="o">.</span><span class="n">toArray</span><span class="o">,</span> <span class="n">stage</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">stage</span><span class="o">.</span><span class="n">latestInfo</span><span class="o">.</span><span class="n">attemptNumber</span><span class="o">,</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">properties</span><span class="o">))</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="c1">// Because we posted SparkListenerStageSubmitted earlier, we should mark
+</span>      <span class="c1">// the stage as completed here in case there are no tasks to run
+</span>      <span class="n">markStageAsFinished</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="nc">None</span><span class="o">)</span>
+
+      <span class="n">stage</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">stage</span><span class="k">:</span> <span class="kt">ShuffleMapStage</span> <span class="o">=&gt;</span>
+          <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Stage ${stage} is actually done; "</span> <span class="o">+</span>
+              <span class="n">s</span><span class="s">"(available: ${stage.isAvailable},"</span> <span class="o">+</span>
+              <span class="n">s</span><span class="s">"available outputs: ${stage.numAvailableOutputs},"</span> <span class="o">+</span>
+              <span class="n">s</span><span class="s">"partitions: ${stage.numPartitions})"</span><span class="o">)</span>
+          <span class="n">markMapStageJobsAsFinished</span><span class="o">(</span><span class="n">stage</span><span class="o">)</span>
+        <span class="k">case</span> <span class="n">stage</span> <span class="k">:</span> <span class="kt">ResultStage</span> <span class="o">=&gt;</span>
+          <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Stage ${stage} is actually done; (partitions: ${stage.numPartitions})"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="n">submitWaitingChildStages</span><span class="o">(</span><span class="n">stage</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>DAGScheduler虽然近2000行代码，但主要做的工作就是如上所述，阅读源码不能一个方法一个方法去看，需要场景驱动，根据流程，寻找我们需要的部分</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/07/06/spark_dag_scheduler', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
