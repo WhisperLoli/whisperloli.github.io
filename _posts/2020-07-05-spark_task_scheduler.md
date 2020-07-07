@@ -27,7 +27,7 @@ subtitle: 'TaskScheduler'
 > 
 > Pool: 可执行的实体，TaskSetManagers的集合，该类中会创建相应的调度算法，每个TaskSetManager也会被添加到待调度的队列中，提供getSortedTaskSetQueue方法使用调度算法给TaskSet队列排序
 > 
-> TaskSchedulerImpl: 继承自TaskScheduler, SparkContext中创建完taskScheduler后，会调用initialize方法，初始化backend和判断调度策略并创建相应的SchedulableBuilder对象, 最重要的方法submitTasks，提交一系列的task（也就是一个TaskSet）到SchedulableBuilder调度池中, resourceOffer会排除黑名单中的executor，获取调度池中根据调度策略排序后的任务队列，随机为每个executor分配任务，避免任务总在同一个worker上
+> TaskSchedulerImpl: 继承自TaskScheduler, SparkContext中创建完taskScheduler后，会调用initialize方法，初始化backend和判断调度策略并创建相应的SchedulableBuilder对象, 最重要的方法submitTasks，提交一系列的task（也就是一个TaskSet）到SchedulableBuilder调度池中, resourceOffer会排除黑名单中的executor，获取调度池中根据调度策略排序后的任务队列，随机为每个executor分配任务，避免任务总在同一个worker上。start方法也很重要，很启动线程判断推测执行，当有一个task运行时间过长，就会在启动一个相同的task执行这个任务
 
 ```scala
   override def submitTasks(taskSet: TaskSet) {
