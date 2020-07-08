@@ -1,0 +1,690 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记（十七）</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十七）</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记（十七）</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/06/spark_dag_scheduler.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记（十六）</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/06/spark_dag_scheduler.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记（十六）</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        Dynamic Allocation Executor
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>先解释一下master，worker，driver，executor概念吧，很多人用了很久的spark也是一知半解，Master和Workder对应的是物理节点，driver和executor对应的是节点中的进程，driver既可以在master，也可以在workder上，但是executor只能存在于worker上，本章要分享的东西动态分配executor，会使用到workder</p>
+
+  <p>如果开启了动态分配executor，ExecutorAllocationManager会在SparkContext中被创建，并调用实例的start方法，start方法中使用线程池定时调度线程判断当前分配的executor是缺了还是多了，缺少则申请，多了不会移除，因为executor等待时间太长会自动执行移除，那如何判当前需要的executor数量呢？计算公式如下，(正在运行的task数量+pending的task数量+每个executor能并发的task-1)/每个executor能并发的task-1，计算出来的结果就是我们需要的executor数量，之后会做出判断，是否超出设置的executor最大值/最小值</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">val</span> <span class="n">tasksPerExecutor</span> <span class="k">=</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="s">"spark.executor.cores"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span> <span class="o">/</span> <span class="n">conf</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="s">"spark.task.cpus"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+
+<span class="cm">/**
+   * The maximum number of executors we would need under the current load to satisfy all running
+   * and pending tasks, rounded up.
+   */</span>
+  <span class="k">private</span> <span class="k">def</span> <span class="n">maxNumExecutorsNeeded</span><span class="o">()</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">numRunningOrPendingTasks</span> <span class="k">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">totalPendingTasks</span> <span class="o">+</span> <span class="n">listener</span><span class="o">.</span><span class="n">totalRunningTasks</span>
+    <span class="o">(</span><span class="n">numRunningOrPendingTasks</span> <span class="o">+</span> <span class="n">tasksPerExecutor</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">/</span> <span class="n">tasksPerExecutor</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>之后使用client.requestTotalExecutors(numExecutorsTarget, localityAwareTasks, hostToLocalTaskCount)执行申请，该方法会进入CoarseGrainedSchedulerBackend中并调用doRequestTotalExecutors(requestedTotalExecutors)方法，doRequestTotalExecutors在StandaloneSchedulerBackend被重写，重写后的方法使用StandaloneAppClient的requestTotalExecutors方法，方法如下，会使用endpointRef发送RequestExecutors消息</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+   * Request executors from the Master by specifying the total number desired,
+   * including existing pending and running executors.
+   *
+   * @return whether the request is acknowledged.
+   */</span>
+  <span class="k">def</span> <span class="n">requestTotalExecutors</span><span class="o">(</span><span class="n">requestedTotal</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">get</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">appId</span><span class="o">.</span><span class="n">get</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">endpoint</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">ask</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">](</span><span class="nc">RequestExecutors</span><span class="o">(</span><span class="n">appId</span><span class="o">.</span><span class="n">get</span><span class="o">,</span> <span class="n">requestedTotal</span><span class="o">))</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">logWarning</span><span class="o">(</span><span class="s">"Attempted to request executors before driver fully initialized."</span><span class="o">)</span>
+      <span class="nc">Future</span><span class="o">.</span><span class="n">successful</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>接着endpoint会对消息做出回应，使用了master的endpointRef发送消息</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="n">receiveAndReply</span><span class="o">(</span><span class="n">context</span><span class="k">:</span> <span class="kt">RpcCallContext</span><span class="o">)</span><span class="k">:</span> <span class="kt">PartialFunction</span><span class="o">[</span><span class="kt">Any</span>, <span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">StopAppClient</span> <span class="k">=&gt;</span>
+        <span class="n">markDead</span><span class="o">(</span><span class="s">"Application has been stopped."</span><span class="o">)</span>
+        <span class="n">sendToMaster</span><span class="o">(</span><span class="nc">UnregisterApplication</span><span class="o">(</span><span class="n">appId</span><span class="o">.</span><span class="n">get</span><span class="o">))</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">reply</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+        <span class="n">stop</span><span class="o">()</span>
+
+      <span class="k">case</span> <span class="n">r</span><span class="k">:</span> <span class="kt">RequestExecutors</span> <span class="o">=&gt;</span>
+        <span class="n">master</span> <span class="k">match</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">m</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">askAndReplyAsync</span><span class="o">(</span><span class="n">m</span><span class="o">,</span> <span class="n">context</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span>
+          <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+            <span class="n">logWarning</span><span class="o">(</span><span class="s">"Attempted to request executors before registering with Master."</span><span class="o">)</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">reply</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+        <span class="o">}</span>
+
+      <span class="k">case</span> <span class="n">k</span><span class="k">:</span> <span class="kt">KillExecutors</span> <span class="o">=&gt;</span>
+        <span class="n">master</span> <span class="k">match</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">m</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">askAndReplyAsync</span><span class="o">(</span><span class="n">m</span><span class="o">,</span> <span class="n">context</span><span class="o">,</span> <span class="n">k</span><span class="o">)</span>
+          <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+            <span class="n">logWarning</span><span class="o">(</span><span class="s">"Attempted to kill executors before registering with Master."</span><span class="o">)</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">reply</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="k">def</span> <span class="n">askAndReplyAsync</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span>
+        <span class="n">endpointRef</span><span class="k">:</span> <span class="kt">RpcEndpointRef</span><span class="o">,</span>
+        <span class="n">context</span><span class="k">:</span> <span class="kt">RpcCallContext</span><span class="o">,</span>
+        <span class="n">msg</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="c1">// Ask a message and create a thread to reply with the result.  Allow thread to be
+</span>      <span class="c1">// interrupted during shutdown, otherwise context must be notified of NonFatal errors.
+</span>      <span class="n">endpointRef</span><span class="o">.</span><span class="n">ask</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">](</span><span class="n">msg</span><span class="o">).</span><span class="n">andThen</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="nc">Success</span><span class="o">(</span><span class="n">b</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">context</span><span class="o">.</span><span class="n">reply</span><span class="o">(</span><span class="n">b</span><span class="o">)</span>
+        <span class="k">case</span> <span class="nc">Failure</span><span class="o">(</span><span class="n">ie</span><span class="k">:</span> <span class="kt">InterruptedException</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="c1">// Cancelled
+</span>        <span class="k">case</span> <span class="nc">Failure</span><span class="o">(</span><span class="nc">NonFatal</span><span class="o">(</span><span class="n">t</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="n">context</span><span class="o">.</span><span class="n">sendFailure</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+      <span class="o">}(</span><span class="nc">ThreadUtils</span><span class="o">.</span><span class="n">sameThread</span><span class="o">)</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>接下来该进入Master类了，Master类继承了ThreadSafeRpcEndpoint，所以他自身就是个endpoint类，实现了leader选举功能，后续会单独把Master和Worker拿出来讲讲吧，Master收到RequestExecutors后，执行handleRequestExecutors方法，注意如下会用到HashMap，appId对应唯一的ApplicationInfo，猜测可能一个Master可以管理很多个spark application，这个后续研究</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">private</span> <span class="k">def</span> <span class="n">handleRequestExecutors</span><span class="o">(</span><span class="n">appId</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">requestedTotal</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">idToApp</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">appId</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">appInfo</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Application $appId requested to set total executors to $requestedTotal."</span><span class="o">)</span>
+        <span class="n">appInfo</span><span class="o">.</span><span class="n">executorLimit</span> <span class="k">=</span> <span class="n">requestedTotal</span>
+        <span class="n">schedule</span><span class="o">()</span>
+        <span class="kc">true</span>
+      <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span>
+        <span class="n">logWarning</span><span class="o">(</span><span class="n">s</span><span class="s">"Unknown application $appId requested $requestedTotal total executors."</span><span class="o">)</span>
+        <span class="kc">false</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">schedule</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">!=</span> <span class="nc">RecoveryState</span><span class="o">.</span><span class="nc">ALIVE</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span>
+    <span class="o">}</span>
+    <span class="c1">// Drivers take strict precedence over executors
+</span>    <span class="k">val</span> <span class="n">shuffledAliveWorkers</span> <span class="k">=</span> <span class="nc">Random</span><span class="o">.</span><span class="n">shuffle</span><span class="o">(</span><span class="n">workers</span><span class="o">.</span><span class="n">toSeq</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="nc">WorkerState</span><span class="o">.</span><span class="nc">ALIVE</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">numWorkersAlive</span> <span class="k">=</span> <span class="n">shuffledAliveWorkers</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">var</span> <span class="n">curPos</span> <span class="k">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">driver</span> <span class="k">&lt;-</span> <span class="n">waitingDrivers</span><span class="o">.</span><span class="n">toList</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// iterate over a copy of waitingDrivers
+</span>      <span class="c1">// We assign workers to each waiting driver in a round-robin fashion. For each driver, we
+</span>      <span class="c1">// start from the last worker that was assigned a driver, and continue onwards until we have
+</span>      <span class="c1">// explored all alive workers.
+</span>      <span class="k">var</span> <span class="n">launched</span> <span class="k">=</span> <span class="kc">false</span>
+      <span class="k">var</span> <span class="n">numWorkersVisited</span> <span class="k">=</span> <span class="mi">0</span>
+      <span class="k">while</span> <span class="o">(</span><span class="n">numWorkersVisited</span> <span class="o">&lt;</span> <span class="n">numWorkersAlive</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">launched</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">worker</span> <span class="k">=</span> <span class="n">shuffledAliveWorkers</span><span class="o">(</span><span class="n">curPos</span><span class="o">)</span>
+        <span class="n">numWorkersVisited</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">worker</span><span class="o">.</span><span class="n">memoryFree</span> <span class="o">&gt;=</span> <span class="n">driver</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">mem</span> <span class="o">&amp;&amp;</span> <span class="n">worker</span><span class="o">.</span><span class="n">coresFree</span> <span class="o">&gt;=</span> <span class="n">driver</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">cores</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">launchDriver</span><span class="o">(</span><span class="n">worker</span><span class="o">,</span> <span class="n">driver</span><span class="o">)</span>
+          <span class="n">waitingDrivers</span> <span class="o">-=</span> <span class="n">driver</span>
+          <span class="n">launched</span> <span class="k">=</span> <span class="kc">true</span>
+        <span class="o">}</span>
+        <span class="n">curPos</span> <span class="k">=</span> <span class="o">(</span><span class="n">curPos</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">%</span> <span class="n">numWorkersAlive</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">startExecutorsOnWorkers</span><span class="o">()</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>在shedule方法中会判断driver是否启动，如果没有启动的话会先启动driver，再启动executor</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">private</span> <span class="k">def</span> <span class="n">startExecutorsOnWorkers</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// Right now this is a very simple FIFO scheduler. We keep trying to fit in the first app
+</span>    <span class="c1">// in the queue, then the second app, etc.
+</span>    <span class="k">for</span> <span class="o">(</span><span class="n">app</span> <span class="k">&lt;-</span> <span class="n">waitingApps</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">coresPerExecutor</span> <span class="k">=</span> <span class="n">app</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">coresPerExecutor</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+      <span class="c1">// If the cores left is less than the coresPerExecutor,the cores left will not be allocated
+</span>      <span class="k">if</span> <span class="o">(</span><span class="n">app</span><span class="o">.</span><span class="n">coresLeft</span> <span class="o">&gt;=</span> <span class="n">coresPerExecutor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Filter out workers that don't have enough resources to launch an executor
+</span>        <span class="k">val</span> <span class="n">usableWorkers</span> <span class="k">=</span> <span class="n">workers</span><span class="o">.</span><span class="n">toArray</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="nc">WorkerState</span><span class="o">.</span><span class="nc">ALIVE</span><span class="o">)</span>
+          <span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">worker</span> <span class="k">=&gt;</span> <span class="n">worker</span><span class="o">.</span><span class="n">memoryFree</span> <span class="o">&gt;=</span> <span class="n">app</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">memoryPerExecutorMB</span> <span class="o">&amp;&amp;</span>
+            <span class="n">worker</span><span class="o">.</span><span class="n">coresFree</span> <span class="o">&gt;=</span> <span class="n">coresPerExecutor</span><span class="o">)</span>
+          <span class="o">.</span><span class="n">sortBy</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">coresFree</span><span class="o">).</span><span class="n">reverse</span>
+        <span class="k">val</span> <span class="n">assignedCores</span> <span class="k">=</span> <span class="n">scheduleExecutorsOnWorkers</span><span class="o">(</span><span class="n">app</span><span class="o">,</span> <span class="n">usableWorkers</span><span class="o">,</span> <span class="n">spreadOutApps</span><span class="o">)</span>
+
+        <span class="c1">// Now that we've decided how many cores to allocate on each worker, let's allocate them
+</span>        <span class="k">for</span> <span class="o">(</span><span class="n">pos</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">usableWorkers</span><span class="o">.</span><span class="n">length</span> <span class="k">if</span> <span class="n">assignedCores</span><span class="o">(</span><span class="n">pos</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">allocateWorkerResourceToExecutors</span><span class="o">(</span>
+            <span class="n">app</span><span class="o">,</span> <span class="n">assignedCores</span><span class="o">(</span><span class="n">pos</span><span class="o">),</span> <span class="n">app</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">coresPerExecutor</span><span class="o">,</span> <span class="n">usableWorkers</span><span class="o">(</span><span class="n">pos</span><span class="o">))</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">allocateWorkerResourceToExecutors</span><span class="o">(</span>
+      <span class="n">app</span><span class="k">:</span> <span class="kt">ApplicationInfo</span><span class="o">,</span>
+      <span class="n">assignedCores</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span>
+      <span class="n">coresPerExecutor</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span>
+      <span class="n">worker</span><span class="k">:</span> <span class="kt">WorkerInfo</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// If the number of cores per executor is specified, we divide the cores assigned
+</span>    <span class="c1">// to this worker evenly among the executors with no remainder.
+</span>    <span class="c1">// Otherwise, we launch a single executor that grabs all the assignedCores on this worker.
+</span>    <span class="k">val</span> <span class="n">numExecutors</span> <span class="k">=</span> <span class="n">coresPerExecutor</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">assignedCores</span> <span class="o">/</span> <span class="k">_</span> <span class="o">}.</span><span class="n">getOrElse</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">coresToAssign</span> <span class="k">=</span> <span class="n">coresPerExecutor</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">assignedCores</span><span class="o">)</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">numExecutors</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">exec</span> <span class="k">=</span> <span class="n">app</span><span class="o">.</span><span class="n">addExecutor</span><span class="o">(</span><span class="n">worker</span><span class="o">,</span> <span class="n">coresToAssign</span><span class="o">)</span>
+      <span class="n">launchExecutor</span><span class="o">(</span><span class="n">worker</span><span class="o">,</span> <span class="n">exec</span><span class="o">)</span>
+      <span class="n">app</span><span class="o">.</span><span class="n">state</span> <span class="k">=</span> <span class="nc">ApplicationState</span><span class="o">.</span><span class="nc">RUNNING</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>一步一步下来，最终会调用到launchExecutor方法，发送rpc请求LaunchExecutor</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">launchExecutor</span><span class="o">(</span><span class="n">worker</span><span class="k">:</span> <span class="kt">WorkerInfo</span><span class="o">,</span> <span class="n">exec</span><span class="k">:</span> <span class="kt">ExecutorDesc</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Launching executor "</span> <span class="o">+</span> <span class="n">exec</span><span class="o">.</span><span class="n">fullId</span> <span class="o">+</span> <span class="s">" on worker "</span> <span class="o">+</span> <span class="n">worker</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+    <span class="n">worker</span><span class="o">.</span><span class="n">addExecutor</span><span class="o">(</span><span class="n">exec</span><span class="o">)</span>
+    <span class="n">worker</span><span class="o">.</span><span class="n">endpoint</span><span class="o">.</span><span class="n">send</span><span class="o">(</span><span class="nc">LaunchExecutor</span><span class="o">(</span><span class="n">masterUrl</span><span class="o">,</span>
+      <span class="n">exec</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">exec</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">exec</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">desc</span><span class="o">,</span> <span class="n">exec</span><span class="o">.</span><span class="n">cores</span><span class="o">,</span> <span class="n">exec</span><span class="o">.</span><span class="n">memory</span><span class="o">))</span>
+    <span class="n">exec</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">send</span><span class="o">(</span>
+      <span class="nc">ExecutorAdded</span><span class="o">(</span><span class="n">exec</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">worker</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">worker</span><span class="o">.</span><span class="n">hostPort</span><span class="o">,</span> <span class="n">exec</span><span class="o">.</span><span class="n">cores</span><span class="o">,</span> <span class="n">exec</span><span class="o">.</span><span class="n">memory</span><span class="o">))</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Worker收到RPC请求后，会执行如下代码，会创建ExecutorRunner对象并执行start方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="nc">LaunchExecutor</span><span class="o">(</span><span class="n">masterUrl</span><span class="o">,</span> <span class="n">appId</span><span class="o">,</span> <span class="n">execId</span><span class="o">,</span> <span class="n">appDesc</span><span class="o">,</span> <span class="n">cores_</span><span class="o">,</span> <span class="n">memory_</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">masterUrl</span> <span class="o">!=</span> <span class="n">activeMasterUrl</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logWarning</span><span class="o">(</span><span class="s">"Invalid Master ("</span> <span class="o">+</span> <span class="n">masterUrl</span> <span class="o">+</span> <span class="s">") attempted to launch executor."</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+          <span class="n">logInfo</span><span class="o">(</span><span class="s">"Asked to launch executor %s/%d for %s"</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="n">appId</span><span class="o">,</span> <span class="n">execId</span><span class="o">,</span> <span class="n">appDesc</span><span class="o">.</span><span class="n">name</span><span class="o">))</span>
+
+          <span class="c1">// Create the executor's working directory
+</span>          <span class="k">val</span> <span class="n">executorDir</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">workDir</span><span class="o">,</span> <span class="n">appId</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">execId</span><span class="o">)</span>
+          <span class="k">if</span> <span class="o">(!</span><span class="n">executorDir</span><span class="o">.</span><span class="n">mkdirs</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nc">IOException</span><span class="o">(</span><span class="s">"Failed to create directory "</span> <span class="o">+</span> <span class="n">executorDir</span><span class="o">)</span>
+          <span class="o">}</span>
+
+          <span class="c1">// Create local dirs for the executor. These are passed to the executor via the
+</span>          <span class="c1">// SPARK_EXECUTOR_DIRS environment variable, and deleted by the Worker when the
+</span>          <span class="c1">// application finishes.
+</span>          <span class="k">val</span> <span class="n">appLocalDirs</span> <span class="k">=</span> <span class="n">appDirectories</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">appId</span><span class="o">,</span> <span class="o">{</span>
+            <span class="k">val</span> <span class="n">localRootDirs</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">getOrCreateLocalRootDirs</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
+            <span class="k">val</span> <span class="n">dirs</span> <span class="k">=</span> <span class="n">localRootDirs</span><span class="o">.</span><span class="n">flatMap</span> <span class="o">{</span> <span class="n">dir</span> <span class="k">=&gt;</span>
+              <span class="k">try</span> <span class="o">{</span>
+                <span class="k">val</span> <span class="n">appDir</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">createDirectory</span><span class="o">(</span><span class="n">dir</span><span class="o">,</span> <span class="n">namePrefix</span> <span class="k">=</span> <span class="s">"executor"</span><span class="o">)</span>
+                <span class="nc">Utils</span><span class="o">.</span><span class="n">chmod700</span><span class="o">(</span><span class="n">appDir</span><span class="o">)</span>
+                <span class="nc">Some</span><span class="o">(</span><span class="n">appDir</span><span class="o">.</span><span class="n">getAbsolutePath</span><span class="o">())</span>
+              <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+                <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">IOException</span> <span class="o">=&gt;</span>
+                  <span class="n">logWarning</span><span class="o">(</span><span class="n">s</span><span class="s">"${e.getMessage}. Ignoring this directory."</span><span class="o">)</span>
+                  <span class="nc">None</span>
+              <span class="o">}</span>
+            <span class="o">}.</span><span class="n">toSeq</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">dirs</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+              <span class="k">throw</span> <span class="k">new</span> <span class="nc">IOException</span><span class="o">(</span><span class="s">"No subfolder can be created in "</span> <span class="o">+</span>
+                <span class="n">s</span><span class="s">"${localRootDirs.mkString("</span><span class="o">,</span><span class="s">")}."</span><span class="o">)</span>
+            <span class="o">}</span>
+            <span class="n">dirs</span>
+          <span class="o">})</span>
+          <span class="n">appDirectories</span><span class="o">(</span><span class="n">appId</span><span class="o">)</span> <span class="k">=</span> <span class="n">appLocalDirs</span>
+          <span class="k">val</span> <span class="n">manager</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ExecutorRunner</span><span class="o">(</span>
+            <span class="n">appId</span><span class="o">,</span>
+            <span class="n">execId</span><span class="o">,</span>
+            <span class="n">appDesc</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">command</span> <span class="k">=</span> <span class="nc">Worker</span><span class="o">.</span><span class="n">maybeUpdateSSLSettings</span><span class="o">(</span><span class="n">appDesc</span><span class="o">.</span><span class="n">command</span><span class="o">,</span> <span class="n">conf</span><span class="o">)),</span>
+            <span class="n">cores_</span><span class="o">,</span>
+            <span class="n">memory_</span><span class="o">,</span>
+            <span class="n">self</span><span class="o">,</span>
+            <span class="n">workerId</span><span class="o">,</span>
+            <span class="n">host</span><span class="o">,</span>
+            <span class="n">webUi</span><span class="o">.</span><span class="n">boundPort</span><span class="o">,</span>
+            <span class="n">publicAddress</span><span class="o">,</span>
+            <span class="n">sparkHome</span><span class="o">,</span>
+            <span class="n">executorDir</span><span class="o">,</span>
+            <span class="n">workerUri</span><span class="o">,</span>
+            <span class="n">conf</span><span class="o">,</span>
+            <span class="n">appLocalDirs</span><span class="o">,</span> <span class="nc">ExecutorState</span><span class="o">.</span><span class="nc">RUNNING</span><span class="o">)</span>
+          <span class="n">executors</span><span class="o">(</span><span class="n">appId</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">execId</span><span class="o">)</span> <span class="k">=</span> <span class="n">manager</span>
+          <span class="n">manager</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+          <span class="n">coresUsed</span> <span class="o">+=</span> <span class="n">cores_</span>
+          <span class="n">memoryUsed</span> <span class="o">+=</span> <span class="n">memory_</span>
+          <span class="n">sendToMaster</span><span class="o">(</span><span class="nc">ExecutorStateChanged</span><span class="o">(</span><span class="n">appId</span><span class="o">,</span> <span class="n">execId</span><span class="o">,</span> <span class="n">manager</span><span class="o">.</span><span class="n">state</span><span class="o">,</span> <span class="nc">None</span><span class="o">,</span> <span class="nc">None</span><span class="o">))</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+            <span class="n">logError</span><span class="o">(</span><span class="n">s</span><span class="s">"Failed to launch executor $appId/$execId for ${appDesc.name}."</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">executors</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">appId</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">execId</span><span class="o">))</span> <span class="o">{</span>
+              <span class="n">executors</span><span class="o">(</span><span class="n">appId</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">execId</span><span class="o">).</span><span class="n">kill</span><span class="o">()</span>
+              <span class="n">executors</span> <span class="o">-=</span> <span class="n">appId</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">execId</span>
+            <span class="o">}</span>
+            <span class="n">sendToMaster</span><span class="o">(</span><span class="nc">ExecutorStateChanged</span><span class="o">(</span><span class="n">appId</span><span class="o">,</span> <span class="n">execId</span><span class="o">,</span> <span class="nc">ExecutorState</span><span class="o">.</span><span class="nc">FAILED</span><span class="o">,</span>
+              <span class="nc">Some</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">toString</span><span class="o">),</span> <span class="nc">None</span><span class="o">))</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>ExecutorRunner的start方法内容如下，会调用fetchAndRunExecutor方法，该方法会拼接生成启动executor进程的命令，并使用一些底层的技术启动进程，就不细看进去了</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">private</span><span class="o">[</span><span class="kt">worker</span><span class="o">]</span> <span class="k">def</span> <span class="n">start</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">workerThread</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="s">"ExecutorRunner for "</span> <span class="o">+</span> <span class="n">fullId</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">{</span> <span class="n">fetchAndRunExecutor</span><span class="o">()</span> <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">workerThread</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="c1">// Shutdown hook that kills actors on shutdown.
+</span>    <span class="n">shutdownHook</span> <span class="k">=</span> <span class="nc">ShutdownHookManager</span><span class="o">.</span><span class="n">addShutdownHook</span> <span class="o">{</span> <span class="o">()</span> <span class="k">=&gt;</span>
+      <span class="c1">// It's possible that we arrive here before calling `fetchAndRunExecutor`, then `state` will
+</span>      <span class="c1">// be `ExecutorState.RUNNING`. In this case, we should set `state` to `FAILED`.
+</span>      <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="nc">ExecutorState</span><span class="o">.</span><span class="nc">RUNNING</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">state</span> <span class="k">=</span> <span class="nc">ExecutorState</span><span class="o">.</span><span class="nc">FAILED</span>
+      <span class="o">}</span>
+      <span class="n">killProcess</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="s">"Worker shutting down"</span><span class="o">))</span> <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">fetchAndRunExecutor</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// Launch the process
+</span>      <span class="k">val</span> <span class="n">builder</span> <span class="k">=</span> <span class="nc">CommandUtils</span><span class="o">.</span><span class="n">buildProcessBuilder</span><span class="o">(</span><span class="n">appDesc</span><span class="o">.</span><span class="n">command</span><span class="o">,</span> <span class="k">new</span> <span class="nc">SecurityManager</span><span class="o">(</span><span class="n">conf</span><span class="o">),</span>
+        <span class="n">memory</span><span class="o">,</span> <span class="n">sparkHome</span><span class="o">.</span><span class="n">getAbsolutePath</span><span class="o">,</span> <span class="n">substituteVariables</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">command</span> <span class="k">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">command</span><span class="o">()</span>
+      <span class="k">val</span> <span class="n">formattedCommand</span> <span class="k">=</span> <span class="n">command</span><span class="o">.</span><span class="n">asScala</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">"\""</span><span class="o">,</span> <span class="s">"\" \""</span><span class="o">,</span> <span class="s">"\""</span><span class="o">)</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Launch command: $formattedCommand"</span><span class="o">)</span>
+
+      <span class="n">builder</span><span class="o">.</span><span class="n">directory</span><span class="o">(</span><span class="n">executorDir</span><span class="o">)</span>
+      <span class="n">builder</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">"SPARK_EXECUTOR_DIRS"</span><span class="o">,</span> <span class="n">appLocalDirs</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="nc">File</span><span class="o">.</span><span class="n">pathSeparator</span><span class="o">))</span>
+      <span class="c1">// In case we are running this from within the Spark Shell, avoid creating a "scala"
+</span>      <span class="c1">// parent process for the executor command
+</span>      <span class="n">builder</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">"SPARK_LAUNCH_WITH_SCALA"</span><span class="o">,</span> <span class="s">"0"</span><span class="o">)</span>
+
+      <span class="c1">// Add webUI log urls
+</span>      <span class="k">val</span> <span class="n">baseUrl</span> <span class="k">=</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">conf</span><span class="o">.</span><span class="n">getBoolean</span><span class="o">(</span><span class="s">"spark.ui.reverseProxy"</span><span class="o">,</span> <span class="kc">false</span><span class="o">))</span> <span class="o">{</span>
+          <span class="n">s</span><span class="s">"/proxy/$workerId/logPage/?appId=$appId&amp;executorId=$execId&amp;logType="</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="n">s</span><span class="s">"http://$publicAddress:$webUiPort/logPage/?appId=$appId&amp;executorId=$execId&amp;logType="</span>
+        <span class="o">}</span>
+      <span class="n">builder</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">"SPARK_LOG_URL_STDERR"</span><span class="o">,</span> <span class="n">s</span><span class="s">"${baseUrl}stderr"</span><span class="o">)</span>
+      <span class="n">builder</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">"SPARK_LOG_URL_STDOUT"</span><span class="o">,</span> <span class="n">s</span><span class="s">"${baseUrl}stdout"</span><span class="o">)</span>
+
+      <span class="n">process</span> <span class="k">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+      <span class="k">val</span> <span class="n">header</span> <span class="k">=</span> <span class="s">"Spark Executor Command: %s\n%s\n\n"</span><span class="o">.</span><span class="n">format</span><span class="o">(</span>
+        <span class="n">formattedCommand</span><span class="o">,</span> <span class="s">"="</span> <span class="o">*</span> <span class="mi">40</span><span class="o">)</span>
+
+      <span class="c1">// Redirect its stdout and stderr to files
+</span>      <span class="k">val</span> <span class="n">stdout</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">executorDir</span><span class="o">,</span> <span class="s">"stdout"</span><span class="o">)</span>
+      <span class="n">stdoutAppender</span> <span class="k">=</span> <span class="nc">FileAppender</span><span class="o">(</span><span class="n">process</span><span class="o">.</span><span class="n">getInputStream</span><span class="o">,</span> <span class="n">stdout</span><span class="o">,</span> <span class="n">conf</span><span class="o">)</span>
+
+      <span class="k">val</span> <span class="n">stderr</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">executorDir</span><span class="o">,</span> <span class="s">"stderr"</span><span class="o">)</span>
+      <span class="nc">Files</span><span class="o">.</span><span class="n">write</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">stderr</span><span class="o">,</span> <span class="nc">StandardCharsets</span><span class="o">.</span><span class="nc">UTF_8</span><span class="o">)</span>
+      <span class="n">stderrAppender</span> <span class="k">=</span> <span class="nc">FileAppender</span><span class="o">(</span><span class="n">process</span><span class="o">.</span><span class="n">getErrorStream</span><span class="o">,</span> <span class="n">stderr</span><span class="o">,</span> <span class="n">conf</span><span class="o">)</span>
+
+      <span class="c1">// Wait for it to exit; executor may exit with code 0 (when driver instructs it to shutdown)
+</span>      <span class="c1">// or with nonzero exit code
+</span>      <span class="k">val</span> <span class="n">exitCode</span> <span class="k">=</span> <span class="n">process</span><span class="o">.</span><span class="n">waitFor</span><span class="o">()</span>
+      <span class="n">state</span> <span class="k">=</span> <span class="nc">ExecutorState</span><span class="o">.</span><span class="nc">EXITED</span>
+      <span class="k">val</span> <span class="n">message</span> <span class="k">=</span> <span class="s">"Command exited with code "</span> <span class="o">+</span> <span class="n">exitCode</span>
+      <span class="n">worker</span><span class="o">.</span><span class="n">send</span><span class="o">(</span><span class="nc">ExecutorStateChanged</span><span class="o">(</span><span class="n">appId</span><span class="o">,</span> <span class="n">execId</span><span class="o">,</span> <span class="n">state</span><span class="o">,</span> <span class="nc">Some</span><span class="o">(</span><span class="n">message</span><span class="o">),</span> <span class="nc">Some</span><span class="o">(</span><span class="n">exitCode</span><span class="o">)))</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">interrupted</span><span class="k">:</span> <span class="kt">InterruptedException</span> <span class="o">=&gt;</span>
+        <span class="n">logInfo</span><span class="o">(</span><span class="s">"Runner thread for executor "</span> <span class="o">+</span> <span class="n">fullId</span> <span class="o">+</span> <span class="s">" interrupted"</span><span class="o">)</span>
+        <span class="n">state</span> <span class="k">=</span> <span class="nc">ExecutorState</span><span class="o">.</span><span class="nc">KILLED</span>
+        <span class="n">killProcess</span><span class="o">(</span><span class="nc">None</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+        <span class="n">logError</span><span class="o">(</span><span class="s">"Error running executor"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+        <span class="n">state</span> <span class="k">=</span> <span class="nc">ExecutorState</span><span class="o">.</span><span class="nc">FAILED</span>
+        <span class="n">killProcess</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">toString</span><span class="o">))</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>driver的话也是类似，worker收到LaunchDriver的消息启动Driver，只不过使用的是DriverRunner，start方法中会执行prepareAndRunDriver方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="nc">LaunchDriver</span><span class="o">(</span><span class="n">driverId</span><span class="o">,</span> <span class="n">driverDesc</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Asked to launch driver $driverId"</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">driver</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">DriverRunner</span><span class="o">(</span>
+        <span class="n">conf</span><span class="o">,</span>
+        <span class="n">driverId</span><span class="o">,</span>
+        <span class="n">workDir</span><span class="o">,</span>
+        <span class="n">sparkHome</span><span class="o">,</span>
+        <span class="n">driverDesc</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">command</span> <span class="k">=</span> <span class="nc">Worker</span><span class="o">.</span><span class="n">maybeUpdateSSLSettings</span><span class="o">(</span><span class="n">driverDesc</span><span class="o">.</span><span class="n">command</span><span class="o">,</span> <span class="n">conf</span><span class="o">)),</span>
+        <span class="n">self</span><span class="o">,</span>
+        <span class="n">workerUri</span><span class="o">,</span>
+        <span class="n">securityMgr</span><span class="o">)</span>
+      <span class="n">drivers</span><span class="o">(</span><span class="n">driverId</span><span class="o">)</span> <span class="k">=</span> <span class="n">driver</span>
+      <span class="n">driver</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+
+      <span class="n">coresUsed</span> <span class="o">+=</span> <span class="n">driverDesc</span><span class="o">.</span><span class="n">cores</span>
+      <span class="n">memoryUsed</span> <span class="o">+=</span> <span class="n">driverDesc</span><span class="o">.</span><span class="n">mem</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>prepareAndRunDriver方法如下，driver需要下载user jar，这点executor不需要，接着也是拼接启动进程参数，执行到最后也是使用ProcessImpl启动进程</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">worker</span><span class="o">]</span> <span class="k">def</span> <span class="n">prepareAndRunDriver</span><span class="o">()</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">driverDir</span> <span class="k">=</span> <span class="n">createWorkingDirectory</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">localJarFilename</span> <span class="k">=</span> <span class="n">downloadUserJar</span><span class="o">(</span><span class="n">driverDir</span><span class="o">)</span>
+
+    <span class="k">def</span> <span class="n">substituteVariables</span><span class="o">(</span><span class="n">argument</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">argument</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="s">""</span> <span class="k">=&gt;</span> <span class="n">workerUrl</span>
+      <span class="k">case</span> <span class="s">""</span> <span class="k">=&gt;</span> <span class="n">localJarFilename</span>
+      <span class="k">case</span> <span class="n">other</span> <span class="k">=&gt;</span> <span class="n">other</span>
+    <span class="o">}</span>
+
+    <span class="c1">// TODO: If we add ability to submit multiple jars they should also be added here
+</span>    <span class="k">val</span> <span class="n">builder</span> <span class="k">=</span> <span class="nc">CommandUtils</span><span class="o">.</span><span class="n">buildProcessBuilder</span><span class="o">(</span><span class="n">driverDesc</span><span class="o">.</span><span class="n">command</span><span class="o">,</span> <span class="n">securityManager</span><span class="o">,</span>
+      <span class="n">driverDesc</span><span class="o">.</span><span class="n">mem</span><span class="o">,</span> <span class="n">sparkHome</span><span class="o">.</span><span class="n">getAbsolutePath</span><span class="o">,</span> <span class="n">substituteVariables</span><span class="o">)</span>
+
+    <span class="n">runDriver</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="n">driverDir</span><span class="o">,</span> <span class="n">driverDesc</span><span class="o">.</span><span class="n">supervise</span><span class="o">)</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">runDriver</span><span class="o">(</span><span class="n">builder</span><span class="k">:</span> <span class="kt">ProcessBuilder</span><span class="o">,</span> <span class="n">baseDir</span><span class="k">:</span> <span class="kt">File</span><span class="o">,</span> <span class="n">supervise</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">builder</span><span class="o">.</span><span class="n">directory</span><span class="o">(</span><span class="n">baseDir</span><span class="o">)</span>
+    <span class="k">def</span> <span class="n">initialize</span><span class="o">(</span><span class="n">process</span><span class="k">:</span> <span class="kt">Process</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="c1">// Redirect stdout and stderr to files
+</span>      <span class="k">val</span> <span class="n">stdout</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">baseDir</span><span class="o">,</span> <span class="s">"stdout"</span><span class="o">)</span>
+      <span class="nc">CommandUtils</span><span class="o">.</span><span class="n">redirectStream</span><span class="o">(</span><span class="n">process</span><span class="o">.</span><span class="n">getInputStream</span><span class="o">,</span> <span class="n">stdout</span><span class="o">)</span>
+
+      <span class="k">val</span> <span class="n">stderr</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">baseDir</span><span class="o">,</span> <span class="s">"stderr"</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">formattedCommand</span> <span class="k">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">asScala</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">"\""</span><span class="o">,</span> <span class="s">"\" \""</span><span class="o">,</span> <span class="s">"\""</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">header</span> <span class="k">=</span> <span class="s">"Launch Command: %s\n%s\n\n"</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="n">formattedCommand</span><span class="o">,</span> <span class="s">"="</span> <span class="o">*</span> <span class="mi">40</span><span class="o">)</span>
+      <span class="nc">Files</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">stderr</span><span class="o">,</span> <span class="nc">StandardCharsets</span><span class="o">.</span><span class="nc">UTF_8</span><span class="o">)</span>
+      <span class="nc">CommandUtils</span><span class="o">.</span><span class="n">redirectStream</span><span class="o">(</span><span class="n">process</span><span class="o">.</span><span class="n">getErrorStream</span><span class="o">,</span> <span class="n">stderr</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">runCommandWithRetry</span><span class="o">(</span><span class="nc">ProcessBuilderLike</span><span class="o">(</span><span class="n">builder</span><span class="o">),</span> <span class="n">initialize</span><span class="o">,</span> <span class="n">supervise</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>其实看源码方法中很多东西不用看的，比如参数校验，spark代码那么多，如果细细的看，恐怕有得看，学会了这一招，就快了，主要是熟悉整个的流程以及学习思想</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/07/08/dynamic_allocation_executor', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
