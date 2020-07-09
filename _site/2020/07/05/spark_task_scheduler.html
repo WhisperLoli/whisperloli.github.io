@@ -296,10 +296,13 @@ var _hmt = _hmt || [];
 
   <p>SchedulerBackend的实现有LocalSchedulerBackend，CoarseGrainedSchedulerBackend，前者用于本地模式，后者应用于集群模式，StandaloneSchedulerBackend继承CoarseGrainedSchedulerBackend</p>
 
-  <p>先讲讲LocalSchedulerBackend，TaskScheduler的start方法会调用SchedulerBackend的start方法，创建endpoint和endpointRef，killTask/statusUpdate/reviveOffers都会发送RPC消息给endpointRef，真正的执行task交由executor操作</p>
+  <p>先讲讲LocalSchedulerBackend，TaskScheduler的start方法会调用SchedulerBackend的start方法，创建endpoint和endpointRef，killTask/statusUpdate/reviveOffers都会发送RPC消息给endpointRef，真正的执行task交由executor操作，local模式会在LocalSchedulerBackend中创建executor，而这个executor也是driver</p>
 </blockquote>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">reviveOffers</span><span class="o">()</span> <span class="o">{</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">private</span> <span class="k">val</span> <span class="n">executor</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Executor</span><span class="o">(</span>
+    <span class="n">localExecutorId</span><span class="o">,</span> <span class="n">localExecutorHostname</span><span class="o">,</span> <span class="nc">SparkEnv</span><span class="o">.</span><span class="n">get</span><span class="o">,</span> <span class="n">userClassPath</span><span class="o">,</span> <span class="n">isLocal</span> <span class="k">=</span> <span class="kc">true</span><span class="o">)</span>
+
+  <span class="k">def</span> <span class="n">reviveOffers</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">val</span> <span class="n">offers</span> <span class="k">=</span> <span class="nc">IndexedSeq</span><span class="o">(</span><span class="k">new</span> <span class="nc">WorkerOffer</span><span class="o">(</span><span class="n">localExecutorId</span><span class="o">,</span> <span class="n">localExecutorHostname</span><span class="o">,</span> <span class="n">freeCores</span><span class="o">))</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">task</span> <span class="k">&lt;-</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">resourceOffers</span><span class="o">(</span><span class="n">offers</span><span class="o">).</span><span class="n">flatten</span><span class="o">)</span> <span class="o">{</span>
       <span class="n">freeCores</span> <span class="o">-=</span> <span class="n">scheduler</span><span class="o">.</span><span class="nc">CPUS_PER_TASK</span>

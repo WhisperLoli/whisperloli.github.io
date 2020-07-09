@@ -141,9 +141,12 @@ subtitle: 'TaskScheduler'
 > 
 > SchedulerBackend的实现有LocalSchedulerBackend，CoarseGrainedSchedulerBackend，前者用于本地模式，后者应用于集群模式，StandaloneSchedulerBackend继承CoarseGrainedSchedulerBackend
 > 
-> 先讲讲LocalSchedulerBackend，TaskScheduler的start方法会调用SchedulerBackend的start方法，创建endpoint和endpointRef，killTask/statusUpdate/reviveOffers都会发送RPC消息给endpointRef，真正的执行task交由executor操作
+> 先讲讲LocalSchedulerBackend，TaskScheduler的start方法会调用SchedulerBackend的start方法，创建endpoint和endpointRef，killTask/statusUpdate/reviveOffers都会发送RPC消息给endpointRef，真正的执行task交由executor操作，local模式会在LocalSchedulerBackend中创建executor，而这个executor也是driver
 
 ```scala
+  private val executor = new Executor(
+    localExecutorId, localExecutorHostname, SparkEnv.get, userClassPath, isLocal = true)
+
   def reviveOffers() {
     val offers = IndexedSeq(new WorkerOffer(localExecutorId, localExecutorHostname, freeCores))
     for (task <- scheduler.resourceOffers(offers).flatten) {
