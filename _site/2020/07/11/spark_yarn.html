@@ -1,0 +1,852 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记(十八)</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(十八)</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(十八)</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/09/elastisearch_search_optimize.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">ElasticSearch查询超时优化</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/09/elastisearch_search_optimize.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>ElasticSearch查询超时优化</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        SparkSubmit后Yarn模式启动流程
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>之前说 <a href="https://whisperloli.github.io/2020/05/13/spark_submit_process.html">SparkSubmit</a> 的时候，只是大致讲了下整个流程，prepareSubmitEnvironment没有细讲，该方法中会判断当前是以什么模式启动，不同的启动模式，主函数和其他配置都会变化，如下所示，如果是yarn cluster模式，spark-submit最后执行的主函数就会是org.apache.spark.deploy.yarn.YarnClusterApplication，而不是我们自己打在jar包中的主函数，如果是client模式的话，依然是我们自己提供的主函数</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">private</span><span class="o">[</span><span class="kt">deploy</span><span class="o">]</span> <span class="k">val</span> <span class="nc">YARN_CLUSTER_SUBMIT_CLASS</span> <span class="k">=</span>
+    <span class="s">"org.apache.spark.deploy.yarn.YarnClusterApplication"</span>
+
+    <span class="c1">// In yarn-cluster mode, use yarn.Client as a wrapper around the user class
+</span>    <span class="k">if</span> <span class="o">(</span><span class="n">isYarnCluster</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">childMainClass</span> <span class="k">=</span> <span class="nc">YARN_CLUSTER_SUBMIT_CLASS</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">isPython</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--primary-py-file"</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">primaryResource</span><span class="o">)</span>
+        <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--class"</span><span class="o">,</span> <span class="s">"org.apache.spark.deploy.PythonRunner"</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">isR</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">mainFile</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Path</span><span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">primaryResource</span><span class="o">).</span><span class="n">getName</span>
+        <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--primary-r-file"</span><span class="o">,</span> <span class="n">mainFile</span><span class="o">)</span>
+        <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--class"</span><span class="o">,</span> <span class="s">"org.apache.spark.deploy.RRunner"</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">primaryResource</span> <span class="o">!=</span> <span class="nc">SparkLauncher</span><span class="o">.</span><span class="nc">NO_RESOURCE</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--jar"</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">primaryResource</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--class"</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">mainClass</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">childArgs</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">childArgs</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">arg</span> <span class="k">=&gt;</span> <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--arg"</span><span class="o">,</span> <span class="n">arg</span><span class="o">)</span> <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>找到执行的主函数，就很好就判断，先看yarn-cluster模式吧，启动后创建client调用run方法</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private[spark] class YarnClusterApplication extends SparkApplication {
+
+  override def start(args: Array[String], conf: SparkConf): Unit = {
+    // SparkSubmit would use yarn cache to distribute files &amp; jars in yarn mode,
+    // so remove them from sparkConf here for yarn mode.
+    conf.remove("spark.jars")
+    conf.remove("spark.files")
+
+    new Client(new ClientArguments(args), conf).run()
+  }
+
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>run方法那么多东西，其实主要就是看第一行代码，其他都是些什么校验啊之类的</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">appId</span> <span class="k">=</span> <span class="n">submitApplication</span><span class="o">()</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">launcherBackend</span><span class="o">.</span><span class="n">isConnected</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">fireAndForget</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">report</span> <span class="k">=</span> <span class="n">getApplicationReport</span><span class="o">(</span><span class="n">appId</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">state</span> <span class="k">=</span> <span class="n">report</span><span class="o">.</span><span class="n">getYarnApplicationState</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Application report for $appId (state: $state)"</span><span class="o">)</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="n">formatReportDetails</span><span class="o">(</span><span class="n">report</span><span class="o">))</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="nc">YarnApplicationState</span><span class="o">.</span><span class="nc">FAILED</span> <span class="o">||</span> <span class="n">state</span> <span class="o">==</span> <span class="nc">YarnApplicationState</span><span class="o">.</span><span class="nc">KILLED</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Application $appId finished with status: $state"</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="o">(</span><span class="n">yarnApplicationState</span><span class="o">,</span> <span class="n">finalApplicationStatus</span><span class="o">)</span> <span class="k">=</span> <span class="n">monitorApplication</span><span class="o">(</span><span class="n">appId</span><span class="o">)</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">yarnApplicationState</span> <span class="o">==</span> <span class="nc">YarnApplicationState</span><span class="o">.</span><span class="nc">FAILED</span> <span class="o">||</span>
+        <span class="n">finalApplicationStatus</span> <span class="o">==</span> <span class="nc">FinalApplicationStatus</span><span class="o">.</span><span class="nc">FAILED</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Application $appId finished with failed status"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">yarnApplicationState</span> <span class="o">==</span> <span class="nc">YarnApplicationState</span><span class="o">.</span><span class="nc">KILLED</span> <span class="o">||</span>
+        <span class="n">finalApplicationStatus</span> <span class="o">==</span> <span class="nc">FinalApplicationStatus</span><span class="o">.</span><span class="nc">KILLED</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Application $appId is killed"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">finalApplicationStatus</span> <span class="o">==</span> <span class="nc">FinalApplicationStatus</span><span class="o">.</span><span class="nc">UNDEFINED</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"The final status of application $appId is undefined"</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>submitApplication方法主要用于提交application，创建Container启动上下文，application提交上下文，并提交到yarn中。container启动上下文就是准备一些jvm参数，用户的配置之类用于启动ApplicationMaster。application提交上下文就是设置一些sparkConf中配置的参数，比如我们设置yarn的队列之类的，spark app name等等</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+   * Submit an application running our ApplicationMaster to the ResourceManager.
+   *
+   * The stable Yarn API provides a convenience method (YarnClient#createApplication) for
+   * creating applications and setting up the application submission context. This was not
+   * available in the alpha API.
+   */
+  def submitApplication(): ApplicationId = {
+    var appId: ApplicationId = null
+    try {
+      launcherBackend.connect()
+      // Setup the credentials before doing anything else,
+      // so we have don't have issues at any point.
+      setupCredentials()
+      yarnClient.init(hadoopConf)
+      yarnClient.start()
+
+      logInfo("Requesting a new application from cluster with %d NodeManagers"
+        .format(yarnClient.getYarnClusterMetrics.getNumNodeManagers))
+
+      // Get a new application from our RM
+      val newApp = yarnClient.createApplication()
+      val newAppResponse = newApp.getNewApplicationResponse()
+      appId = newAppResponse.getApplicationId()
+
+      new CallerContext("CLIENT", sparkConf.get(APP_CALLER_CONTEXT),
+        Option(appId.toString)).setCurrentContext()
+
+      // Verify whether the cluster has enough resources for our AM
+      verifyClusterResources(newAppResponse)
+
+      // Set up the appropriate contexts to launch our AM
+      val containerContext = createContainerLaunchContext(newAppResponse)
+      val appContext = createApplicationSubmissionContext(newApp, containerContext)
+
+      // Finally, submit and monitor the application
+      logInfo(s"Submitting application $appId to ResourceManager")
+      yarnClient.submitApplication(appContext)
+      launcherBackend.setAppId(appId.toString)
+      reportLauncherState(SparkAppHandle.State.SUBMITTED)
+
+      appId
+    } catch {
+      case e: Throwable =&gt;
+        if (appId != null) {
+          cleanupStagingDir(appId)
+        }
+        throw e
+    }
+  }
+</code></pre></div></div>
+
+<blockquote>
+  <p>提交完后，yarn会启动ApplicationMaster，执行ApplicationMaster的run方法，主要就是runDriver方法和runExecutorLauncher方法，cluster模式要执行runDriver主要是因为spark-submit提交后并没有执行用户的代码，所以没有启动driver，而client模式提交后，是先执行的用户代码，driver已经启动了，再来将任务提交到yarn中，申请executor。这也就是为什么client模式提交代码driver就会创建在哪台机器上，而cluster模式不会。</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">final</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">doAsUser</span> <span class="o">{</span>
+      <span class="n">runImpl</span><span class="o">()</span>
+    <span class="o">}</span>
+    <span class="n">exitCode</span>
+  <span class="o">}</span>
+
+  <span class="k">private</span> <span class="k">def</span> <span class="n">runImpl</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">appAttemptId</span> <span class="k">=</span> <span class="n">client</span><span class="o">.</span><span class="n">getAttemptId</span><span class="o">()</span>
+
+      <span class="k">var</span> <span class="n">attemptID</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">isClusterMode</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Set the web ui port to be ephemeral for yarn so we don't conflict with
+</span>        <span class="c1">// other spark processes running on the same box
+</span>        <span class="nc">System</span><span class="o">.</span><span class="n">setProperty</span><span class="o">(</span><span class="s">"spark.ui.port"</span><span class="o">,</span> <span class="s">"0"</span><span class="o">)</span>
+
+        <span class="c1">// Set the master and deploy mode property to match the requested mode.
+</span>        <span class="nc">System</span><span class="o">.</span><span class="n">setProperty</span><span class="o">(</span><span class="s">"spark.master"</span><span class="o">,</span> <span class="s">"yarn"</span><span class="o">)</span>
+        <span class="nc">System</span><span class="o">.</span><span class="n">setProperty</span><span class="o">(</span><span class="s">"spark.submit.deployMode"</span><span class="o">,</span> <span class="s">"cluster"</span><span class="o">)</span>
+
+        <span class="c1">// Set this internal configuration if it is running on cluster mode, this
+</span>        <span class="c1">// configuration will be checked in SparkContext to avoid misuse of yarn cluster mode.
+</span>        <span class="nc">System</span><span class="o">.</span><span class="n">setProperty</span><span class="o">(</span><span class="s">"spark.yarn.app.id"</span><span class="o">,</span> <span class="n">appAttemptId</span><span class="o">.</span><span class="n">getApplicationId</span><span class="o">().</span><span class="n">toString</span><span class="o">())</span>
+
+        <span class="n">attemptID</span> <span class="k">=</span> <span class="nc">Option</span><span class="o">(</span><span class="n">appAttemptId</span><span class="o">.</span><span class="n">getAttemptId</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
+      <span class="o">}</span>
+
+      <span class="k">new</span> <span class="nc">CallerContext</span><span class="o">(</span>
+        <span class="s">"APPMASTER"</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">APP_CALLER_CONTEXT</span><span class="o">),</span>
+        <span class="nc">Option</span><span class="o">(</span><span class="n">appAttemptId</span><span class="o">.</span><span class="n">getApplicationId</span><span class="o">.</span><span class="n">toString</span><span class="o">),</span> <span class="n">attemptID</span><span class="o">).</span><span class="n">setCurrentContext</span><span class="o">()</span>
+
+      <span class="n">logInfo</span><span class="o">(</span><span class="s">"ApplicationAttemptId: "</span> <span class="o">+</span> <span class="n">appAttemptId</span><span class="o">)</span>
+
+      <span class="c1">// This shutdown hook should run *after* the SparkContext is shut down.
+</span>      <span class="k">val</span> <span class="n">priority</span> <span class="k">=</span> <span class="nc">ShutdownHookManager</span><span class="o">.</span><span class="nc">SPARK_CONTEXT_SHUTDOWN_PRIORITY</span> <span class="o">-</span> <span class="mi">1</span>
+      <span class="nc">ShutdownHookManager</span><span class="o">.</span><span class="n">addShutdownHook</span><span class="o">(</span><span class="n">priority</span><span class="o">)</span> <span class="o">{</span> <span class="o">()</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">maxAppAttempts</span> <span class="k">=</span> <span class="n">client</span><span class="o">.</span><span class="n">getMaxRegAttempts</span><span class="o">(</span><span class="n">sparkConf</span><span class="o">,</span> <span class="n">yarnConf</span><span class="o">)</span>
+        <span class="k">val</span> <span class="n">isLastAttempt</span> <span class="k">=</span> <span class="n">client</span><span class="o">.</span><span class="n">getAttemptId</span><span class="o">().</span><span class="n">getAttemptId</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="n">maxAppAttempts</span>
+
+        <span class="k">if</span> <span class="o">(!</span><span class="n">finished</span><span class="o">)</span> <span class="o">{</span>
+          <span class="c1">// The default state of ApplicationMaster is failed if it is invoked by shut down hook.
+</span>          <span class="c1">// This behavior is different compared to 1.x version.
+</span>          <span class="c1">// If user application is exited ahead of time by calling System.exit(N), here mark
+</span>          <span class="c1">// this application as failed with EXIT_EARLY. For a good shutdown, user shouldn't call
+</span>          <span class="c1">// System.exit(0) to terminate the application.
+</span>          <span class="n">finish</span><span class="o">(</span><span class="n">finalStatus</span><span class="o">,</span>
+            <span class="nc">ApplicationMaster</span><span class="o">.</span><span class="nc">EXIT_EARLY</span><span class="o">,</span>
+            <span class="s">"Shutdown hook called before final status was reported."</span><span class="o">)</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(!</span><span class="n">unregistered</span><span class="o">)</span> <span class="o">{</span>
+          <span class="c1">// we only want to unregister if we don't want the RM to retry
+</span>          <span class="k">if</span> <span class="o">(</span><span class="n">finalStatus</span> <span class="o">==</span> <span class="nc">FinalApplicationStatus</span><span class="o">.</span><span class="nc">SUCCEEDED</span> <span class="o">||</span> <span class="n">isLastAttempt</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">unregister</span><span class="o">(</span><span class="n">finalStatus</span><span class="o">,</span> <span class="n">finalMsg</span><span class="o">)</span>
+            <span class="n">cleanupStagingDir</span><span class="o">()</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+
+      <span class="c1">// If the credentials file config is present, we must periodically renew tokens. So create
+</span>      <span class="c1">// a new AMDelegationTokenRenewer
+</span>      <span class="k">if</span> <span class="o">(</span><span class="n">sparkConf</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="nc">CREDENTIALS_FILE_PATH</span><span class="o">))</span> <span class="o">{</span>
+        <span class="c1">// Start a short-lived thread for AMCredentialRenewer, the only purpose is to set the
+</span>        <span class="c1">// classloader so that main jar and secondary jars could be used by AMCredentialRenewer.
+</span>        <span class="k">val</span> <span class="n">credentialRenewerThread</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Thread</span> <span class="o">{</span>
+          <span class="n">setName</span><span class="o">(</span><span class="s">"AMCredentialRenewerStarter"</span><span class="o">)</span>
+          <span class="n">setContextClassLoader</span><span class="o">(</span><span class="n">userClassLoader</span><span class="o">)</span>
+
+          <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+            <span class="k">val</span> <span class="n">credentialManager</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">YARNHadoopDelegationTokenManager</span><span class="o">(</span>
+              <span class="n">sparkConf</span><span class="o">,</span>
+              <span class="n">yarnConf</span><span class="o">,</span>
+              <span class="n">conf</span> <span class="k">=&gt;</span> <span class="nc">YarnSparkHadoopUtil</span><span class="o">.</span><span class="n">hadoopFSsToAccess</span><span class="o">(</span><span class="n">sparkConf</span><span class="o">,</span> <span class="n">conf</span><span class="o">))</span>
+
+            <span class="k">val</span> <span class="n">credentialRenewer</span> <span class="k">=</span>
+              <span class="k">new</span> <span class="nc">AMCredentialRenewer</span><span class="o">(</span><span class="n">sparkConf</span><span class="o">,</span> <span class="n">yarnConf</span><span class="o">,</span> <span class="n">credentialManager</span><span class="o">)</span>
+            <span class="n">credentialRenewer</span><span class="o">.</span><span class="n">scheduleLoginFromKeytab</span><span class="o">()</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="n">credentialRenewerThread</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+        <span class="n">credentialRenewerThread</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+      <span class="o">}</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">isClusterMode</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">runDriver</span><span class="o">()</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">runExecutorLauncher</span><span class="o">()</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+        <span class="c1">// catch everything else if not specifically handled
+</span>        <span class="n">logError</span><span class="o">(</span><span class="s">"Uncaught exception: "</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+        <span class="n">finish</span><span class="o">(</span><span class="nc">FinalApplicationStatus</span><span class="o">.</span><span class="nc">FAILED</span><span class="o">,</span>
+          <span class="nc">ApplicationMaster</span><span class="o">.</span><span class="nc">EXIT_UNCAUGHT_EXCEPTION</span><span class="o">,</span>
+          <span class="s">"Uncaught exception: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>runDriver方法会先调用startUserApplication方法提交执行用户的代码，然后自己的代码会被阻塞等待用户代码创建完TaskScheduler，SparkContext创建taskScheduler时使用ClusterManager创建，yarn模式会进入YarnClusterManager，YarnClusterScheduler会调用ApplicationMaster.sparkContextInitialized(sc)方法，发送通知给runDriver，至此driver创建完成，runDriver方法会继续向下执行，会执行registerAM方法注册ApplicationMaster（也就是AM）</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">runDriver</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">addAmIpFilter</span><span class="o">(</span><span class="nc">None</span><span class="o">)</span>
+    <span class="n">userClassThread</span> <span class="k">=</span> <span class="n">startUserApplication</span><span class="o">()</span>
+
+    <span class="c1">// This a bit hacky, but we need to wait until the spark.driver.port property has
+</span>    <span class="c1">// been set by the Thread executing the user class.
+</span>    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Waiting for spark context initialization..."</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">totalWaitTime</span> <span class="k">=</span> <span class="n">sparkConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">AM_MAX_WAIT_TIME</span><span class="o">)</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">sc</span> <span class="k">=</span> <span class="nc">ThreadUtils</span><span class="o">.</span><span class="n">awaitResult</span><span class="o">(</span><span class="n">sparkContextPromise</span><span class="o">.</span><span class="n">future</span><span class="o">,</span>
+        <span class="nc">Duration</span><span class="o">(</span><span class="n">totalWaitTime</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="nc">MILLISECONDS</span><span class="o">))</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">sc</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">rpcEnv</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">rpcEnv</span>
+        <span class="k">val</span> <span class="n">driverRef</span> <span class="k">=</span> <span class="n">createSchedulerRef</span><span class="o">(</span>
+          <span class="n">sc</span><span class="o">.</span><span class="n">getConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.driver.host"</span><span class="o">),</span>
+          <span class="n">sc</span><span class="o">.</span><span class="n">getConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.driver.port"</span><span class="o">))</span>
+        <span class="n">registerAM</span><span class="o">(</span><span class="n">sc</span><span class="o">.</span><span class="n">getConf</span><span class="o">,</span> <span class="n">rpcEnv</span><span class="o">,</span> <span class="n">driverRef</span><span class="o">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">webUrl</span><span class="o">))</span>
+        <span class="n">registered</span> <span class="k">=</span> <span class="kc">true</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="c1">// Sanity check; should never happen in normal operation, since sc should only be null
+</span>        <span class="c1">// if the user app did not create a SparkContext.
+</span>        <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span><span class="o">(</span><span class="s">"User did not initialize spark context!"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="n">resumeDriver</span><span class="o">()</span>
+      <span class="n">userClassThread</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">SparkException</span> <span class="kt">if</span> <span class="kt">e.getCause</span><span class="o">()</span><span class="kt">.isInstanceOf</span><span class="o">[</span><span class="kt">TimeoutException</span><span class="o">]</span> <span class="k">=&gt;</span>
+        <span class="n">logError</span><span class="o">(</span>
+          <span class="n">s</span><span class="s">"SparkContext did not initialize after waiting for $totalWaitTime ms. "</span> <span class="o">+</span>
+           <span class="s">"Please check earlier log output for errors. Failing the application."</span><span class="o">)</span>
+        <span class="n">finish</span><span class="o">(</span><span class="nc">FinalApplicationStatus</span><span class="o">.</span><span class="nc">FAILED</span><span class="o">,</span>
+          <span class="nc">ApplicationMaster</span><span class="o">.</span><span class="nc">EXIT_SC_NOT_INITED</span><span class="o">,</span>
+          <span class="s">"Timed out waiting for SparkContext."</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="n">resumeDriver</span><span class="o">()</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>注册完AM后会分配资源，执行allocator.allocateResources()方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">registerAM</span><span class="o">(</span>
+      <span class="nc">_sparkConf</span><span class="k">:</span> <span class="kt">SparkConf</span><span class="o">,</span>
+      <span class="nc">_rpcEnv</span><span class="k">:</span> <span class="kt">RpcEnv</span><span class="o">,</span>
+      <span class="n">driverRef</span><span class="k">:</span> <span class="kt">RpcEndpointRef</span><span class="o">,</span>
+      <span class="n">uiAddress</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">appId</span> <span class="k">=</span> <span class="n">client</span><span class="o">.</span><span class="n">getAttemptId</span><span class="o">().</span><span class="n">getApplicationId</span><span class="o">().</span><span class="n">toString</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">attemptId</span> <span class="k">=</span> <span class="n">client</span><span class="o">.</span><span class="n">getAttemptId</span><span class="o">().</span><span class="n">getAttemptId</span><span class="o">().</span><span class="n">toString</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">historyAddress</span> <span class="k">=</span> <span class="nc">ApplicationMaster</span>
+      <span class="o">.</span><span class="n">getHistoryServerAddress</span><span class="o">(</span><span class="nc">_sparkConf</span><span class="o">,</span> <span class="n">yarnConf</span><span class="o">,</span> <span class="n">appId</span><span class="o">,</span> <span class="n">attemptId</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">driverUrl</span> <span class="k">=</span> <span class="nc">RpcEndpointAddress</span><span class="o">(</span>
+      <span class="nc">_sparkConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.driver.host"</span><span class="o">),</span>
+      <span class="nc">_sparkConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.driver.port"</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span>
+      <span class="nc">CoarseGrainedSchedulerBackend</span><span class="o">.</span><span class="nc">ENDPOINT_NAME</span><span class="o">).</span><span class="n">toString</span>
+
+    <span class="c1">// Before we initialize the allocator, let's log the information about how executors will
+</span>    <span class="c1">// be run up front, to avoid printing this out for every single executor being launched.
+</span>    <span class="c1">// Use placeholders for information that changes such as executor IDs.
+</span>    <span class="n">logInfo</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">executorMemory</span> <span class="k">=</span> <span class="n">sparkConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">EXECUTOR_MEMORY</span><span class="o">).</span><span class="n">toInt</span>
+      <span class="k">val</span> <span class="n">executorCores</span> <span class="k">=</span> <span class="n">sparkConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">EXECUTOR_CORES</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">dummyRunner</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ExecutorRunnable</span><span class="o">(</span><span class="nc">None</span><span class="o">,</span> <span class="n">yarnConf</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">,</span> <span class="n">driverUrl</span><span class="o">,</span> <span class="s">"&lt;executorId&gt;"</span><span class="o">,</span>
+        <span class="s">"&lt;hostname&gt;"</span><span class="o">,</span> <span class="n">executorMemory</span><span class="o">,</span> <span class="n">executorCores</span><span class="o">,</span> <span class="n">appId</span><span class="o">,</span> <span class="n">securityMgr</span><span class="o">,</span> <span class="n">localResources</span><span class="o">)</span>
+      <span class="n">dummyRunner</span><span class="o">.</span><span class="n">launchContextDebugInfo</span><span class="o">()</span>
+    <span class="o">}</span>
+
+    <span class="n">allocator</span> <span class="k">=</span> <span class="n">client</span><span class="o">.</span><span class="n">register</span><span class="o">(</span><span class="n">driverUrl</span><span class="o">,</span>
+      <span class="n">driverRef</span><span class="o">,</span>
+      <span class="n">yarnConf</span><span class="o">,</span>
+      <span class="nc">_sparkConf</span><span class="o">,</span>
+      <span class="n">uiAddress</span><span class="o">,</span>
+      <span class="n">historyAddress</span><span class="o">,</span>
+      <span class="n">securityMgr</span><span class="o">,</span>
+      <span class="n">localResources</span><span class="o">)</span>
+
+    <span class="c1">// Initialize the AM endpoint *after* the allocator has been initialized. This ensures
+</span>    <span class="c1">// that when the driver sends an initial executor request (e.g. after an AM restart),
+</span>    <span class="c1">// the allocator is ready to service requests.
+</span>    <span class="n">rpcEnv</span><span class="o">.</span><span class="n">setupEndpoint</span><span class="o">(</span><span class="s">"YarnAM"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">AMEndpoint</span><span class="o">(</span><span class="n">rpcEnv</span><span class="o">,</span> <span class="n">driverRef</span><span class="o">))</span>
+
+    <span class="n">allocator</span><span class="o">.</span><span class="n">allocateResources</span><span class="o">()</span>
+    <span class="n">reporterThread</span> <span class="k">=</span> <span class="n">launchReporterThread</span><span class="o">()</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>allocateResources方法获取yarn分配给我们的资源，如果所有资源都可以获取，那么会启动containers数量与max executors数量一致，也就是一个containers中一个executor，之后执行handleAllocatedContainers方法。分配container时的策略是同一个host的优先，接下来再是同一个机架，最后是同一个机房。再执行runAllocatedContainers方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">allocateResources</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="n">updateResourceRequests</span><span class="o">()</span>
+
+    <span class="k">val</span> <span class="n">progressIndicator</span> <span class="k">=</span> <span class="mf">0.1f</span>
+    <span class="c1">// Poll the ResourceManager. This doubles as a heartbeat if there are no pending container
+</span>    <span class="c1">// requests.
+</span>    <span class="k">val</span> <span class="n">allocateResponse</span> <span class="k">=</span> <span class="n">amClient</span><span class="o">.</span><span class="n">allocate</span><span class="o">(</span><span class="n">progressIndicator</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">allocatedContainers</span> <span class="k">=</span> <span class="n">allocateResponse</span><span class="o">.</span><span class="n">getAllocatedContainers</span><span class="o">()</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">allocatedContainers</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logDebug</span><span class="o">((</span><span class="s">"Allocated containers: %d. Current executor count: %d. "</span> <span class="o">+</span>
+        <span class="s">"Launching executor count: %d. Cluster resources: %s."</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">format</span><span class="o">(</span>
+          <span class="n">allocatedContainers</span><span class="o">.</span><span class="n">size</span><span class="o">,</span>
+          <span class="n">runningExecutors</span><span class="o">.</span><span class="n">size</span><span class="o">,</span>
+          <span class="n">numExecutorsStarting</span><span class="o">.</span><span class="n">get</span><span class="o">,</span>
+          <span class="n">allocateResponse</span><span class="o">.</span><span class="n">getAvailableResources</span><span class="o">))</span>
+
+      <span class="n">handleAllocatedContainers</span><span class="o">(</span><span class="n">allocatedContainers</span><span class="o">.</span><span class="n">asScala</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">val</span> <span class="n">completedContainers</span> <span class="k">=</span> <span class="n">allocateResponse</span><span class="o">.</span><span class="n">getCompletedContainersStatuses</span><span class="o">()</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">completedContainers</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logDebug</span><span class="o">(</span><span class="s">"Completed %d containers"</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="n">completedContainers</span><span class="o">.</span><span class="n">size</span><span class="o">))</span>
+      <span class="n">processCompletedContainers</span><span class="o">(</span><span class="n">completedContainers</span><span class="o">.</span><span class="n">asScala</span><span class="o">)</span>
+      <span class="n">logDebug</span><span class="o">(</span><span class="s">"Finished processing %d completed containers. Current running executor count: %d."</span>
+        <span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="n">completedContainers</span><span class="o">.</span><span class="n">size</span><span class="o">,</span> <span class="n">runningExecutors</span><span class="o">.</span><span class="n">size</span><span class="o">))</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="k">def</span> <span class="n">handleAllocatedContainers</span><span class="o">(</span><span class="n">allocatedContainers</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Container</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">containersToUse</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">Container</span><span class="o">](</span><span class="n">allocatedContainers</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
+
+    <span class="c1">// Match incoming requests by host
+</span>    <span class="k">val</span> <span class="n">remainingAfterHostMatches</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">Container</span><span class="o">]</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">allocatedContainer</span> <span class="k">&lt;-</span> <span class="n">allocatedContainers</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">matchContainerToRequest</span><span class="o">(</span><span class="n">allocatedContainer</span><span class="o">,</span> <span class="n">allocatedContainer</span><span class="o">.</span><span class="n">getNodeId</span><span class="o">.</span><span class="n">getHost</span><span class="o">,</span>
+        <span class="n">containersToUse</span><span class="o">,</span> <span class="n">remainingAfterHostMatches</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Match remaining by rack
+</span>    <span class="k">val</span> <span class="n">remainingAfterRackMatches</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">Container</span><span class="o">]</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">allocatedContainer</span> <span class="k">&lt;-</span> <span class="n">remainingAfterHostMatches</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">rack</span> <span class="k">=</span> <span class="n">resolver</span><span class="o">.</span><span class="n">resolve</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="n">allocatedContainer</span><span class="o">.</span><span class="n">getNodeId</span><span class="o">.</span><span class="n">getHost</span><span class="o">)</span>
+      <span class="n">matchContainerToRequest</span><span class="o">(</span><span class="n">allocatedContainer</span><span class="o">,</span> <span class="n">rack</span><span class="o">,</span> <span class="n">containersToUse</span><span class="o">,</span>
+        <span class="n">remainingAfterRackMatches</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Assign remaining that are neither node-local nor rack-local
+</span>    <span class="k">val</span> <span class="n">remainingAfterOffRackMatches</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">Container</span><span class="o">]</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">allocatedContainer</span> <span class="k">&lt;-</span> <span class="n">remainingAfterRackMatches</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">matchContainerToRequest</span><span class="o">(</span><span class="n">allocatedContainer</span><span class="o">,</span> <span class="nc">ANY_HOST</span><span class="o">,</span> <span class="n">containersToUse</span><span class="o">,</span>
+        <span class="n">remainingAfterOffRackMatches</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(!</span><span class="n">remainingAfterOffRackMatches</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Releasing ${remainingAfterOffRackMatches.size} unneeded containers that were "</span> <span class="o">+</span>
+        <span class="n">s</span><span class="s">"allocated to us"</span><span class="o">)</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">container</span> <span class="k">&lt;-</span> <span class="n">remainingAfterOffRackMatches</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">internalReleaseContainer</span><span class="o">(</span><span class="n">container</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="n">runAllocatedContainers</span><span class="o">(</span><span class="n">containersToUse</span><span class="o">)</span>
+
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Received %d containers from YARN, launching executors on %d of them."</span>
+      <span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="n">allocatedContainers</span><span class="o">.</span><span class="n">size</span><span class="o">,</span> <span class="n">containersToUse</span><span class="o">.</span><span class="n">size</span><span class="o">))</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>runAllocatedContainers方法用于启动executor，代码如下</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">runAllocatedContainers</span><span class="o">(</span><span class="n">containersToUse</span><span class="k">:</span> <span class="kt">ArrayBuffer</span><span class="o">[</span><span class="kt">Container</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">container</span> <span class="k">&lt;-</span> <span class="n">containersToUse</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">executorIdCounter</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">val</span> <span class="n">executorHostname</span> <span class="k">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getNodeId</span><span class="o">.</span><span class="n">getHost</span>
+      <span class="k">val</span> <span class="n">containerId</span> <span class="k">=</span> <span class="n">container</span><span class="o">.</span><span class="n">getId</span>
+      <span class="k">val</span> <span class="n">executorId</span> <span class="k">=</span> <span class="n">executorIdCounter</span><span class="o">.</span><span class="n">toString</span>
+      <span class="n">assert</span><span class="o">(</span><span class="n">container</span><span class="o">.</span><span class="n">getResource</span><span class="o">.</span><span class="n">getMemory</span> <span class="o">&gt;=</span> <span class="n">resource</span><span class="o">.</span><span class="n">getMemory</span><span class="o">)</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Launching container $containerId on host $executorHostname "</span> <span class="o">+</span>
+        <span class="n">s</span><span class="s">"for executor with ID $executorId"</span><span class="o">)</span>
+
+      <span class="k">def</span> <span class="n">updateInternalState</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+        <span class="n">runningExecutors</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="n">executorId</span><span class="o">)</span>
+        <span class="n">numExecutorsStarting</span><span class="o">.</span><span class="n">decrementAndGet</span><span class="o">()</span>
+        <span class="n">executorIdToContainer</span><span class="o">(</span><span class="n">executorId</span><span class="o">)</span> <span class="k">=</span> <span class="n">container</span>
+        <span class="n">containerIdToExecutorId</span><span class="o">(</span><span class="n">container</span><span class="o">.</span><span class="n">getId</span><span class="o">)</span> <span class="k">=</span> <span class="n">executorId</span>
+
+        <span class="k">val</span> <span class="n">containerSet</span> <span class="k">=</span> <span class="n">allocatedHostToContainersMap</span><span class="o">.</span><span class="n">getOrElseUpdate</span><span class="o">(</span><span class="n">executorHostname</span><span class="o">,</span>
+          <span class="k">new</span> <span class="nc">HashSet</span><span class="o">[</span><span class="kt">ContainerId</span><span class="o">])</span>
+        <span class="n">containerSet</span> <span class="o">+=</span> <span class="n">containerId</span>
+        <span class="n">allocatedContainerToHostMap</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">containerId</span><span class="o">,</span> <span class="n">executorHostname</span><span class="o">)</span>
+      <span class="o">}</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">runningExecutors</span><span class="o">.</span><span class="n">size</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">targetNumExecutors</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">numExecutorsStarting</span><span class="o">.</span><span class="n">incrementAndGet</span><span class="o">()</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">launchContainers</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">launcherPool</span><span class="o">.</span><span class="n">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">Runnable</span> <span class="o">{</span>
+            <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+              <span class="k">try</span> <span class="o">{</span>
+                <span class="k">new</span> <span class="nc">ExecutorRunnable</span><span class="o">(</span>
+                  <span class="nc">Some</span><span class="o">(</span><span class="n">container</span><span class="o">),</span>
+                  <span class="n">conf</span><span class="o">,</span>
+                  <span class="n">sparkConf</span><span class="o">,</span>
+                  <span class="n">driverUrl</span><span class="o">,</span>
+                  <span class="n">executorId</span><span class="o">,</span>
+                  <span class="n">executorHostname</span><span class="o">,</span>
+                  <span class="n">executorMemory</span><span class="o">,</span>
+                  <span class="n">executorCores</span><span class="o">,</span>
+                  <span class="n">appAttemptId</span><span class="o">.</span><span class="n">getApplicationId</span><span class="o">.</span><span class="n">toString</span><span class="o">,</span>
+                  <span class="n">securityMgr</span><span class="o">,</span>
+                  <span class="n">localResources</span>
+                <span class="o">).</span><span class="n">run</span><span class="o">()</span>
+                <span class="n">updateInternalState</span><span class="o">()</span>
+              <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+                <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Throwable</span> <span class="o">=&gt;</span>
+                  <span class="n">numExecutorsStarting</span><span class="o">.</span><span class="n">decrementAndGet</span><span class="o">()</span>
+                  <span class="k">if</span> <span class="o">(</span><span class="nc">NonFatal</span><span class="o">(</span><span class="n">e</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">logError</span><span class="o">(</span><span class="n">s</span><span class="s">"Failed to launch executor $executorId on container $containerId"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+                    <span class="c1">// Assigned container should be released immediately
+</span>                    <span class="c1">// to avoid unnecessary resource occupation.
+</span>                    <span class="n">amClient</span><span class="o">.</span><span class="n">releaseAssignedContainer</span><span class="o">(</span><span class="n">containerId</span><span class="o">)</span>
+                  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="k">throw</span> <span class="n">e</span>
+                  <span class="o">}</span>
+              <span class="o">}</span>
+            <span class="o">}</span>
+          <span class="o">})</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="c1">// For test only
+</span>          <span class="n">updateInternalState</span><span class="o">()</span>
+        <span class="o">}</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">logInfo</span><span class="o">((</span><span class="s">"Skip launching executorRunnable as running executors count: %d "</span> <span class="o">+</span>
+          <span class="s">"reached target executors count: %d."</span><span class="o">).</span><span class="n">format</span><span class="o">(</span>
+          <span class="n">runningExecutors</span><span class="o">.</span><span class="n">size</span><span class="o">,</span> <span class="n">targetNumExecutors</span><span class="o">))</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>再来说说client模式启动流程吧，client模式会先执行用户代码，进入YarnClusterManager中，创建SchedulerBackend会进入YarnClientSchedulerBackend中</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="n">createSchedulerBackend</span><span class="o">(</span><span class="n">sc</span><span class="k">:</span> <span class="kt">SparkContext</span><span class="o">,</span>
+      <span class="n">masterURL</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+      <span class="n">scheduler</span><span class="k">:</span> <span class="kt">TaskScheduler</span><span class="o">)</span><span class="k">:</span> <span class="kt">SchedulerBackend</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">deployMode</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="s">"cluster"</span> <span class="k">=&gt;</span>
+        <span class="k">new</span> <span class="nc">YarnClusterSchedulerBackend</span><span class="o">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">TaskSchedulerImpl</span><span class="o">],</span> <span class="n">sc</span><span class="o">)</span>
+      <span class="k">case</span> <span class="s">"client"</span> <span class="k">=&gt;</span>
+        <span class="k">new</span> <span class="nc">YarnClientSchedulerBackend</span><span class="o">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">TaskSchedulerImpl</span><span class="o">],</span> <span class="n">sc</span><span class="o">)</span>
+      <span class="k">case</span>  <span class="k">_</span> <span class="k">=&gt;</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">SparkException</span><span class="o">(</span><span class="n">s</span><span class="s">"Unknown deploy mode '${sc.deployMode}' for Yarn"</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>YarnClientSchedulerBackend的start方法也会执行client.submitApplication()，提交到yarn中，接下来就和cluster模式差不多了，创建AM，再执行runExecutorLauncher方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+   * Create a Yarn client to submit an application to the ResourceManager.
+   * This waits until the application is running.
+   */</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="n">start</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">driverHost</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.driver.host"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">driverPort</span> <span class="k">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">"spark.driver.port"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">hostport</span> <span class="k">=</span> <span class="n">driverHost</span> <span class="o">+</span> <span class="s">":"</span> <span class="o">+</span> <span class="n">driverPort</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">ui</span> <span class="k">=&gt;</span> <span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="o">(</span><span class="s">"spark.driver.appUIAddress"</span><span class="o">,</span> <span class="n">ui</span><span class="o">.</span><span class="n">webUrl</span><span class="o">)</span> <span class="o">}</span>
+
+    <span class="k">val</span> <span class="n">argsArrayBuf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">String</span><span class="o">]()</span>
+    <span class="n">argsArrayBuf</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--arg"</span><span class="o">,</span> <span class="n">hostport</span><span class="o">)</span>
+
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"ClientArguments called with: "</span> <span class="o">+</span> <span class="n">argsArrayBuf</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">" "</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">args</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ClientArguments</span><span class="o">(</span><span class="n">argsArrayBuf</span><span class="o">.</span><span class="n">toArray</span><span class="o">)</span>
+    <span class="n">totalExpectedExecutors</span> <span class="k">=</span> <span class="nc">SchedulerBackendUtils</span><span class="o">.</span><span class="n">getInitialTargetExecutorNumber</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
+    <span class="n">client</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Client</span><span class="o">(</span><span class="n">args</span><span class="o">,</span> <span class="n">conf</span><span class="o">)</span>
+    <span class="n">bindToYarn</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="n">submitApplication</span><span class="o">(),</span> <span class="nc">None</span><span class="o">)</span>
+
+    <span class="c1">// SPARK-8687: Ensure all necessary properties have already been set before
+</span>    <span class="c1">// we initialize our driver scheduler backend, which serves these properties
+</span>    <span class="c1">// to the executors
+</span>    <span class="k">super</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">waitForApplication</span><span class="o">()</span>
+
+    <span class="c1">// SPARK-8851: In yarn-client mode, the AM still does the credentials refresh. The driver
+</span>    <span class="c1">// reads the credentials from HDFS, just like the executors and updates its own credentials
+</span>    <span class="c1">// cache.
+</span>    <span class="k">if</span> <span class="o">(</span><span class="n">conf</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">"spark.yarn.credentials.file"</span><span class="o">))</span> <span class="o">{</span>
+      <span class="nc">YarnSparkHadoopUtil</span><span class="o">.</span><span class="n">startCredentialUpdater</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">monitorThread</span> <span class="k">=</span> <span class="n">asyncMonitorApplication</span><span class="o">()</span>
+    <span class="n">monitorThread</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>runExecutorLauncher方法中也会使用到registerAM方法，注册完AM就开始分配资源，申请Containers，启动executors</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">runExecutorLauncher</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">hostname</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">localHostName</span>
+    <span class="k">val</span> <span class="n">amCores</span> <span class="k">=</span> <span class="n">sparkConf</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">AM_CORES</span><span class="o">)</span>
+    <span class="n">rpcEnv</span> <span class="k">=</span> <span class="nc">RpcEnv</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="s">"sparkYarnAM"</span><span class="o">,</span> <span class="n">hostname</span><span class="o">,</span> <span class="n">hostname</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">,</span> <span class="n">securityMgr</span><span class="o">,</span>
+      <span class="n">amCores</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">driverRef</span> <span class="k">=</span> <span class="n">waitForSparkDriver</span><span class="o">()</span>
+    <span class="n">addAmIpFilter</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="n">driverRef</span><span class="o">))</span>
+    <span class="n">registerAM</span><span class="o">(</span><span class="n">sparkConf</span><span class="o">,</span> <span class="n">rpcEnv</span><span class="o">,</span> <span class="n">driverRef</span><span class="o">,</span> <span class="n">sparkConf</span><span class="o">.</span><span class="n">getOption</span><span class="o">(</span><span class="s">"spark.driver.appUIAddress"</span><span class="o">))</span>
+    <span class="n">registered</span> <span class="k">=</span> <span class="kc">true</span>
+
+    <span class="c1">// In client mode the actor will stop the reporter thread.
+</span>    <span class="n">reporterThread</span><span class="o">.</span><span class="n">join</span><span class="o">()</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>讲到这就差不多了，自己看代码的话yarn这块确实花了好长时间，因为一开始漏了spark-submit yarn-cluster模式启动函数会变，后来找到这块，就好理解很多</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/07/11/spark_yarn', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
