@@ -1,0 +1,543 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记(十九)</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(十九)</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(十九)</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/11/spark_yarn.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记(十八)</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/11/spark_yarn.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记(十八)</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        SparkSubmit之StandAlone模式启动流程
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>StandAlone中cluster和client模式启动类是不一样的，在SparkSubmit类中可以看到，</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">deploy</span><span class="o">]</span> <span class="k">val</span> <span class="nc">REST_CLUSTER_SUBMIT_CLASS</span> <span class="k">=</span> <span class="n">classOf</span><span class="o">[</span><span class="kt">RestSubmissionClientApp</span><span class="o">].</span><span class="n">getName</span><span class="o">()</span>
+
+<span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">isStandaloneCluster</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">useRest</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">childMainClass</span> <span class="k">=</span> <span class="nc">REST_CLUSTER_SUBMIT_CLASS</span>
+    <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">primaryResource</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">mainClass</span><span class="o">)</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="c1">// In legacy standalone cluster mode, use Client as a wrapper around the user class
+</span>    <span class="n">childMainClass</span> <span class="k">=</span> <span class="nc">STANDALONE_CLUSTER_SUBMIT_CLASS</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">supervise</span><span class="o">)</span> <span class="o">{</span> <span class="n">childArgs</span> <span class="o">+=</span> <span class="s">"--supervise"</span> <span class="o">}</span>
+    <span class="nc">Option</span><span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">driverMemory</span><span class="o">).</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">m</span> <span class="k">=&gt;</span> <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--memory"</span><span class="o">,</span> <span class="n">m</span><span class="o">)</span> <span class="o">}</span>
+    <span class="nc">Option</span><span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">driverCores</span><span class="o">).</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">c</span> <span class="k">=&gt;</span> <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"--cores"</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="o">}</span>
+    <span class="n">childArgs</span> <span class="o">+=</span> <span class="s">"launch"</span>
+    <span class="n">childArgs</span> <span class="o">+=</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">master</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">primaryResource</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="n">mainClass</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="n">childArgs</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">childArgs</span> <span class="o">++=</span> <span class="n">args</span><span class="o">.</span><span class="n">childArgs</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>提交后执行start方法，我看到这段代码时突然懵了，这创建完endpoint和endpointRef后就没了，amazing，那怎么启动呢，想了一会，就明白了，创建endpointRef后会自动存入onstart消息，触发onStart方法，Master的onStart可以做一些初始化工作</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">spark</span><span class="o">]</span> <span class="k">class</span> <span class="nc">ClientApp</span> <span class="k">extends</span> <span class="nc">SparkApplication</span> <span class="o">{</span>
+
+  <span class="k">override</span> <span class="k">def</span> <span class="n">start</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="n">conf</span><span class="k">:</span> <span class="kt">SparkConf</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">driverArgs</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ClientArguments</span><span class="o">(</span><span class="n">args</span><span class="o">)</span>
+
+    <span class="k">if</span> <span class="o">(!</span><span class="n">conf</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">"spark.rpc.askTimeout"</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="o">(</span><span class="s">"spark.rpc.askTimeout"</span><span class="o">,</span> <span class="s">"10s"</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="nc">Logger</span><span class="o">.</span><span class="n">getRootLogger</span><span class="o">.</span><span class="n">setLevel</span><span class="o">(</span><span class="n">driverArgs</span><span class="o">.</span><span class="n">logLevel</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">rpcEnv</span> <span class="k">=</span>
+      <span class="nc">RpcEnv</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="s">"driverClient"</span><span class="o">,</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">localHostName</span><span class="o">(),</span> <span class="mi">0</span><span class="o">,</span> <span class="n">conf</span><span class="o">,</span> <span class="k">new</span> <span class="nc">SecurityManager</span><span class="o">(</span><span class="n">conf</span><span class="o">))</span>
+
+    <span class="k">val</span> <span class="n">masterEndpoints</span> <span class="k">=</span> <span class="n">driverArgs</span><span class="o">.</span><span class="n">masters</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="nc">RpcAddress</span><span class="o">.</span><span class="n">fromSparkURL</span><span class="o">).</span>
+      <span class="n">map</span><span class="o">(</span><span class="n">rpcEnv</span><span class="o">.</span><span class="n">setupEndpointRef</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="nc">Master</span><span class="o">.</span><span class="nc">ENDPOINT_NAME</span><span class="o">))</span>
+    <span class="n">rpcEnv</span><span class="o">.</span><span class="n">setupEndpoint</span><span class="o">(</span><span class="s">"client"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">ClientEndpoint</span><span class="o">(</span><span class="n">rpcEnv</span><span class="o">,</span> <span class="n">driverArgs</span><span class="o">,</span> <span class="n">masterEndpoints</span><span class="o">,</span> <span class="n">conf</span><span class="o">))</span>
+
+    <span class="n">rpcEnv</span><span class="o">.</span><span class="n">awaitTermination</span><span class="o">()</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>ClientEndpoint的onStart方法会调用MasterEndpointRef发送RequestSubmitDriver消息给Master的Endpoint</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="n">onStart</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">driverArgs</span><span class="o">.</span><span class="n">cmd</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="s">"launch"</span> <span class="k">=&gt;</span>
+    <span class="c1">// TODO: We could add an env variable here and intercept it in `sc.addJar` that would
+</span>    <span class="c1">//       truncate filesystem paths similar to what YARN does. For now, we just require
+</span>    <span class="c1">//       people call `addJar` assuming the jar is in the same directory.
+</span>    <span class="k">val</span> <span class="n">mainClass</span> <span class="k">=</span> <span class="s">"org.apache.spark.deploy.worker.DriverWrapper"</span>
+
+    <span class="k">val</span> <span class="n">classPathConf</span> <span class="k">=</span> <span class="s">"spark.driver.extraClassPath"</span>
+    <span class="k">val</span> <span class="n">classPathEntries</span> <span class="k">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">classPathConf</span><span class="o">).</span><span class="n">toSeq</span><span class="o">.</span><span class="n">flatMap</span> <span class="o">{</span> <span class="n">cp</span> <span class="k">=&gt;</span>
+      <span class="n">cp</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">File</span><span class="o">.</span><span class="n">pathSeparator</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">val</span> <span class="n">libraryPathConf</span> <span class="k">=</span> <span class="s">"spark.driver.extraLibraryPath"</span>
+    <span class="k">val</span> <span class="n">libraryPathEntries</span> <span class="k">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">libraryPathConf</span><span class="o">).</span><span class="n">toSeq</span><span class="o">.</span><span class="n">flatMap</span> <span class="o">{</span> <span class="n">cp</span> <span class="k">=&gt;</span>
+      <span class="n">cp</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">File</span><span class="o">.</span><span class="n">pathSeparator</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">val</span> <span class="n">extraJavaOptsConf</span> <span class="k">=</span> <span class="s">"spark.driver.extraJavaOptions"</span>
+    <span class="k">val</span> <span class="n">extraJavaOpts</span> <span class="k">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">extraJavaOptsConf</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="nc">Utils</span><span class="o">.</span><span class="n">splitCommandString</span><span class="o">).</span><span class="n">getOrElse</span><span class="o">(</span><span class="nc">Seq</span><span class="o">.</span><span class="n">empty</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">sparkJavaOpts</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">sparkJavaOpts</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">javaOpts</span> <span class="k">=</span> <span class="n">sparkJavaOpts</span> <span class="o">++</span> <span class="n">extraJavaOpts</span>
+    <span class="k">val</span> <span class="n">command</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Command</span><span class="o">(</span><span class="n">mainClass</span><span class="o">,</span>
+      <span class="nc">Seq</span><span class="o">(</span><span class="s">""</span><span class="o">,</span> <span class="s">""</span><span class="o">,</span> <span class="n">driverArgs</span><span class="o">.</span><span class="n">mainClass</span><span class="o">)</span> <span class="o">++</span> <span class="n">driverArgs</span><span class="o">.</span><span class="n">driverOptions</span><span class="o">,</span>
+      <span class="n">sys</span><span class="o">.</span><span class="n">env</span><span class="o">,</span> <span class="n">classPathEntries</span><span class="o">,</span> <span class="n">libraryPathEntries</span><span class="o">,</span> <span class="n">javaOpts</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">driverDescription</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">DriverDescription</span><span class="o">(</span>
+      <span class="n">driverArgs</span><span class="o">.</span><span class="n">jarUrl</span><span class="o">,</span>
+      <span class="n">driverArgs</span><span class="o">.</span><span class="n">memory</span><span class="o">,</span>
+      <span class="n">driverArgs</span><span class="o">.</span><span class="n">cores</span><span class="o">,</span>
+      <span class="n">driverArgs</span><span class="o">.</span><span class="n">supervise</span><span class="o">,</span>
+      <span class="n">command</span><span class="o">)</span>
+    <span class="n">asyncSendToMasterAndForwardReply</span><span class="o">[</span><span class="kt">SubmitDriverResponse</span><span class="o">](</span>
+      <span class="nc">RequestSubmitDriver</span><span class="o">(</span><span class="n">driverDescription</span><span class="o">))</span>
+
+  <span class="k">case</span> <span class="s">"kill"</span> <span class="k">=&gt;</span>
+    <span class="k">val</span> <span class="n">driverId</span> <span class="k">=</span> <span class="n">driverArgs</span><span class="o">.</span><span class="n">driverId</span>
+    <span class="n">asyncSendToMasterAndForwardReply</span><span class="o">[</span><span class="kt">KillDriverResponse</span><span class="o">](</span><span class="nc">RequestKillDriver</span><span class="o">(</span><span class="n">driverId</span><span class="o">))</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">private</span> <span class="k">def</span> <span class="n">asyncSendToMasterAndForwardReply</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">message</span><span class="k">:</span> <span class="kt">Any</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="n">masterEndpoint</span> <span class="k">&lt;-</span> <span class="n">masterEndpoints</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">masterEndpoint</span><span class="o">.</span><span class="n">ask</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">message</span><span class="o">).</span><span class="n">onComplete</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Success</span><span class="o">(</span><span class="n">v</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">self</span><span class="o">.</span><span class="n">send</span><span class="o">(</span><span class="n">v</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">Failure</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">logWarning</span><span class="o">(</span><span class="n">s</span><span class="s">"Error sending messages to master   $masterEndpoint"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+    <span class="o">}(</span><span class="n">forwardMessageExecutionContext</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>  
+  
+</code></pre></div></div>
+
+<blockquote>
+  <p>createDriver(description)方法并不会创建driver，只是生成DriverInfo类，里面包含了driver的一些信息，真正执行的还是shedule方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="nc">RequestSubmitDriver</span><span class="o">(</span><span class="n">description</span><span class="o">)</span> <span class="k">=&gt;</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">!=</span> <span class="nc">RecoveryState</span><span class="o">.</span><span class="nc">ALIVE</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">msg</span> <span class="k">=</span> <span class="n">s</span><span class="s">"${Utils.BACKUP_STANDALONE_MASTER_PREFIX}: $state. "</span> <span class="o">+</span>
+      <span class="s">"Can only accept driver submissions in ALIVE state."</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">reply</span><span class="o">(</span><span class="nc">SubmitDriverResponse</span><span class="o">(</span><span class="n">self</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="nc">None</span><span class="o">,</span> <span class="n">msg</span><span class="o">))</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Driver submitted "</span> <span class="o">+</span> <span class="n">description</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">mainClass</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">driver</span> <span class="k">=</span> <span class="n">createDriver</span><span class="o">(</span><span class="n">description</span><span class="o">)</span>
+    <span class="n">persistenceEngine</span><span class="o">.</span><span class="n">addDriver</span><span class="o">(</span><span class="n">driver</span><span class="o">)</span>
+    <span class="n">waitingDrivers</span> <span class="o">+=</span> <span class="n">driver</span>
+    <span class="n">drivers</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="n">driver</span><span class="o">)</span>
+    <span class="n">schedule</span><span class="o">()</span>
+
+    <span class="c1">// TODO: It might be good to instead have the submission client poll the master to determine
+</span>    <span class="c1">//       the current status of the driver. For now it's simply "fire and forget".
+</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">reply</span><span class="o">(</span><span class="nc">SubmitDriverResponse</span><span class="o">(</span><span class="n">self</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="nc">Some</span><span class="o">(</span><span class="n">driver</span><span class="o">.</span><span class="n">id</span><span class="o">),</span>
+      <span class="n">s</span><span class="s">"Driver successfully submitted as ${driver.id}"</span><span class="o">))</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>shedule种两个方法，一个是launchDriver，另一个是startExecutorsOnWorkers，看名字也就知道含义，前者启动driver，后者用于启动executors</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">private</span> <span class="k">def</span> <span class="n">schedule</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">!=</span> <span class="nc">RecoveryState</span><span class="o">.</span><span class="nc">ALIVE</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span>
+    <span class="o">}</span>
+    <span class="c1">// Drivers take strict precedence over executors
+</span>    <span class="k">val</span> <span class="n">shuffledAliveWorkers</span> <span class="k">=</span> <span class="nc">Random</span><span class="o">.</span><span class="n">shuffle</span><span class="o">(</span><span class="n">workers</span><span class="o">.</span><span class="n">toSeq</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="nc">WorkerState</span><span class="o">.</span><span class="nc">ALIVE</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">numWorkersAlive</span> <span class="k">=</span> <span class="n">shuffledAliveWorkers</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">var</span> <span class="n">curPos</span> <span class="k">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">driver</span> <span class="k">&lt;-</span> <span class="n">waitingDrivers</span><span class="o">.</span><span class="n">toList</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// iterate over a copy of waitingDrivers
+</span>      <span class="c1">// We assign workers to each waiting driver in a round-robin fashion. For each driver, we
+</span>      <span class="c1">// start from the last worker that was assigned a driver, and continue onwards until we have
+</span>      <span class="c1">// explored all alive workers.
+</span>      <span class="k">var</span> <span class="n">launched</span> <span class="k">=</span> <span class="kc">false</span>
+      <span class="k">var</span> <span class="n">numWorkersVisited</span> <span class="k">=</span> <span class="mi">0</span>
+      <span class="k">while</span> <span class="o">(</span><span class="n">numWorkersVisited</span> <span class="o">&lt;</span> <span class="n">numWorkersAlive</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">launched</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">worker</span> <span class="k">=</span> <span class="n">shuffledAliveWorkers</span><span class="o">(</span><span class="n">curPos</span><span class="o">)</span>
+        <span class="n">numWorkersVisited</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">worker</span><span class="o">.</span><span class="n">memoryFree</span> <span class="o">&gt;=</span> <span class="n">driver</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">mem</span> <span class="o">&amp;&amp;</span> <span class="n">worker</span><span class="o">.</span><span class="n">coresFree</span> <span class="o">&gt;=</span> <span class="n">driver</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">cores</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">launchDriver</span><span class="o">(</span><span class="n">worker</span><span class="o">,</span> <span class="n">driver</span><span class="o">)</span>
+          <span class="n">waitingDrivers</span> <span class="o">-=</span> <span class="n">driver</span>
+          <span class="n">launched</span> <span class="k">=</span> <span class="kc">true</span>
+        <span class="o">}</span>
+        <span class="n">curPos</span> <span class="k">=</span> <span class="o">(</span><span class="n">curPos</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">%</span> <span class="n">numWorkersAlive</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">startExecutorsOnWorkers</span><span class="o">()</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>launchDriver中使用work的endpointRef发送LaunchDriver消息到WorkEndpoint中</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">def</span> <span class="n">launchDriver</span><span class="o">(</span><span class="n">worker</span><span class="k">:</span> <span class="kt">WorkerInfo</span><span class="o">,</span> <span class="n">driver</span><span class="k">:</span> <span class="kt">DriverInfo</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Launching driver "</span> <span class="o">+</span> <span class="n">driver</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s">" on worker "</span> <span class="o">+</span> <span class="n">worker</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+    <span class="n">worker</span><span class="o">.</span><span class="n">addDriver</span><span class="o">(</span><span class="n">driver</span><span class="o">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">worker</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">worker</span><span class="o">)</span>
+    <span class="n">worker</span><span class="o">.</span><span class="n">endpoint</span><span class="o">.</span><span class="n">send</span><span class="o">(</span><span class="nc">LaunchDriver</span><span class="o">(</span><span class="n">driver</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">driver</span><span class="o">.</span><span class="n">desc</span><span class="o">))</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">state</span> <span class="k">=</span> <span class="nc">DriverState</span><span class="o">.</span><span class="nc">RUNNING</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>LaunchDriver使用会创建DriverRunner对象，并调用start方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="nc">LaunchDriver</span><span class="o">(</span><span class="n">driverId</span><span class="o">,</span> <span class="n">driverDesc</span><span class="o">)</span> <span class="k">=&gt;</span>
+  <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Asked to launch driver $driverId"</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">driver</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">DriverRunner</span><span class="o">(</span>
+    <span class="n">conf</span><span class="o">,</span>
+    <span class="n">driverId</span><span class="o">,</span>
+    <span class="n">workDir</span><span class="o">,</span>
+    <span class="n">sparkHome</span><span class="o">,</span>
+    <span class="n">driverDesc</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">command</span> <span class="k">=</span> <span class="nc">Worker</span><span class="o">.</span><span class="n">maybeUpdateSSLSettings</span><span class="o">(</span><span class="n">driverDesc</span><span class="o">.</span><span class="n">command</span><span class="o">,</span> <span class="n">conf</span><span class="o">)),</span>
+    <span class="n">self</span><span class="o">,</span>
+    <span class="n">workerUri</span><span class="o">,</span>
+    <span class="n">securityMgr</span><span class="o">)</span>
+  <span class="n">drivers</span><span class="o">(</span><span class="n">driverId</span><span class="o">)</span> <span class="k">=</span> <span class="n">driver</span>
+  <span class="n">driver</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+
+  <span class="n">coresUsed</span> <span class="o">+=</span> <span class="n">driverDesc</span><span class="o">.</span><span class="n">cores</span>
+  <span class="n">memoryUsed</span> <span class="o">+=</span> <span class="n">driverDesc</span><span class="o">.</span><span class="n">mem</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>DriverRunner的start方法运行到最后，会调用命令创建系统process</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** Starts a thread to run and manage the driver. */</span>
+  <span class="k">private</span><span class="o">[</span><span class="kt">worker</span><span class="o">]</span> <span class="k">def</span> <span class="n">start</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="s">"DriverRunner for "</span> <span class="o">+</span> <span class="n">driverId</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">var</span> <span class="n">shutdownHook</span><span class="k">:</span> <span class="kt">AnyRef</span> <span class="o">=</span> <span class="kc">null</span>
+        <span class="k">try</span> <span class="o">{</span>
+          <span class="n">shutdownHook</span> <span class="k">=</span> <span class="nc">ShutdownHookManager</span><span class="o">.</span><span class="n">addShutdownHook</span> <span class="o">{</span> <span class="o">()</span> <span class="k">=&gt;</span>
+            <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Worker shutting down, killing driver $driverId"</span><span class="o">)</span>
+            <span class="n">kill</span><span class="o">()</span>
+          <span class="o">}</span>
+
+          <span class="c1">// prepare driver jars and run driver
+</span>          <span class="k">val</span> <span class="n">exitCode</span> <span class="k">=</span> <span class="n">prepareAndRunDriver</span><span class="o">()</span>
+
+          <span class="c1">// set final state depending on if forcibly killed and process exit code
+</span>          <span class="n">finalState</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">exitCode</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Some</span><span class="o">(</span><span class="nc">DriverState</span><span class="o">.</span><span class="nc">FINISHED</span><span class="o">)</span>
+          <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">killed</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Some</span><span class="o">(</span><span class="nc">DriverState</span><span class="o">.</span><span class="nc">KILLED</span><span class="o">)</span>
+          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="nc">Some</span><span class="o">(</span><span class="nc">DriverState</span><span class="o">.</span><span class="nc">FAILED</span><span class="o">)</span>
+          <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span>
+            <span class="n">kill</span><span class="o">()</span>
+            <span class="n">finalState</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="nc">DriverState</span><span class="o">.</span><span class="nc">ERROR</span><span class="o">)</span>
+            <span class="n">finalException</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">e</span><span class="o">)</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">shutdownHook</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">ShutdownHookManager</span><span class="o">.</span><span class="n">removeShutdownHook</span><span class="o">(</span><span class="n">shutdownHook</span><span class="o">)</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="c1">// notify worker of final driver state, possible exception
+</span>        <span class="n">worker</span><span class="o">.</span><span class="n">send</span><span class="o">(</span><span class="nc">DriverStateChanged</span><span class="o">(</span><span class="n">driverId</span><span class="o">,</span> <span class="n">finalState</span><span class="o">.</span><span class="n">get</span><span class="o">,</span> <span class="n">finalException</span><span class="o">))</span>
+      <span class="o">}</span>
+    <span class="o">}.</span><span class="n">start</span><span class="o">()</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>启动executor也类似呗，先分配资源，再使用命令创建executor</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/07/12/spark_stand_alone_cluster', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
