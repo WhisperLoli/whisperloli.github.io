@@ -9,7 +9,7 @@ cover: '/blog/Halloween/2020_05_14_01.webp'
 subtitle: Dynamic Allocation Executor
 ---
 
-> 先解释一下master，worker，driver，executor概念吧，很多人用了很久的spark也是一知半解，Master和Workder对应的是物理节点，driver和executor对应的是节点中的进程，driver既可以在master，也可以在workder上，但是executor只能存在于worker上，本章要分享的东西动态分配executor，会使用到workder
+> 先解释一下master，worker，driver，executor概念吧，很多人用了很久的spark也是一知半解，Master和Workder对应的是物理节点，driver和executor对应的是节点中的进程，driver既可以在master，也可以在workder上，但是executor只能存在于worker上，本章要分享的动态分配executor，会使用到workder，master与worker是对应standalone/mesos模式，yarn模式不存在该概念
 > 
 > 如果开启了动态分配executor，ExecutorAllocationManager会在SparkContext中被创建，并调用实例的start方法，start方法中使用线程池定时调度线程判断当前分配的executor是缺了还是多了，缺少则申请，多了不会移除，因为executor等待时间太长会自动执行移除，那如何判当前需要的executor数量呢？计算公式如下，(正在运行的task数量+pending的task数量+每个executor能并行的task-1)/每个executor能并发的task-1，计算出来的结果就是我们需要的executor数量，之后会做出判断，是否超出设置的executor最大值/最小值
 
@@ -26,7 +26,7 @@ private val tasksPerExecutor =
     (numRunningOrPendingTasks + tasksPerExecutor - 1) / tasksPerExecutor
   }
 ```
-> 之后使用client.requestTotalExecutors(numExecutorsTarget, localityAwareTasks, hostToLocalTaskCount)执行申请，该方法会进入CoarseGrainedSchedulerBackend中并调用doRequestTotalExecutors(requestedTotalExecutors)方法，doRequestTotalExecutors在StandaloneSchedulerBackend被重写，重写后的方法使用StandaloneAppClient的requestTotalExecutors方法，方法如下，会使用endpointRef发送RequestExecutors消息
+> 之后使用client.requestTotalExecutors(numExecutorsTarget, localityAwareTasks, hostToLocalTaskCount)执行申请，该方法会进入CoarseGrainedSchedulerBackend中并调用doRequestTotalExecutors(requestedTotalExecutors)方法，doRequestTotalExecutors在StandaloneSchedulerBackend被重写。其他的实现比如yarn中也重写了，在此只讲Standalone模式，yarn的实现在YarnSchedulerBackend中，client/cluster模式都是如此，再通过ApplicationMaster申请。重写后的方法使用StandaloneAppClient的requestTotalExecutors方法，方法如下，会使用endpointRef发送RequestExecutors消息
 
 ```scala
 /**
