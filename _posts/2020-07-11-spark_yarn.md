@@ -6,7 +6,7 @@ tags:
 - Spark
 color: rgb(207, 207, 207)
 cover: '/blog/Halloween/2020070802.webp'
-subtitle: SparkSubmit后Yarn模式启动流程
+subtitle: SparkSubmit之Yarn模式启动流程
 ---
 > 之前说 [SparkSubmit](https://whisperloli.github.io/2020/05/13/spark_submit_process.html) 的时候，只是大致讲了下整个流程，prepareSubmitEnvironment没有细讲，该方法中会判断当前是以什么模式启动，不同的启动模式，主函数和其他配置都会变化，如下所示，如果是yarn cluster模式，spark-submit最后执行的主函数就会是org.apache.spark.deploy.yarn.YarnClusterApplication，而不是我们自己打在jar包中的主函数，如果是client模式的话，依然是我们自己提供的主函数
 
