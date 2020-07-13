@@ -3,7 +3,7 @@ layout: post
 title:  "Elasticsearch自定义分词器"
 date:   2018-12-23 13:11:01 +0800
 tags:
-- elasticsearch
+- ElasticSearch
 - 搜索引擎
 color: rgb(244, 204, 204)
 cover: '/blog/Halloween/three_pumkin.webp'

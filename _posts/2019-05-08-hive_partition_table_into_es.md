@@ -4,7 +4,7 @@ title:  "Hive分区表导入ElasticSearch"
 date:   2019-05-08 22:25:19 +0800
 tags:
 - Hive
-- elasticsearch
+- ElasticSearch
 color: rgb(0, 0, 205)
 cover: '/blog/Halloween/2019_05_06_03.webp'
 subtitle: 'hive分区表一次性导入ElasticSearch'
