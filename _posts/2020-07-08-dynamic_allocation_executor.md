@@ -86,7 +86,7 @@ override def receiveAndReply(context: RpcCallContext): PartialFunction[Any, Unit
     }
 ```
 
-> 接下来该进入Master类了，Master类继承了ThreadSafeRpcEndpoint，所以他自身就是个endpoint类，实现了leader选举功能，后续会单独把Master和Worker拿出来讲讲吧，Master收到RequestExecutors后，执行handleRequestExecutors方法，注意如下会用到HashMap，appId对应唯一的ApplicationInfo，猜测可能一个Master可以管理很多个spark application，这个后续研究
+> 接下来该进入Master类了，Master类继承了ThreadSafeRpcEndpoint，所以他自身就是个endpoint类，Master收到RequestExecutors后，执行handleRequestExecutors方法，注意如下会用到HashMap，appId对应唯一的ApplicationInfo，为什么会这样呢？因为用户启动spark集群的start-all.sh实际就是执行Master、Worker类的主函数，spark集群中肯定会存在多个spark application，所以使用HashMap存储
 
 ```scala
   private def handleRequestExecutors(appId: String, requestedTotal: Int): Boolean = {
