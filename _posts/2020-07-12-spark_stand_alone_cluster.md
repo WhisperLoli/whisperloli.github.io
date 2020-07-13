@@ -248,3 +248,5 @@ case LaunchDriver(driverId, driverDesc) =>
 ```
 
 > 启动executor也类似呗，先分配资源，再使用命令创建executor
+> 
+> 启动Driver和Executor可以参考[动态分配executor章节](https://whisperloli.github.io/2020/07/08/dynamic_allocation_executor.html)
