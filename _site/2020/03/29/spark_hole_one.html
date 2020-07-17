@@ -173,11 +173,7 @@ var _hmt = _hmt || [];
 </blockquote>
 
 <blockquote>
-  <p>我研究了挺久吧，最终得以解决。<strong><u>划重点，类中使用第三方成员变量未实现序列化且无法修改源码，使用伴生对象object创建该类的实例，类似单例模式，spark中使用object类中创建的对象，该方法无需序列化。scala中object类相当于java静态类，类中方法、属性皆为静态方法、属性。</u></strong></p>
-</blockquote>
-
-<blockquote>
-  <p>还有一个就是在executor中直接调用driver端创建的SparkContent对象也会报错，信息为Caused by: java.io.NotSerializableException: org.apache.spark.SparkContext，SparkContext对象也是不支持序列化的，如果需要使用，可以遍历RDD的使用使用rdd.sparkContext方法获得</p>
+  <p>我研究了挺久吧，最终得以解决。<strong><u>划重点，类中使用第三方成员变量未实现序列化且无法修改源码，使用伴生对象object创建该类的实例，类似单例模式，spark中使用object类中创建的对象，该方法无需序列化。scala中object类相当于java静态类，类中方法、属性皆为静态方法、属性。但是需要使用lazy关键字</u></strong></p>
 </blockquote>
 
 <p>接下来提供一下我对流处理中redis-client创建的见解吧。大致可以分为一下几种方法吧。</p>
@@ -217,12 +213,48 @@ var _hmt = _hmt || [];
 <blockquote>
   <p>即上述我使用的方法，采用伴生对象object创建类实例</p>
 
-  <p>优点：client无需序列化，应该只创建一个连接（未测试，应该是在driver端初始化该object，如果在每个executor JVM中创建的话，则创建的client数量会和executor数量一致，如果是的话，解决方案可以在driver端调用object中的方法强行初始化）</p>
+  <p>优点：client无需序列化，应该只创建n个连接（会在每个executor JVM中创建的话，创建的client数量会和executor数量n一致）</p>
 
   <p>缺点：貌似没啥缺点，是除开可以序列化之外最完美的方案</p>
+
+  <p>代码如下，在foreachPartition中使用之前先判断redisCloundAddress这些属性是不是空值，driver端使用set方法初始化属性，在executor中是拿不到的</p>
 </blockquote>
 
-<p>可能会有人问，为什么不使用广播，广播会比直接在executor中使用性能好。</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">RedisClient</span> <span class="k">extends</span> <span class="nc">Serializable</span> <span class="o">{</span>
+  <span class="k">private</span> <span class="k">var</span> <span class="n">redisCloudAddress</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="k">_</span>
+  <span class="k">private</span> <span class="k">var</span> <span class="n">searchAppName</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="k">_</span>
+  <span class="k">private</span> <span class="k">var</span> <span class="n">recommendAppName</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="k">_</span>
+
+  <span class="k">def</span> <span class="n">setRedisCloudAddress</span><span class="o">(</span><span class="n">redisCloudAddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">redisCloudAddress</span> <span class="k">=</span> <span class="n">redisCloudAddress</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">setSearchAppName</span><span class="o">(</span><span class="n">searchAppName</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">searchAppName</span> <span class="k">=</span> <span class="n">searchAppName</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">setRecommendAppName</span><span class="o">(</span><span class="n">recommendAppName</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">recommendAppName</span> <span class="k">=</span> <span class="n">recommendAppName</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">getRedisCloudAddress</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">redisCloudAddress</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">getSearchAppName</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">searchAppName</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">getRecommendAppName</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">recommendAppName</span>
+  <span class="o">}</span>
+
+  <span class="k">lazy</span> <span class="k">val</span> <span class="n">searchClient</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">RedisClient</span><span class="o">(</span><span class="n">redisCloudAddress</span><span class="o">,</span> <span class="n">searchAppName</span><span class="o">)</span>
+  <span class="k">lazy</span> <span class="k">val</span> <span class="n">recommendClient</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">RedisClient</span><span class="o">(</span><span class="n">redisCloudAddress</span><span class="o">,</span> <span class="n">recommendAppName</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>可能会有人问，为什么不使用广播，广播object会比直接在executor中使用性能好。</p>
 
 <blockquote>
   <p>我测试过了，使用广播的话，会抛出ConcurrentModificationException的异常，这个java异常是多线程并发改一个对象产生的异常。这个异常可能是我司的redis-client才有也不一定，可以做尝试。</p>
