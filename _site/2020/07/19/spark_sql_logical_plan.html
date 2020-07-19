@@ -1,0 +1,455 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记(二十)</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(二十)</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(二十)</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/13/hive_sql_active_n.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">SQL实现连续N天活跃用户</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/13/hive_sql_active_n.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>SQL实现连续N天活跃用户</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        Spark SQL之逻辑计划
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>在Spark SQL中，Catalog主要用于各种资源信息及元数据信息的统一管理，spark catalog主要分为InMemoryCatalog和HiveExternalCatalog，二者均继承自ExternalCatalog，SessionCatalog起到了一个代理的作用，对底层的元数据、临时表、视图、函数等进行了封装，通过多态调用ExternalCatalog的方法进而执行InMemoryCatalog/HiveExternalCatalog中的方法。在整个Spark SQL中起到了关键性作用。</p>
+
+  <p>spark sql的查询分为逻辑计划和物理计划</p>
+
+  <p>逻辑计划又细分为Unresolved LogicalPlan，Analyzed LogicPlan，Optimized LogicalPlan，用户执行的SQL经过SparkSqlParser处理后转换为Unresolved LogicalPlan</p>
+
+  <p>Unresolved LogicalPlan是逻辑算子树的最初形态，但是不包含数据信息与列信息</p>
+
+  <p>Analyzer将一系列的规则作用于Unresolved LogicalPlan，对树上的节点绑定各种数据信息，生成解析后的Analyzed LogicPlan</p>
+
+  <p>Optimizer将一系列的优化规则作用到Analyzed LogicPlan上，在确保结果正确的前提下，改写其中的低效结果，生成Optimized LogicalPlan</p>
+
+  <p>LogicalPlan继承自QueryPlan，QueryPlan继承自TreeNode，所以LogicalPlan也是属于TreeNode结构</p>
+
+  <p>QueryPlan中有一个statePrefix方法，如果该计划不可用，则前缀会用感叹号(!)标记</p>
+
+  <p>LogicalPlan有三个子类，分别是LeafNode(叶子结点), UnaryNode(一元子节点，只有一个子孩子的节点),BinaryNode(二元子节点，拥有左右孩子的节点)</p>
+
+  <p>大致介绍了下涉及到的类，下面说下AST（抽象语法树）,用户的SQL被ANTLR4解析生成抽象语法树，SparkSqlParser中使用AstBuilder访问者类对语法树进行访问，在这里需要说一下，Spark采用了访问者模式进行访问树的每个节点</p>
+
+  <p>用户的sql会先经过AbstractSqlParser的parsePlan进行处理，SparkSqlParser继承自AbstractSqlParser，SparkSqlParser并没有对parsePlan方法重写，parsePlan方法先调用parse(sqlText)方法，该方法会进入子类的parse方法，最终还是会回到AbstractSqlParser的parse方法，SqlBaseLexer是词法分析器，SqlBaseParser是语法解析器，最终进入toResult方法，toResult就是parsePlan方法中调用parse方法传递的第二个参数，第二个参数是个函数，在这个函数里面调用astBuilder.visitSingleStatement方法，进入访问者模式</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** Creates LogicalPlan for a given SQL string. */</span>
+<span class="k">override</span> <span class="k">def</span> <span class="n">parsePlan</span><span class="o">(</span><span class="n">sqlText</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">LogicalPlan</span> <span class="o">=</span> <span class="n">parse</span><span class="o">(</span><span class="n">sqlText</span><span class="o">)</span> <span class="o">{</span> <span class="n">parser</span> <span class="k">=&gt;</span>
+    <span class="n">astBuilder</span><span class="o">.</span><span class="n">visitSingleStatement</span><span class="o">(</span><span class="n">parser</span><span class="o">.</span><span class="n">singleStatement</span><span class="o">())</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">plan</span><span class="k">:</span> <span class="kt">LogicalPlan</span> <span class="o">=&gt;</span> <span class="n">plan</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">position</span> <span class="k">=</span> <span class="nc">Origin</span><span class="o">(</span><span class="nc">None</span><span class="o">,</span> <span class="nc">None</span><span class="o">)</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">ParseException</span><span class="o">(</span><span class="nc">Option</span><span class="o">(</span><span class="n">sqlText</span><span class="o">),</span> <span class="s">"Unsupported SQL statement"</span><span class="o">,</span> <span class="n">position</span><span class="o">,</span> <span class="n">position</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">protected</span> <span class="k">def</span> <span class="n">parse</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">command</span><span class="k">:</span> <span class="kt">String</span><span class="o">)(</span><span class="n">toResult</span><span class="k">:</span> <span class="kt">SqlBaseParser</span> <span class="o">=&gt;</span> <span class="n">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Parsing command: $command"</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">lexer</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SqlBaseLexer</span><span class="o">(</span><span class="k">new</span> <span class="nc">UpperCaseCharStream</span><span class="o">(</span><span class="nc">CharStreams</span><span class="o">.</span><span class="n">fromString</span><span class="o">(</span><span class="n">command</span><span class="o">)))</span>
+  <span class="n">lexer</span><span class="o">.</span><span class="n">removeErrorListeners</span><span class="o">()</span>
+  <span class="n">lexer</span><span class="o">.</span><span class="n">addErrorListener</span><span class="o">(</span><span class="nc">ParseErrorListener</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="n">tokenStream</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">CommonTokenStream</span><span class="o">(</span><span class="n">lexer</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">parser</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SqlBaseParser</span><span class="o">(</span><span class="n">tokenStream</span><span class="o">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">addParseListener</span><span class="o">(</span><span class="nc">PostProcessor</span><span class="o">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">removeErrorListeners</span><span class="o">()</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">addErrorListener</span><span class="o">(</span><span class="nc">ParseErrorListener</span><span class="o">)</span>
+
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// first, try parsing with potentially faster SLL mode
+</span>      <span class="n">parser</span><span class="o">.</span><span class="n">getInterpreter</span><span class="o">.</span><span class="n">setPredictionMode</span><span class="o">(</span><span class="nc">PredictionMode</span><span class="o">.</span><span class="nc">SLL</span><span class="o">)</span>
+      <span class="n">toResult</span><span class="o">(</span><span class="n">parser</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">ParseCancellationException</span> <span class="o">=&gt;</span>
+        <span class="c1">// if we fail, parse with LL mode
+</span>        <span class="n">tokenStream</span><span class="o">.</span><span class="n">seek</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="c1">// rewind input stream
+</span>        <span class="n">parser</span><span class="o">.</span><span class="n">reset</span><span class="o">()</span>
+
+        <span class="c1">// Try Again.
+</span>        <span class="n">parser</span><span class="o">.</span><span class="n">getInterpreter</span><span class="o">.</span><span class="n">setPredictionMode</span><span class="o">(</span><span class="nc">PredictionMode</span><span class="o">.</span><span class="nc">LL</span><span class="o">)</span>
+        <span class="n">toResult</span><span class="o">(</span><span class="n">parser</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">ParseException</span> <span class="kt">if</span> <span class="kt">e.command.isDefined</span> <span class="o">=&gt;</span>
+        <span class="k">throw</span> <span class="n">e</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">ParseException</span> <span class="o">=&gt;</span>
+        <span class="k">throw</span> <span class="n">e</span><span class="o">.</span><span class="n">withCommand</span><span class="o">(</span><span class="n">command</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">AnalysisException</span> <span class="o">=&gt;</span>
+        <span class="k">val</span> <span class="n">position</span> <span class="k">=</span> <span class="nc">Origin</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">line</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="n">startPosition</span><span class="o">)</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nc">ParseException</span><span class="o">(</span><span class="nc">Option</span><span class="o">(</span><span class="n">command</span><span class="o">),</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="o">,</span> <span class="n">position</span><span class="o">,</span> <span class="n">position</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+  
+  
+<span class="k">class</span> <span class="nc">SparkSqlParser</span><span class="o">(</span><span class="n">conf</span><span class="k">:</span> <span class="kt">SQLConf</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">AbstractSqlParser</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">astBuilder</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkSqlAstBuilder</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
+
+  <span class="k">private</span> <span class="k">val</span> <span class="n">substitutor</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">VariableSubstitution</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
+
+  <span class="k">protected</span> <span class="k">override</span> <span class="k">def</span> <span class="n">parse</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">command</span><span class="k">:</span> <span class="kt">String</span><span class="o">)(</span><span class="n">toResult</span><span class="k">:</span> <span class="kt">SqlBaseParser</span> <span class="o">=&gt;</span> <span class="n">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">super</span><span class="o">.</span><span class="n">parse</span><span class="o">(</span><span class="n">substitutor</span><span class="o">.</span><span class="n">substitute</span><span class="o">(</span><span class="n">command</span><span class="o">))(</span><span class="n">toResult</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>对树根节点的访问会递归访问树的子节点，先执行visitFromClause构造from Logical Plan，再调用visitTableName，最后构造出整个Unresolved Logical Plan并返回</p>
+
+  <p>Analyzer继承自RuleExecutor，通过模式匹配相应的规则并进行替换，在QueryExecution中会触发Analyzer的executeAndCheck方法，父类中的execute方法会将所有规则应用到逻辑算子树上，并且会对列名解析到相应的下标，Analyzed LogicPlan就生成了</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// QueryExecution中的方法
+</span><span class="k">lazy</span> <span class="k">val</span> <span class="n">analyzed</span><span class="k">:</span> <span class="kt">LogicalPlan</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="nc">SparkSession</span><span class="o">.</span><span class="n">setActiveSession</span><span class="o">(</span><span class="n">sparkSession</span><span class="o">)</span>
+    <span class="n">sparkSession</span><span class="o">.</span><span class="n">sessionState</span><span class="o">.</span><span class="n">analyzer</span><span class="o">.</span><span class="n">executeAndCheck</span><span class="o">(</span><span class="n">logical</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1">// Analyzer中的方法，第一行代码调用execute方法
+</span><span class="k">def</span> <span class="n">executeAndCheck</span><span class="o">(</span><span class="n">plan</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">LogicalPlan</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">analyzed</span> <span class="k">=</span> <span class="n">execute</span><span class="o">(</span><span class="n">plan</span><span class="o">)</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">checkAnalysis</span><span class="o">(</span><span class="n">analyzed</span><span class="o">)</span>
+      <span class="nc">EliminateBarriers</span><span class="o">(</span><span class="n">analyzed</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">AnalysisException</span> <span class="o">=&gt;</span>
+        <span class="k">val</span> <span class="n">ae</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">AnalysisException</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="n">line</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="n">startPosition</span><span class="o">,</span> <span class="nc">Option</span><span class="o">(</span><span class="n">analyzed</span><span class="o">))</span>
+        <span class="n">ae</span><span class="o">.</span><span class="n">setStackTrace</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getStackTrace</span><span class="o">)</span>
+        <span class="k">throw</span> <span class="n">ae</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// 执行executeSameContext方法
+</span><span class="k">override</span> <span class="k">def</span> <span class="n">execute</span><span class="o">(</span><span class="n">plan</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">LogicalPlan</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="nc">AnalysisContext</span><span class="o">.</span><span class="n">reset</span><span class="o">()</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">executeSameContext</span><span class="o">(</span><span class="n">plan</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="nc">AnalysisContext</span><span class="o">.</span><span class="n">reset</span><span class="o">()</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// executeSameContext方法会调用父类RuleExecutor的execute方法
+</span><span class="k">private</span> <span class="k">def</span> <span class="n">executeSameContext</span><span class="o">(</span><span class="n">plan</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">LogicalPlan</span> <span class="o">=</span> <span class="k">super</span><span class="o">.</span><span class="n">execute</span><span class="o">(</span><span class="n">plan</span><span class="o">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Optimizer同样也是继承自RuleExecutor，而SparkOptimizer继承自Optimizer，QueryExecution中也定义了optimizedPlan，会调用optimizer的execute方法，由于Optimizer和SparkOptimizer中都没有重写execute方法，所以直接调用RuleExecutor的execute方法，然后将自己的规则batches应用到算子树中</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lazy</span> <span class="k">val</span> <span class="n">optimizedPlan</span><span class="k">:</span> <span class="kt">LogicalPlan</span> <span class="o">=</span> <span class="n">sparkSession</span><span class="o">.</span><span class="n">sessionState</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">execute</span><span class="o">(</span><span class="n">withCachedData</span><span class="o">)</span>
+</code></pre></div></div>
+<blockquote>
+  <p>最后生成的优化后的算子树将作为Spark SQL中生成物理计划的输入</p>
+
+  <p>如下上半部分是执行select * from student where year = ‘2010’得到的逻辑计划，Unresolved LogicalPlan自底向上对应着相应的执行顺序，第一步是生成表student对应的逻辑计划，第二步是加入过滤后的逻辑计划，第三步是生成加入列裁剪后的逻辑计划，因为sql中查询的是*，所以Project对应的*</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>== Parsed Logical Plan ==
+'Project [*]
++- 'Filter ('year = 2010)
+   +- 'UnresolvedRelation `student`
+
+== Analyzed Logical Plan ==
+year: string, class: string, student: string, score: string
+Project [year#10, class#11, student#12, score#13]
++- Filter (year#10 = 2010)
+   +- SubqueryAlias student
+      +- Relation[year#10,class#11,student#12,score#13] csv
+
+== Optimized Logical Plan ==
+Filter (isnotnull(year#10) &amp;&amp; (year#10 = 2010))
++- Relation[year#10,class#11,student#12,score#13] csv
+
+== Physical Plan ==
+*(1) Project [year#10, class#11, student#12, score#13]
++- *(1) Filter (isnotnull(year#10) &amp;&amp; (year#10 = 2010))
+   +- *(1) FileScan csv [year#10,class#11,student#12,score#13] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/Users/admin/Desktop/student.csv], PartitionFilters: [], PushedFilters: [IsNotNull(year), EqualTo(year,2010)], ReadSchema: struct&lt;year:string,class:string,student:string,score:string&gt;
+</code></pre></div></div>
+
+<blockquote>
+
+  <p>本来想着也进行调试的，看代码如何运行，及运行中的变量结果，可是发现SqlBaseBaseVisitor，SqlBaseVisitor，SqlBaseParser等这些类都是由SqlBase.g4生成的代码，在spark源码中根本无法debug，但是可以在自己创建的项目中进行调试运行到spark相应的类中</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/07/19/spark_sql_logical_plan', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
