@@ -173,7 +173,7 @@ var _hmt = _hmt || [];
 
   <p>Analyzer将一系列的规则作用于Unresolved LogicalPlan，对树上的节点绑定各种数据信息，生成解析后的Analyzed LogicPlan</p>
 
-  <p>Optimizer将一系列的优化规则作用到Analyzed LogicPlan上，在确保结果正确的前提下，改写其中的低效结果，生成Optimized LogicalPlan</p>
+  <p>Optimizer将一系列的优化规则作用到Analyzed LogicPlan上，在确保结果正确的前提下，改写其中的低效结果，生成Optimized LogicalPlan，这步优化被称为RBO，因为是基于规则的优化</p>
 
   <p>LogicalPlan继承自QueryPlan，QueryPlan继承自TreeNode，所以LogicalPlan也是属于TreeNode结构</p>
 
