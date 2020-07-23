@@ -1,0 +1,518 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记(二十二)</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(二十二)</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(二十二)</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/21/spark_physical_plan.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记(二十一)</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/21/spark_physical_plan.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记(二十一)</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        Spark SQL之Join
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>目前转换成为物理计划的join策略实现总共有5种，</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Broadcast hash join (BHJ):不支持full outer join；right outer join只能广播左表，left outer, left semi, left anti只能广播右表；inner join左右表都可以广播。用户可以使用广播函数显示指定或者设置广播阈值大小，默认10M
+Shuffle hash join: 比BHJ更严格
+Sort merge: 通常不能使用上述方案时，考虑使用，当两个表都比较大时
+BroadcastNestedLoopJoin (BNLJ)，
+CartesianProduct，
+最后两种都是对应着没有指定join key的情况，非常耗性能
+</code></pre></div>  </div>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="cm">/**
+     * Matches a plan whose output should be small enough to be used in broadcast join.
+     */</span>
+    <span class="c1">// 判断是否能够广播，表大小统计小于广播阈值
+</span>    <span class="k">private</span> <span class="k">def</span> <span class="n">canBroadcast</span><span class="o">(</span><span class="n">plan</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="n">plan</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sizeInBytes</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">plan</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sizeInBytes</span> <span class="o">&lt;=</span> <span class="n">conf</span><span class="o">.</span><span class="n">autoBroadcastJoinThreshold</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Matches a plan whose single partition should be small enough to build a hash table.
+     *
+     * Note: this assume that the number of partition is fixed, requires additional work if it's
+     * dynamic.
+     */</span>
+    <span class="c1">// 构建本地HashMap，需要表大小统计小于广播阈值(spark.sql.autoBroadcastJoinThreshold)*默认分区数(spark.sql.shuffle.partitions),按照默认的算，就是10*200，大小为2000M
+</span>    <span class="k">private</span> <span class="k">def</span> <span class="n">canBuildLocalHashMap</span><span class="o">(</span><span class="n">plan</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="n">plan</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sizeInBytes</span> <span class="o">&lt;</span> <span class="n">conf</span><span class="o">.</span><span class="n">autoBroadcastJoinThreshold</span> <span class="o">*</span> <span class="n">conf</span><span class="o">.</span><span class="n">numShufflePartitions</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Returns whether plan a is much smaller (3X) than plan b.
+     *
+     * The cost to build hash map is higher than sorting, we should only build hash map on a table
+     * that is much smaller than other one. Since we does not have the statistic for number of rows,
+     * use the size of bytes here as estimation.
+     */</span>
+    <span class="c1">// a表大小扩大3倍要比b小，也就是b远大于a表
+</span>    <span class="k">private</span> <span class="k">def</span> <span class="n">muchSmaller</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="n">a</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sizeInBytes</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sizeInBytes</span>
+    <span class="o">}</span>
+	
+	<span class="c1">// innerlike, leftouter,leftsemi,leftanti,ExistenceJoin可以构建右表
+</span>    <span class="k">private</span> <span class="k">def</span> <span class="n">canBuildRight</span><span class="o">(</span><span class="n">joinType</span><span class="k">:</span> <span class="kt">JoinType</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="n">joinType</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="k">_:</span> <span class="kt">InnerLike</span> <span class="kt">|</span> <span class="kt">LeftOuter</span> <span class="kt">|</span> <span class="kt">LeftSemi</span> <span class="kt">|</span> <span class="kt">LeftAnti</span> <span class="kt">|</span> <span class="k">_</span><span class="kt">:</span> <span class="kt">ExistenceJoin</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="kc">false</span>
+    <span class="o">}</span>
+
+    <span class="c1">// innerlike, RightOuter可以构建左表
+</span>    <span class="k">private</span> <span class="k">def</span> <span class="n">canBuildLeft</span><span class="o">(</span><span class="n">joinType</span><span class="k">:</span> <span class="kt">JoinType</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="n">joinType</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="k">_:</span> <span class="kt">InnerLike</span> <span class="kt">|</span> <span class="kt">RightOuter</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="kc">false</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="k">def</span> <span class="n">broadcastSide</span><span class="o">(</span>
+        <span class="n">canBuildLeft</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">,</span>
+        <span class="n">canBuildRight</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">,</span>
+        <span class="n">left</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">,</span>
+        <span class="n">right</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">BuildSide</span> <span class="o">=</span> <span class="o">{</span>
+		<span class="c1">// 那边小build哪边的表
+</span>      <span class="k">def</span> <span class="n">smallerSide</span> <span class="k">=</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">right</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sizeInBytes</span> <span class="o">&lt;=</span> <span class="n">left</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sizeInBytes</span><span class="o">)</span> <span class="nc">BuildRight</span> <span class="k">else</span> <span class="nc">BuildLeft</span>
+		<span class="c1">// 左右都能build时，build小的一边
+</span>      <span class="k">if</span> <span class="o">(</span><span class="n">canBuildRight</span> <span class="o">&amp;&amp;</span> <span class="n">canBuildLeft</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Broadcast smaller side base on its estimated physical size
+</span>        <span class="c1">// if both sides have broadcast hint
+</span>        <span class="n">smallerSide</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">canBuildRight</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">BuildRight</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">canBuildLeft</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">BuildLeft</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      	 <span class="c1">// 左右表都不能build时，build小的表
+</span>        <span class="c1">// for the last default broadcast nested loop join
+</span>        <span class="n">smallerSide</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="k">def</span> <span class="n">canBroadcastByHints</span><span class="o">(</span><span class="n">joinType</span><span class="k">:</span> <span class="kt">JoinType</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span>
+      <span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">buildLeft</span> <span class="k">=</span> <span class="n">canBuildLeft</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">left</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">hints</span><span class="o">.</span><span class="n">broadcast</span>
+      <span class="k">val</span> <span class="n">buildRight</span> <span class="k">=</span> <span class="n">canBuildRight</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">right</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">hints</span><span class="o">.</span><span class="n">broadcast</span>
+      <span class="n">buildLeft</span> <span class="o">||</span> <span class="n">buildRight</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="k">def</span> <span class="n">broadcastSideByHints</span><span class="o">(</span><span class="n">joinType</span><span class="k">:</span> <span class="kt">JoinType</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span>
+      <span class="k">:</span> <span class="kt">BuildSide</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">buildLeft</span> <span class="k">=</span> <span class="n">canBuildLeft</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">left</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">hints</span><span class="o">.</span><span class="n">broadcast</span>
+      <span class="k">val</span> <span class="n">buildRight</span> <span class="k">=</span> <span class="n">canBuildRight</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">right</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">hints</span><span class="o">.</span><span class="n">broadcast</span>
+      <span class="n">broadcastSide</span><span class="o">(</span><span class="n">buildLeft</span><span class="o">,</span> <span class="n">buildRight</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="k">def</span> <span class="n">canBroadcastBySizes</span><span class="o">(</span><span class="n">joinType</span><span class="k">:</span> <span class="kt">JoinType</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span>
+      <span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">buildLeft</span> <span class="k">=</span> <span class="n">canBuildLeft</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">canBroadcast</span><span class="o">(</span><span class="n">left</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">buildRight</span> <span class="k">=</span> <span class="n">canBuildRight</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">canBroadcast</span><span class="o">(</span><span class="n">right</span><span class="o">)</span>
+      <span class="n">buildLeft</span> <span class="o">||</span> <span class="n">buildRight</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="k">def</span> <span class="n">broadcastSideBySizes</span><span class="o">(</span><span class="n">joinType</span><span class="k">:</span> <span class="kt">JoinType</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span>
+      <span class="k">:</span> <span class="kt">BuildSide</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">buildLeft</span> <span class="k">=</span> <span class="n">canBuildLeft</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">canBroadcast</span><span class="o">(</span><span class="n">left</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">buildRight</span> <span class="k">=</span> <span class="n">canBuildRight</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">canBroadcast</span><span class="o">(</span><span class="n">right</span><span class="o">)</span>
+      <span class="n">broadcastSide</span><span class="o">(</span><span class="n">buildLeft</span><span class="o">,</span> <span class="n">buildRight</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">plan</span><span class="k">:</span> <span class="kt">LogicalPlan</span><span class="o">)</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">SparkPlan</span><span class="o">]</span> <span class="k">=</span> <span class="n">plan</span> <span class="k">match</span> <span class="o">{</span>
+
+      <span class="c1">// --- BroadcastHashJoin --------------------------------------------------------------------
+</span>		<span class="c1">// 显示指定广播时
+</span>      <span class="c1">// broadcast hints were specified
+</span>      <span class="k">case</span> <span class="nc">ExtractEquiJoinKeys</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="k">if</span> <span class="n">canBroadcastByHints</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">buildSide</span> <span class="k">=</span> <span class="n">broadcastSideByHints</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="nc">Seq</span><span class="o">(</span><span class="n">joins</span><span class="o">.</span><span class="nc">BroadcastHashJoinExec</span><span class="o">(</span>
+          <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">buildSide</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">)))</span>
+
+		<span class="c1">// 不显示指定广播时，只要满足条件也能广播
+</span>      <span class="c1">// broadcast hints were not specified, so need to infer it from size and configuration.
+</span>      <span class="k">case</span> <span class="nc">ExtractEquiJoinKeys</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="k">if</span> <span class="n">canBroadcastBySizes</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">buildSide</span> <span class="k">=</span> <span class="n">broadcastSideBySizes</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="nc">Seq</span><span class="o">(</span><span class="n">joins</span><span class="o">.</span><span class="nc">BroadcastHashJoinExec</span><span class="o">(</span>
+          <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">buildSide</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">)))</span>
+
+      <span class="c1">// --- ShuffledHashJoin ---------------------------------------------------------------------
+</span>		<span class="c1">// 需要设置spark.sql.join.preferSortMergeJoin为false,默认为true，参与join的key不具有排序的特性
+</span>      <span class="k">case</span> <span class="nc">ExtractEquiJoinKeys</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+         <span class="k">if</span> <span class="o">!</span><span class="n">conf</span><span class="o">.</span><span class="n">preferSortMergeJoin</span> <span class="o">&amp;&amp;</span> <span class="n">canBuildRight</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">canBuildLocalHashMap</span><span class="o">(</span><span class="n">right</span><span class="o">)</span>
+           <span class="o">&amp;&amp;</span> <span class="n">muchSmaller</span><span class="o">(</span><span class="n">right</span><span class="o">,</span> <span class="n">left</span><span class="o">)</span> <span class="o">||</span>
+           <span class="o">!</span><span class="nc">RowOrdering</span><span class="o">.</span><span class="n">isOrderable</span><span class="o">(</span><span class="n">leftKeys</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="nc">Seq</span><span class="o">(</span><span class="n">joins</span><span class="o">.</span><span class="nc">ShuffledHashJoinExec</span><span class="o">(</span>
+          <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="nc">BuildRight</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">)))</span>
+
+      <span class="k">case</span> <span class="nc">ExtractEquiJoinKeys</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+         <span class="k">if</span> <span class="o">!</span><span class="n">conf</span><span class="o">.</span><span class="n">preferSortMergeJoin</span> <span class="o">&amp;&amp;</span> <span class="n">canBuildLeft</span><span class="o">(</span><span class="n">joinType</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">canBuildLocalHashMap</span><span class="o">(</span><span class="n">left</span><span class="o">)</span>
+           <span class="o">&amp;&amp;</span> <span class="n">muchSmaller</span><span class="o">(</span><span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="o">||</span>
+           <span class="o">!</span><span class="nc">RowOrdering</span><span class="o">.</span><span class="n">isOrderable</span><span class="o">(</span><span class="n">leftKeys</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="nc">Seq</span><span class="o">(</span><span class="n">joins</span><span class="o">.</span><span class="nc">ShuffledHashJoinExec</span><span class="o">(</span>
+          <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="nc">BuildLeft</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">)))</span>
+
+      <span class="c1">// --- SortMergeJoin ------------------------------------------------------------
+</span>
+      <span class="k">case</span> <span class="nc">ExtractEquiJoinKeys</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="k">if</span> <span class="nc">RowOrdering</span><span class="o">.</span><span class="n">isOrderable</span><span class="o">(</span><span class="n">leftKeys</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">joins</span><span class="o">.</span><span class="nc">SortMergeJoinExec</span><span class="o">(</span>
+          <span class="n">leftKeys</span><span class="o">,</span> <span class="n">rightKeys</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">condition</span><span class="o">,</span> <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">))</span> <span class="o">::</span> <span class="nc">Nil</span>
+
+      <span class="c1">// --- Without joining keys ------------------------------------------------------------
+</span>
+      <span class="c1">// Pick BroadcastNestedLoopJoin if one side could be broadcast
+</span>      <span class="k">case</span> <span class="n">j</span> <span class="k">@</span> <span class="n">logical</span><span class="o">.</span><span class="nc">Join</span><span class="o">(</span><span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">condition</span><span class="o">)</span>
+          <span class="k">if</span> <span class="n">canBroadcastByHints</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">buildSide</span> <span class="k">=</span> <span class="n">broadcastSideByHints</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="n">joins</span><span class="o">.</span><span class="nc">BroadcastNestedLoopJoinExec</span><span class="o">(</span>
+          <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">),</span> <span class="n">buildSide</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">condition</span><span class="o">)</span> <span class="o">::</span> <span class="nc">Nil</span>
+
+      <span class="k">case</span> <span class="n">j</span> <span class="k">@</span> <span class="n">logical</span><span class="o">.</span><span class="nc">Join</span><span class="o">(</span><span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">condition</span><span class="o">)</span>
+          <span class="k">if</span> <span class="n">canBroadcastBySizes</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">buildSide</span> <span class="k">=</span> <span class="n">broadcastSideBySizes</span><span class="o">(</span><span class="n">joinType</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="n">joins</span><span class="o">.</span><span class="nc">BroadcastNestedLoopJoinExec</span><span class="o">(</span>
+          <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">),</span> <span class="n">buildSide</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">condition</span><span class="o">)</span> <span class="o">::</span> <span class="nc">Nil</span>
+
+      <span class="c1">// Pick CartesianProduct for InnerJoin
+</span>      <span class="k">case</span> <span class="n">logical</span><span class="o">.</span><span class="nc">Join</span><span class="o">(</span><span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">,</span> <span class="k">_:</span> <span class="kt">InnerLike</span><span class="o">,</span> <span class="n">condition</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">joins</span><span class="o">.</span><span class="nc">CartesianProductExec</span><span class="o">(</span><span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">),</span> <span class="n">condition</span><span class="o">)</span> <span class="o">::</span> <span class="nc">Nil</span>
+
+      <span class="k">case</span> <span class="n">logical</span><span class="o">.</span><span class="nc">Join</span><span class="o">(</span><span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">condition</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">buildSide</span> <span class="k">=</span> <span class="n">broadcastSide</span><span class="o">(</span>
+          <span class="n">left</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">hints</span><span class="o">.</span><span class="n">broadcast</span><span class="o">,</span> <span class="n">right</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">hints</span><span class="o">.</span><span class="n">broadcast</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="c1">// This join could be very slow or OOM
+</span>        <span class="n">joins</span><span class="o">.</span><span class="nc">BroadcastNestedLoopJoinExec</span><span class="o">(</span>
+          <span class="n">planLater</span><span class="o">(</span><span class="n">left</span><span class="o">),</span> <span class="n">planLater</span><span class="o">(</span><span class="n">right</span><span class="o">),</span> <span class="n">buildSide</span><span class="o">,</span> <span class="n">joinType</span><span class="o">,</span> <span class="n">condition</span><span class="o">)</span> <span class="o">::</span> <span class="nc">Nil</span>
+
+      <span class="c1">// --- Cases where this strategy does not apply ---------------------------------------------
+</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
+    <span class="o">}</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>hash join需要满足如下条件</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 设置spark.sql.join.preferSortMergeJoin=false
+2. join key不具有排序特性
+3. 右表/左表能被build，且右表/左表能build localhashmap，也就是右表/左表大小小于广播阈值*默认分区数
+4. 右表/左表比左表/右表小3倍以上
+</code></pre></div>  </div>
+
+  <p>broadcast join条件</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>表大小不超过广播阈值，且能build，比如右连接，条件时需要build左表且左表大小比阈值小。
+右连接build左表，左连接build右表，内连接左右表都可以
+</code></pre></div>  </div>
+
+  <p>spark中broadcast join, hash join的实现都是把一张表加载到内存中，称为buildIter，另一张表称之为streamIter，join时从streamIter中依次取一条记录，然后去buildIter中查，满足条件则join</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">protected</span> <span class="k">override</span> <span class="k">def</span> <span class="n">doExecute</span><span class="o">()</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">InternalRow</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">numOutputRows</span> <span class="k">=</span> <span class="n">longMetric</span><span class="o">(</span><span class="s">"numOutputRows"</span><span class="o">)</span>
+    <span class="n">streamedPlan</span><span class="o">.</span><span class="n">execute</span><span class="o">().</span><span class="n">zipPartitions</span><span class="o">(</span><span class="n">buildPlan</span><span class="o">.</span><span class="n">execute</span><span class="o">())</span> <span class="o">{</span> <span class="o">(</span><span class="n">streamIter</span><span class="o">,</span> <span class="n">buildIter</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="k">val</span> <span class="n">hashed</span> <span class="k">=</span> <span class="n">buildHashedRelation</span><span class="o">(</span><span class="n">buildIter</span><span class="o">)</span>
+      <span class="n">join</span><span class="o">(</span><span class="n">streamIter</span><span class="o">,</span> <span class="n">hashed</span><span class="o">,</span> <span class="n">numOutputRows</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+  
+<span class="k">private</span> <span class="k">def</span> <span class="n">buildHashedRelation</span><span class="o">(</span><span class="n">iter</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">InternalRow</span><span class="o">])</span><span class="k">:</span> <span class="kt">HashedRelation</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">buildDataSize</span> <span class="k">=</span> <span class="n">longMetric</span><span class="o">(</span><span class="s">"buildDataSize"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">buildTime</span> <span class="k">=</span> <span class="n">longMetric</span><span class="o">(</span><span class="s">"buildTime"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">start</span> <span class="k">=</span> <span class="nc">System</span><span class="o">.</span><span class="n">nanoTime</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">context</span> <span class="k">=</span> <span class="nc">TaskContext</span><span class="o">.</span><span class="n">get</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">relation</span> <span class="k">=</span> <span class="nc">HashedRelation</span><span class="o">(</span><span class="n">iter</span><span class="o">,</span> <span class="n">buildKeys</span><span class="o">,</span> <span class="n">taskMemoryManager</span> <span class="k">=</span> <span class="n">context</span><span class="o">.</span><span class="n">taskMemoryManager</span><span class="o">())</span>
+    <span class="n">buildTime</span> <span class="o">+=</span> <span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="n">nanoTime</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">)</span> <span class="o">/</span> <span class="mi">1000000</span>
+    <span class="n">buildDataSize</span> <span class="o">+=</span> <span class="n">relation</span><span class="o">.</span><span class="n">estimatedSize</span>
+    <span class="c1">// This relation is usually used until the end of task.
+</span>    <span class="n">context</span><span class="o">.</span><span class="n">addTaskCompletionListener</span><span class="o">(</span><span class="k">_</span> <span class="k">=&gt;</span> <span class="n">relation</span><span class="o">.</span><span class="n">close</span><span class="o">())</span>
+    <span class="n">relation</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>sort merge join需要先对key进行排序，然后shuffle，将相同的key发到同一个partition中，再在partition内部进行比较，不需要将一个表加载到内存中，所以sort merge join并没有buildIter,streamIter概念</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/07/23/spark_sql_join', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
