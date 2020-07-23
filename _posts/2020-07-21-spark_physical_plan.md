@@ -5,7 +5,7 @@ date:   2020-07-21 23:32:49 +0800
 tags:
 - Spark
 color: rgb(207, 207, 207)
-cover: '/blog/Halloween/2020070805.webp'
+cover: '/blog/Halloween/2020070807.webp'
 subtitle: Spark SQL之物理计划
 ---
 > 逻辑计划执行完，生成的Optimizer Logical Plan会被SparkPlanner调用plan方法执行，SparkPlaner会将各种物理计划策略strategies作用到Logical Plan上，生成Iterator[SparkPlan]，SparkPlan是物理计划的父类，所以一个逻辑计划可能产生多个物理计划，然后选取最佳的SparkPlan，看如下代码，spark2.3.3版本中仍然是用next方法选取第一个。之后在执行计划前做一些准备工作，调用若干规则应用，toRDD函数正式执行物理计划，转换成RDD[InternalRow]类型
