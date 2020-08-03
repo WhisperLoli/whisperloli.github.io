@@ -1,0 +1,835 @@
+<!-- 博文的布局-Layout -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 引入head标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-sclable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="For dream" />
+<meta name="keywords" content="虎子的博客，虎子，虎子的个人博客，Loli的博客，萝莉的博客" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/media.css">
+<link rel="stylesheet" href="/assets/css/animate.min.css">
+<link rel="stylesheet" href="/assets/css/pygments/pygments_manni.css">
+<link rel="stylesheet" href="/assets/css/github-markdown.css">
+<!-- SNS-icon -->
+<script src="//at.alicdn.com/t/font_856428_y9z6nq7zf5.js"></script>
+<!-- share.css -->
+<link rel="stylesheet" href="/assets/css/share.min.css">
+<!-- font -->
+<link rel="stylesheet" href="/assets/css/font.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Pacifico|Ubuntu|Roboto+Mono|Source+Sans+Pro" rel="stylesheet"> -->
+
+<!-- Favicon -->
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="shortcut icon" />
+<link href="https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293996d480f200894c87e9ff7230153c8&v=4" rel="apple-touch-icon-precomposed" />
+<!-- Android Lolipop Theme Color -->
+<!-- <meta name="theme-color" content="#1464FB"> -->
+<title>Spark源码学习笔记(二十四)</title>
+<!-- 百度统计 -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a3a737f6c3f0813c837b666de10dbaa2";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- 谷歌分析 -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+<!-- Android Lolipop Theme Color -->
+<meta name="theme-color" content=" rgb(207, 207, 207) ">
+</head>
+<body>
+
+<!-- 顶部锚点 -->
+<a id="htmlup" name="htmlup"></a>
+<!-- 引入博文顶部选项 -->
+
+<header id="post-header" style="background-color:rgb(207, 207, 207);">
+  <div class="top-center">
+      <div class="logo">
+          <a href="/" title="my awesome webtitle" style="color: white;">Loli</a>
+      </div>
+      <nav class="top-nav">
+          <ul>
+              
+                <li><a href="/" style="color: white;">首页</a></li>
+              
+                <li><a href="/tags.html" style="color: white;">标签</a></li>
+              
+                <li><a href="/timeline.html" style="color: white;">时间线</a></li>
+              
+                <li><a href="/about.html" style="color: white;">关于博主</a></li>
+              
+                <li><a href="/friendLink.html" style="color: white;">友情链接</a></li>
+              
+          </ul>
+      </nav>
+      <div id="top-boot">
+        <a href="javascript:;" id="boot1" style="display:block;" onclick="document.getElementById('boot-area').style.display='block';document.getElementById('boot1').style.display='none';document.getElementById('boot2').style.display='block';"><img src="/assets/boot_white.png" alt=""></a>
+        <a href="javascript:;" id="boot2" style="display: none;" onclick="document.getElementById('boot-area').style.display='none';document.getElementById('boot1').style.display='block';document.getElementById('boot2').style.display='none';"><img src="/assets/boot_white.png" alt=""></a>
+      </div>
+  </div>
+
+</header>
+
+
+<!-- 引入移动下拉选项 -->
+<div id="boot-area">
+    <ul>
+        
+          <a href="/"><li>首页</li></a>
+        
+          <a href="/tags.html"><li>标签</li></a>
+        
+          <a href="/timeline.html"><li>时间线</li></a>
+        
+          <a href="/about.html"><li>关于博主</li></a>
+        
+          <a href="/friendLink.html"><li>友情链接</li></a>
+        
+    </ul>
+</div>
+
+<!-- 引入博文顶部样式 -->
+<!-- 版本一 垃圾 -->
+<!-- <div class="wow fadeIn top" data-wow-duration="3.5s" >
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(二十四)</span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.4s"></span>
+    <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span>
+</div> -->
+
+<!-- 版本二 可切换页面 -->
+
+<div class="post-top" style="background-color:rgb(207, 207, 207);">
+  <!-- 页面宽度大于800px -->
+  <div class="left-area">
+    
+      <a href="javascript:;" class="btn bounceInLeft animated" onmouseover="showLeft();this.style.color='rgb(207, 207, 207)';" onmouseout="goneLeft();this.style.color='rgba(0,0,0,.2)';"><</a>
+      <div id="left-tab" style="display:none;"><span class="left-san"></span><span class="left-main" style="color:rgb(207, 207, 207);"><sapn class="main">没有上一页咯</sapn></span></div>
+    
+  </div>
+  <div class="post-titlearea">
+    <span class="wow fadeInUp" data-wow-delay="0.2s">Spark源码学习笔记(二十四)</span>
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.4s"></span> -->
+    <!-- <span class="wow fadeInUp" data-wow-delay="0.6s">作者&nbsp;&nbsp;|&nbsp;&nbsp;true</span> -->
+  </div>
+  <div class="right-area">
+    
+      <a href="/2020/07/28/spark_sql_cbo.html" class="btn bounceInRight self-animated" onmouseover="showRight();this.style.color='rgb(207, 207, 207)';" onmouseout="goneRight();this.style.color='rgba(0,0,0,.2)';">></a>
+      <div id="right-tab" style="display:none;"><span class="right-san"></span><span class="right-main" style="color:rgb(207, 207, 207);"><sapn class="main">Spark源码学习笔记(二十三)</sapn></span></div>
+    
+  </div>
+
+  <!-- 页面宽度小于800px -->
+  <div class="post-changearea">
+    
+      <a href="javascript:;" class="leftchange" style="border-right: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span><br>没有上一篇咯</span></a>
+    
+    
+      <a href="/2020/07/28/spark_sql_cbo.html" class="rightchange" style="border-left: 1px solid rgb(207, 207, 207);border-bottom: 2px solid rgb(207, 207, 207);"><span>下一篇<br><br>Spark源码学习笔记(二十三)</span></a>
+    
+  </div>
+</div>
+
+
+<div class="markdown-body fadeInUp animated">
+
+  
+    
+      <div class="postpage-subtitle" style="border-left: 8px solid rgb(207, 207, 207); border-right: 8px solid rgb(207, 207, 207)">
+        Spark Streaming详解
+      </div>
+    
+  
+
+  <!-- 文章内容 -->
+  <blockquote>
+  <p>这篇可能是spark源码学习系列的最后一篇了，structed streaming不打算看了，有兴趣的同学可以自己研究。从spark架构中每一个重要的组件到sql，再到现在的streaming，看完源码，真的学习了很多东西吧。</p>
+
+  <p>创建完spark streaming项目后，代码中需要调用StreamingContext的start方法启动。start方法中会调用JobScheduler的start方法。</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// JobScheduler的start方法
+</span>  <span class="k">def</span> <span class="n">start</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">eventLoop</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="c1">// scheduler has already been started
+</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Starting JobScheduler"</span><span class="o">)</span>
+    <span class="n">eventLoop</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">EventLoop</span><span class="o">[</span><span class="kt">JobSchedulerEvent</span><span class="o">](</span><span class="s">"JobScheduler"</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">onReceive</span><span class="o">(</span><span class="n">event</span><span class="k">:</span> <span class="kt">JobSchedulerEvent</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">processEvent</span><span class="o">(</span><span class="n">event</span><span class="o">)</span>
+
+      <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">onError</span><span class="o">(</span><span class="n">e</span><span class="k">:</span> <span class="kt">Throwable</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">reportError</span><span class="o">(</span><span class="s">"Error in job scheduler"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">eventLoop</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+
+    <span class="c1">// attach rate controllers of input streams to receive batch completion updates
+</span>    <span class="k">for</span> <span class="o">{</span>
+      <span class="n">inputDStream</span> <span class="k">&lt;-</span> <span class="n">ssc</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">getInputStreams</span>
+      <span class="c1">// 用于获取每批Job数据量大小
+</span>      <span class="n">rateController</span> <span class="k">&lt;-</span> <span class="n">inputDStream</span><span class="o">.</span><span class="n">rateController</span>
+    <span class="o">}</span> <span class="n">ssc</span><span class="o">.</span><span class="n">addStreamingListener</span><span class="o">(</span><span class="n">rateController</span><span class="o">)</span>
+
+    <span class="n">listenerBus</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">receiverTracker</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ReceiverTracker</span><span class="o">(</span><span class="n">ssc</span><span class="o">)</span>
+    <span class="n">inputInfoTracker</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">InputInfoTracker</span><span class="o">(</span><span class="n">ssc</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">executorAllocClient</span><span class="k">:</span> <span class="kt">ExecutorAllocationClient</span> <span class="o">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">schedulerBackend</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">b</span><span class="k">:</span> <span class="kt">ExecutorAllocationClient</span> <span class="o">=&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">ExecutorAllocationClient</span><span class="o">]</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="kc">null</span>
+    <span class="o">}</span>
+
+    <span class="n">executorAllocationManager</span> <span class="k">=</span> <span class="nc">ExecutorAllocationManager</span><span class="o">.</span><span class="n">createIfEnabled</span><span class="o">(</span>
+      <span class="n">executorAllocClient</span><span class="o">,</span>
+      <span class="n">receiverTracker</span><span class="o">,</span>
+      <span class="n">ssc</span><span class="o">.</span><span class="n">conf</span><span class="o">,</span>
+      <span class="n">ssc</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">batchDuration</span><span class="o">.</span><span class="n">milliseconds</span><span class="o">,</span>
+      <span class="n">clock</span><span class="o">)</span>
+    <span class="n">executorAllocationManager</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">ssc</span><span class="o">.</span><span class="n">addStreamingListener</span><span class="o">)</span>
+    <span class="n">receiverTracker</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="c1">// jobgenerator生成每批Job
+</span>    <span class="n">jobGenerator</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">executorAllocationManager</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">start</span><span class="o">())</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Started JobScheduler"</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>调用JobGenerator.start()方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// JobGenerator类中方法
+</span>  <span class="cm">/** Start generation of jobs */</span>
+  <span class="k">def</span> <span class="n">start</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">eventLoop</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="c1">// generator has already been started
+</span>
+    <span class="c1">// Call checkpointWriter here to initialize it before eventLoop uses it to avoid a deadlock.
+</span>    <span class="c1">// See SPARK-10125
+</span>    <span class="n">checkpointWriter</span>
+
+    <span class="n">eventLoop</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">EventLoop</span><span class="o">[</span><span class="kt">JobGeneratorEvent</span><span class="o">](</span><span class="s">"JobGenerator"</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">onReceive</span><span class="o">(</span><span class="n">event</span><span class="k">:</span> <span class="kt">JobGeneratorEvent</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">processEvent</span><span class="o">(</span><span class="n">event</span><span class="o">)</span>
+
+      <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">onError</span><span class="o">(</span><span class="n">e</span><span class="k">:</span> <span class="kt">Throwable</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="n">jobScheduler</span><span class="o">.</span><span class="n">reportError</span><span class="o">(</span><span class="s">"Error in job generator"</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">eventLoop</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">ssc</span><span class="o">.</span><span class="n">isCheckpointPresent</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">restart</span><span class="o">()</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">startFirstTime</span><span class="o">()</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="cm">/** Starts the generator for the first time */</span>
+  <span class="k">private</span> <span class="k">def</span> <span class="n">startFirstTime</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">startTime</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Time</span><span class="o">(</span><span class="n">timer</span><span class="o">.</span><span class="n">getStartTime</span><span class="o">())</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">start</span><span class="o">(</span><span class="n">startTime</span> <span class="o">-</span> <span class="n">graph</span><span class="o">.</span><span class="n">batchDuration</span><span class="o">)</span>
+    <span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="o">(</span><span class="n">startTime</span><span class="o">.</span><span class="n">milliseconds</span><span class="o">)</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Started JobGenerator at "</span> <span class="o">+</span> <span class="n">startTime</span><span class="o">)</span>
+  <span class="o">}</span>
+  
+  <span class="c1">// RecurringTimer中有线程变量，调用start方法可以启动线程
+</span>  <span class="k">private</span> <span class="k">val</span> <span class="n">timer</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">RecurringTimer</span><span class="o">(</span><span class="n">clock</span><span class="o">,</span> <span class="n">ssc</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">batchDuration</span><span class="o">.</span><span class="n">milliseconds</span><span class="o">,</span>
+    <span class="n">longTime</span> <span class="k">=&gt;</span> <span class="n">eventLoop</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">GenerateJobs</span><span class="o">(</span><span class="k">new</span> <span class="nc">Time</span><span class="o">(</span><span class="n">longTime</span><span class="o">))),</span> <span class="s">"JobGenerator"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>RecurringTimer类中会执行回调生成GenerateJobs事件</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="c1">// RecurringTimer类中的方法
+</span>  <span class="cm">/**
+   * Start at the given start time.
+   */</span>
+  <span class="k">def</span> <span class="n">start</span><span class="o">(</span><span class="n">startTime</span><span class="k">:</span> <span class="kt">Long</span><span class="o">)</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="n">nextTime</span> <span class="k">=</span> <span class="n">startTime</span>
+    <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">logInfo</span><span class="o">(</span><span class="s">"Started timer for "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">" at time "</span> <span class="o">+</span> <span class="n">nextTime</span><span class="o">)</span>
+    <span class="n">nextTime</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">val</span> <span class="n">thread</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="s">"RecurringTimer - "</span> <span class="o">+</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">setDaemon</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">{</span> <span class="n">loop</span> <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="cm">/**
+   * Repeatedly call the callback every interval.
+   */</span>
+  <span class="k">private</span> <span class="k">def</span> <span class="n">loop</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="k">while</span> <span class="o">(!</span><span class="n">stopped</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">triggerActionForNextInterval</span><span class="o">()</span>
+      <span class="o">}</span>
+      <span class="n">triggerActionForNextInterval</span><span class="o">()</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="n">e</span><span class="k">:</span> <span class="kt">InterruptedException</span> <span class="o">=&gt;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="c1">// callback就是JobGenerator中传入的longTime =&gt; eventLoop.post(GenerateJobs(new Time(longTime)))，period是传入的每一批的间隔时间，回调方法会调用GenerateJobs事件
+</span>  <span class="k">private</span> <span class="k">def</span> <span class="n">triggerActionForNextInterval</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// 堵塞直到下一批开始执行时间
+</span>    <span class="n">clock</span><span class="o">.</span><span class="n">waitTillTime</span><span class="o">(</span><span class="n">nextTime</span><span class="o">)</span>
+    <span class="n">callback</span><span class="o">(</span><span class="n">nextTime</span><span class="o">)</span>
+    <span class="n">prevTime</span> <span class="k">=</span> <span class="n">nextTime</span>
+    <span class="n">nextTime</span> <span class="o">+=</span> <span class="n">period</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Callback for "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">" called at time "</span> <span class="o">+</span> <span class="n">prevTime</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>EventLoop已经见到过很多次了，类中有个线程+阻塞队列，线程不停的消费阻塞队列，并调用onReceive方法，JobGenerator中onReceive方法执行的是processEvent方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="cm">/** Processes all events */</span>
+  <span class="k">private</span> <span class="k">def</span> <span class="n">processEvent</span><span class="o">(</span><span class="n">event</span><span class="k">:</span> <span class="kt">JobGeneratorEvent</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Got event "</span> <span class="o">+</span> <span class="n">event</span><span class="o">)</span>
+    <span class="n">event</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">GenerateJobs</span><span class="o">(</span><span class="n">time</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">generateJobs</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">ClearMetadata</span><span class="o">(</span><span class="n">time</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">clearMetadata</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">DoCheckpoint</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">clearCheckpointDataLater</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">doCheckpoint</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">clearCheckpointDataLater</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">ClearCheckpointData</span><span class="o">(</span><span class="n">time</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">clearCheckpointData</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="cm">/** Generate jobs and perform checkpointing for the given `time`.  */</span>
+  <span class="k">private</span> <span class="k">def</span> <span class="n">generateJobs</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// Checkpoint all RDDs marked for checkpointing to ensure their lineages are
+</span>    <span class="c1">// truncated periodically. Otherwise, we may run into stack overflows (SPARK-6847).
+</span>    <span class="n">ssc</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLocalProperty</span><span class="o">(</span><span class="nc">RDD</span><span class="o">.</span><span class="nc">CHECKPOINT_ALL_MARKED_ANCESTORS</span><span class="o">,</span> <span class="s">"true"</span><span class="o">)</span>
+    <span class="nc">Try</span> <span class="o">{</span>
+      <span class="n">jobScheduler</span><span class="o">.</span><span class="n">receiverTracker</span><span class="o">.</span><span class="n">allocateBlocksToBatch</span><span class="o">(</span><span class="n">time</span><span class="o">)</span> <span class="c1">// allocate received blocks to batch
+</span>      <span class="c1">// 生成每批的job
+</span>      <span class="n">graph</span><span class="o">.</span><span class="n">generateJobs</span><span class="o">(</span><span class="n">time</span><span class="o">)</span> <span class="c1">// generate jobs using allocated block
+</span>    <span class="o">}</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Success</span><span class="o">(</span><span class="n">jobs</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">streamIdToInputInfos</span> <span class="k">=</span> <span class="n">jobScheduler</span><span class="o">.</span><span class="n">inputInfoTracker</span><span class="o">.</span><span class="n">getInfo</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+        <span class="c1">// 提交Job
+</span>        <span class="n">jobScheduler</span><span class="o">.</span><span class="n">submitJobSet</span><span class="o">(</span><span class="nc">JobSet</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">jobs</span><span class="o">,</span> <span class="n">streamIdToInputInfos</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">Failure</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">jobScheduler</span><span class="o">.</span><span class="n">reportError</span><span class="o">(</span><span class="s">"Error generating jobs for time "</span> <span class="o">+</span> <span class="n">time</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
+        <span class="nc">PythonDStream</span><span class="o">.</span><span class="n">stopStreamingContextIfPythonProcessIsDead</span><span class="o">(</span><span class="n">e</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">eventLoop</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">DoCheckpoint</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">clearCheckpointDataLater</span> <span class="k">=</span> <span class="kc">false</span><span class="o">))</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>DStreamGraph会调用Dstream类中的generateJob生成，生成Seq[Job]</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">generateJobs</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Job</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Generating jobs for time "</span> <span class="o">+</span> <span class="n">time</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">jobs</span> <span class="k">=</span> <span class="k">this</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+      <span class="n">outputStreams</span><span class="o">.</span><span class="n">flatMap</span> <span class="o">{</span> <span class="n">outputStream</span> <span class="k">=&gt;</span>
+        <span class="c1">// 调用Dstream的generateJob方法
+</span>        <span class="k">val</span> <span class="n">jobOption</span> <span class="k">=</span> <span class="n">outputStream</span><span class="o">.</span><span class="n">generateJob</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+        <span class="n">jobOption</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">setCallSite</span><span class="o">(</span><span class="n">outputStream</span><span class="o">.</span><span class="n">creationSite</span><span class="o">))</span>
+        <span class="n">jobOption</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Generated "</span> <span class="o">+</span> <span class="n">jobs</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="s">" jobs for time "</span> <span class="o">+</span> <span class="n">time</span><span class="o">)</span>
+    <span class="n">jobs</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Dstream中会为Job定义调用sparkContext的runJob方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="cm">/**
+   * Generate a SparkStreaming job for the given time. This is an internal method that
+   * should not be called directly. This default implementation creates a job
+   * that materializes the corresponding RDD. Subclasses of DStream may override this
+   * to generate their own jobs.
+   */</span>
+  <span class="k">private</span><span class="o">[</span><span class="kt">streaming</span><span class="o">]</span> <span class="k">def</span> <span class="n">generateJob</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Job</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="c1">// getOrCompute会获取每一批次对应的RDD
+</span>    <span class="n">getOrCompute</span><span class="o">(</span><span class="n">time</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">rdd</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">jobFunc</span> <span class="k">=</span> <span class="o">()</span> <span class="k">=&gt;</span> <span class="o">{</span>
+          <span class="k">val</span> <span class="n">emptyFunc</span> <span class="k">=</span> <span class="o">{</span> <span class="o">(</span><span class="n">iterator</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="o">{}</span> <span class="o">}</span>
+          <span class="n">context</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">runJob</span><span class="o">(</span><span class="n">rdd</span><span class="o">,</span> <span class="n">emptyFunc</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="nc">Some</span><span class="o">(</span><span class="k">new</span> <span class="nc">Job</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">jobFunc</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="nc">None</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="cm">/**
+   * Get the RDD corresponding to the given time; either retrieve it from cache
+   * or compute-and-cache it.
+   */</span>
+  <span class="k">private</span><span class="o">[</span><span class="kt">streaming</span><span class="o">]</span> <span class="k">final</span> <span class="k">def</span> <span class="n">getOrCompute</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="c1">// If RDD was already generated, then retrieve it from HashMap,
+</span>    <span class="c1">// or else compute the RDD
+</span>    <span class="n">generatedRDDs</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">time</span><span class="o">).</span><span class="n">orElse</span> <span class="o">{</span>
+      <span class="c1">// Compute the RDD if time is valid (e.g. correct time in a sliding window)
+</span>      <span class="c1">// of RDD generation, else generate nothing.
+</span>      <span class="k">if</span> <span class="o">(</span><span class="n">isTimeValid</span><span class="o">(</span><span class="n">time</span><span class="o">))</span> <span class="o">{</span>
+
+        <span class="k">val</span> <span class="n">rddOption</span> <span class="k">=</span> <span class="n">createRDDWithLocalProperties</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">displayInnerRDDOps</span> <span class="k">=</span> <span class="kc">false</span><span class="o">)</span> <span class="o">{</span>
+          <span class="c1">// Disable checks for existing output directories in jobs launched by the streaming
+</span>          <span class="c1">// scheduler, since we may need to write output to an existing directory during checkpoint
+</span>          <span class="c1">// recovery; see SPARK-4835 for more details. We need to have this call here because
+</span>          <span class="c1">// compute() might cause Spark jobs to be launched.
+</span>         
+          <span class="c1">// 获取真正当前Time对应的RDD
+</span>          <span class="nc">SparkHadoopWriterUtils</span><span class="o">.</span><span class="n">disableOutputSpecValidation</span><span class="o">.</span><span class="n">withValue</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 内部会执行获取当前批次应该拉取的数据限制，反压机制，由DirectKafkaInputDStream的compute实现
+</span>            <span class="n">compute</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="n">rddOption</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="k">case</span> <span class="n">newRDD</span> <span class="k">=&gt;</span>
+          <span class="c1">// Register the generated RDD for caching and checkpointing
+</span>          <span class="k">if</span> <span class="o">(</span><span class="n">storageLevel</span> <span class="o">!=</span> <span class="nc">StorageLevel</span><span class="o">.</span><span class="nc">NONE</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 如果持久化策略不是None，则持久化RDD，默认策略是None，调用DStream的persist/cache方法会改变该策略为StorageLevel.MEMORY_ONLY_SER
+</span>            <span class="n">newRDD</span><span class="o">.</span><span class="n">persist</span><span class="o">(</span><span class="n">storageLevel</span><span class="o">)</span>
+            <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Persisting RDD ${newRDD.id} for time $time to $storageLevel"</span><span class="o">)</span>
+          <span class="o">}</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">checkpointDuration</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">time</span> <span class="o">-</span> <span class="n">zeroTime</span><span class="o">).</span><span class="n">isMultipleOf</span><span class="o">(</span><span class="n">checkpointDuration</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">// 如果开启了checkpoint，则执行checkpoint
+</span>            <span class="n">newRDD</span><span class="o">.</span><span class="n">checkpoint</span><span class="o">()</span>
+            <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Marking RDD ${newRDD.id} for time $time for checkpointing"</span><span class="o">)</span>
+          <span class="o">}</span>
+          <span class="n">generatedRDDs</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">newRDD</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">rddOption</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="nc">None</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>生成job后需要提交JobSet(jobs)</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  def submitJobSet(jobSet: JobSet) {
+    if (jobSet.jobs.isEmpty) {
+      logInfo("No jobs added for time " + jobSet.time)
+    } else {
+      listenerBus.post(StreamingListenerBatchSubmitted(jobSet.toBatchInfo))
+      jobSets.put(jobSet.time, jobSet)
+      jobSet.jobs.foreach(job =&gt; jobExecutor.execute(new JobHandler(job)))
+      logInfo("Added jobs for time " + jobSet.time)
+    }
+  }
+  
+  private class JobHandler(job: Job) extends Runnable with Logging {
+    import JobScheduler._
+
+    def run() {
+      val oldProps = ssc.sparkContext.getLocalProperties
+      try {
+        ssc.sparkContext.setLocalProperties(SerializationUtils.clone(ssc.savedProperties.get()))
+        val formattedTime = UIUtils.formatBatchTime(
+          job.time.milliseconds, ssc.graph.batchDuration.milliseconds, showYYYYMMSS = false)
+        val batchUrl = s"/streaming/batch/?id=${job.time.milliseconds}"
+        val batchLinkText = s"[output operation ${job.outputOpId}, batch time ${formattedTime}]"
+
+        ssc.sc.setJobDescription(
+          s"""Streaming job from &lt;a href="$batchUrl"&gt;$batchLinkText&lt;/a&gt;""")
+        ssc.sc.setLocalProperty(BATCH_TIME_PROPERTY_KEY, job.time.milliseconds.toString)
+        ssc.sc.setLocalProperty(OUTPUT_OP_ID_PROPERTY_KEY, job.outputOpId.toString)
+        // Checkpoint all RDDs marked for checkpointing to ensure their lineages are
+        // truncated periodically. Otherwise, we may run into stack overflows (SPARK-6847).
+        ssc.sparkContext.setLocalProperty(RDD.CHECKPOINT_ALL_MARKED_ANCESTORS, "true")
+
+        // We need to assign `eventLoop` to a temp variable. Otherwise, because
+        // `JobScheduler.stop(false)` may set `eventLoop` to null when this method is running, then
+        // it's possible that when `post` is called, `eventLoop` happens to null.
+        var _eventLoop = eventLoop
+        if (_eventLoop != null) {
+          _eventLoop.post(JobStarted(job, clock.getTimeMillis()))
+          // Disable checks for existing output directories in jobs launched by the streaming
+          // scheduler, since we may need to write output to an existing directory during checkpoint
+          // recovery; see SPARK-4835 for more details.
+         // job.run会真正的执行方法，方法在Dstream中定义，封装到Job类中，执行run会触发sparkContext.runJob方法提交rdd执行
+          SparkHadoopWriterUtils.disableOutputSpecValidation.withValue(true) {
+            job.run()
+          }
+          _eventLoop = eventLoop
+          if (_eventLoop != null) {
+            // 发送JobComplete事件
+            _eventLoop.post(JobCompleted(job, clock.getTimeMillis()))
+          }
+        } else {
+          // JobScheduler has been stopped.
+        }
+      } finally {
+        ssc.sparkContext.setLocalProperties(oldProps)
+      }
+    }
+  }
+</code></pre></div></div>
+<blockquote>
+  <p>每批数据处理过程都会如此，用户如果调用DStream的cache/persist方法，但是DStream并没有提供unpersist方法，streaming会自动清理cache的数据，由spark.streaming.unpersist配置，默认值为true</p>
+
+  <p>当每一批Job完成后发送JobCompleted事件到JobScheduler的eventLoop中,该事件对应执行handleJobCompletion方法，之后执行JobGenerator的onBatchCompletion方法，该方法会发送ClearMetadata事件到eventLoop中</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="cm">/** Clear DStream metadata for the given `time`. */</span>
+  <span class="k">private</span> <span class="k">def</span> <span class="n">clearMetadata</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 调用clearMetadata方法
+</span>    <span class="n">ssc</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">clearMetadata</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+
+    <span class="c1">// If checkpointing is enabled, then checkpoint,
+</span>    <span class="c1">// else mark batch to be fully processed
+</span>    <span class="k">if</span> <span class="o">(</span><span class="n">shouldCheckpoint</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">eventLoop</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">DoCheckpoint</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">clearCheckpointDataLater</span> <span class="k">=</span> <span class="kc">true</span><span class="o">))</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="c1">// If checkpointing is not enabled, then delete metadata information about
+</span>      <span class="c1">// received blocks (block data not saved in any case). Otherwise, wait for
+</span>      <span class="c1">// checkpointing of this batch to complete.
+</span>      <span class="k">val</span> <span class="n">maxRememberDuration</span> <span class="k">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">getMaxInputStreamRememberDuration</span><span class="o">()</span>
+      <span class="n">jobScheduler</span><span class="o">.</span><span class="n">receiverTracker</span><span class="o">.</span><span class="n">cleanupOldBlocksAndBatches</span><span class="o">(</span><span class="n">time</span> <span class="o">-</span> <span class="n">maxRememberDuration</span><span class="o">)</span>
+      <span class="n">jobScheduler</span><span class="o">.</span><span class="n">inputInfoTracker</span><span class="o">.</span><span class="n">cleanup</span><span class="o">(</span><span class="n">time</span> <span class="o">-</span> <span class="n">maxRememberDuration</span><span class="o">)</span>
+      <span class="n">markBatchFullyProcessed</span><span class="o">(</span><span class="n">time</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="k">def</span> <span class="n">clearMetadata</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Clearing metadata for time "</span> <span class="o">+</span> <span class="n">time</span><span class="o">)</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+      <span class="n">outputStreams</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">clearMetadata</span><span class="o">(</span><span class="n">time</span><span class="o">))</span>
+    <span class="o">}</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Cleared old metadata for time "</span> <span class="o">+</span> <span class="n">time</span><span class="o">)</span>
+  <span class="o">}</span>
+  
+  <span class="cm">/**
+   * Clear metadata that are older than `rememberDuration` of this DStream.
+   * This is an internal method that should not be called directly. This default
+   * implementation clears the old generated RDDs. Subclasses of DStream may override
+   * this to clear their own metadata along with the generated RDDs.
+   */</span>
+   <span class="c1">// 真正执行clear Metadata方法
+</span>  <span class="k">private</span><span class="o">[</span><span class="kt">streaming</span><span class="o">]</span> <span class="k">def</span> <span class="n">clearMetadata</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">unpersistData</span> <span class="k">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">getBoolean</span><span class="o">(</span><span class="s">"spark.streaming.unpersist"</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">oldRDDs</span> <span class="k">=</span> <span class="n">generatedRDDs</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_1</span> <span class="o">&lt;=</span> <span class="o">(</span><span class="n">time</span> <span class="o">-</span> <span class="n">rememberDuration</span><span class="o">))</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="s">"Clearing references to old RDDs: ["</span> <span class="o">+</span>
+      <span class="n">oldRDDs</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="s">"${x._1} -&gt; ${x._2.id}"</span><span class="o">).</span><span class="n">mkString</span><span class="o">(</span><span class="s">", "</span><span class="o">)</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">)</span>
+    <span class="n">generatedRDDs</span> <span class="o">--=</span> <span class="n">oldRDDs</span><span class="o">.</span><span class="n">keys</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">unpersistData</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Unpersisting old RDDs: ${oldRDDs.values.map(_.id).mkString("</span><span class="o">,</span> <span class="s">")}"</span><span class="o">)</span>
+      <span class="c1">// 清理过期的rdd缓存数据
+</span>      <span class="n">oldRDDs</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">rdd</span> <span class="k">=&gt;</span>
+        <span class="n">rdd</span><span class="o">.</span><span class="n">unpersist</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+        <span class="c1">// Explicitly remove blocks of BlockRDD
+</span>        <span class="n">rdd</span> <span class="k">match</span> <span class="o">{</span>
+          <span class="k">case</span> <span class="n">b</span><span class="k">:</span> <span class="kt">BlockRDD</span><span class="o">[</span><span class="k">_</span><span class="o">]</span> <span class="k">=&gt;</span>
+            <span class="n">logInfo</span><span class="o">(</span><span class="n">s</span><span class="s">"Removing blocks of RDD $b of time $time"</span><span class="o">)</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">removeBlocks</span><span class="o">()</span>
+          <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">logDebug</span><span class="o">(</span><span class="n">s</span><span class="s">"Cleared ${oldRDDs.size} RDDs that were older than "</span> <span class="o">+</span>
+      <span class="n">s</span><span class="s">"${time - rememberDuration}: ${oldRDDs.keys.mkString("</span><span class="o">,</span> <span class="s">")}"</span><span class="o">)</span>
+    <span class="n">dependencies</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">clearMetadata</span><span class="o">(</span><span class="n">time</span><span class="o">))</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>还有一个想说的就是streaming的反压机制，需要用户开启spark.streaming.backpressure.enabled，反压机制就是streaming能够根据当前情况，自动获取当前适合处理的条目数，而不一定是用户设置的最大的当前处理数，spark.streaming.kafka.maxRatePerPartition（每秒钟每个分区拉取数目，如果topic有3个分区，streaming间隔为5s,该配置为1000,则每批拉取最大条目为15000条数据）</p>
+
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cm">/**
+   * Asynchronously maintains &amp; sends new rate limits to the receiver through the receiver tracker.
+   */</span>
+  <span class="k">override</span> <span class="k">protected</span><span class="o">[</span><span class="kt">streaming</span><span class="o">]</span> <span class="k">val</span> <span class="n">rateController</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">RateController</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="c1">// 开启反压机制后，rateController变量会使用DirectKafkaRateController
+</span>    <span class="k">if</span> <span class="o">(</span><span class="nc">RateController</span><span class="o">.</span><span class="n">isBackPressureEnabled</span><span class="o">(</span><span class="n">ssc</span><span class="o">.</span><span class="n">conf</span><span class="o">))</span> <span class="o">{</span>
+      <span class="nc">Some</span><span class="o">(</span><span class="k">new</span> <span class="nc">DirectKafkaRateController</span><span class="o">(</span><span class="n">id</span><span class="o">,</span>
+        <span class="nc">RateEstimator</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">ssc</span><span class="o">.</span><span class="n">conf</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">batchDuration</span><span class="o">)))</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="nc">None</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="k">protected</span><span class="o">[</span><span class="kt">streaming</span><span class="o">]</span> <span class="k">def</span> <span class="n">maxMessagesPerPartition</span><span class="o">(</span>
+    <span class="n">offsets</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">Long</span><span class="o">])</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">Long</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="c1">// 使用getLatestRate获取最新速率大小
+</span>    <span class="k">val</span> <span class="n">estimatedRateLimit</span> <span class="k">=</span> <span class="n">rateController</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">getLatestRate</span><span class="o">())</span>
+
+    <span class="c1">// calculate a per-partition rate limit based on current lag
+</span>    <span class="k">val</span> <span class="n">effectiveRateLimitPerPartition</span> <span class="k">=</span> <span class="n">estimatedRateLimit</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">rate</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">lagPerPartition</span> <span class="k">=</span> <span class="n">offsets</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">tp</span><span class="o">,</span> <span class="n">offset</span><span class="o">)</span> <span class="k">=&gt;</span>
+          <span class="n">tp</span> <span class="o">-&gt;</span> <span class="nc">Math</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">offset</span> <span class="o">-</span> <span class="n">currentOffsets</span><span class="o">(</span><span class="n">tp</span><span class="o">),</span> <span class="mi">0</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="k">val</span> <span class="n">totalLag</span> <span class="k">=</span> <span class="n">lagPerPartition</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span>
+
+        <span class="n">lagPerPartition</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">tp</span><span class="o">,</span> <span class="n">lag</span><span class="o">)</span> <span class="k">=&gt;</span>
+          <span class="c1">// 用户的配置的spark.streaming.kafka.maxRatePerPartition值
+</span>          <span class="k">val</span> <span class="n">maxRateLimitPerPartition</span> <span class="k">=</span> <span class="n">ppc</span><span class="o">.</span><span class="n">maxRatePerPartition</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span>
+          <span class="c1">// 反压机制推测的值
+</span>          <span class="k">val</span> <span class="n">backpressureRate</span> <span class="k">=</span> <span class="nc">Math</span><span class="o">.</span><span class="n">round</span><span class="o">(</span><span class="n">lag</span> <span class="o">/</span> <span class="n">totalLag</span><span class="o">.</span><span class="n">toFloat</span> <span class="o">*</span> <span class="n">rate</span><span class="o">)</span>
+          <span class="n">tp</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">if</span> <span class="o">(</span><span class="n">maxRateLimitPerPartition</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 二者取比较小的值
+</span>            <span class="nc">Math</span><span class="o">.</span><span class="n">min</span><span class="o">(</span><span class="n">backpressureRate</span><span class="o">,</span> <span class="n">maxRateLimitPerPartition</span><span class="o">)}</span> <span class="k">else</span> <span class="n">backpressureRate</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="n">offsets</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">tp</span><span class="o">,</span> <span class="n">offset</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">tp</span> <span class="o">-&gt;</span> <span class="n">ppc</span><span class="o">.</span><span class="n">maxRatePerPartition</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span> <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">effectiveRateLimitPerPartition</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">secsPerBatch</span> <span class="k">=</span> <span class="n">context</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">batchDuration</span><span class="o">.</span><span class="n">milliseconds</span><span class="o">.</span><span class="n">toDouble</span> <span class="o">/</span> <span class="mi">1000</span>
+      <span class="nc">Some</span><span class="o">(</span><span class="n">effectiveRateLimitPerPartition</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span>
+        <span class="c1">// 每秒 * 每秒limit值就是该批每个分区应该获取的值
+</span>        <span class="k">case</span> <span class="o">(</span><span class="n">tp</span><span class="o">,</span> <span class="n">limit</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">tp</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">secsPerBatch</span> <span class="o">*</span> <span class="n">limit</span><span class="o">).</span><span class="n">toLong</span>
+      <span class="o">})</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="nc">None</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>StreamingListenerBus中有事件StreamingListenerBatchCompleted对应批完成，相应执行onBatchCompleted方法，并执行computeAndPublish方法</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">override</span> <span class="k">def</span> <span class="n">onBatchCompleted</span><span class="o">(</span><span class="n">batchCompleted</span><span class="k">:</span> <span class="kt">StreamingListenerBatchCompleted</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">elements</span> <span class="k">=</span> <span class="n">batchCompleted</span><span class="o">.</span><span class="n">batchInfo</span><span class="o">.</span><span class="n">streamIdToInputInfo</span>
+
+    <span class="k">for</span> <span class="o">{</span>
+      <span class="n">processingEnd</span> <span class="k">&lt;-</span> <span class="n">batchCompleted</span><span class="o">.</span><span class="n">batchInfo</span><span class="o">.</span><span class="n">processingEndTime</span>
+      <span class="n">workDelay</span> <span class="k">&lt;-</span> <span class="n">batchCompleted</span><span class="o">.</span><span class="n">batchInfo</span><span class="o">.</span><span class="n">processingDelay</span>
+      <span class="n">waitDelay</span> <span class="k">&lt;-</span> <span class="n">batchCompleted</span><span class="o">.</span><span class="n">batchInfo</span><span class="o">.</span><span class="n">schedulingDelay</span>
+      <span class="n">elems</span> <span class="k">&lt;-</span> <span class="n">elements</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">streamUID</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">numRecords</span><span class="o">)</span>
+    <span class="o">}</span> <span class="n">computeAndPublish</span><span class="o">(</span><span class="n">processingEnd</span><span class="o">,</span> <span class="n">elems</span><span class="o">,</span> <span class="n">workDelay</span><span class="o">,</span> <span class="n">waitDelay</span><span class="o">)</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">def</span> <span class="n">computeAndPublish</span><span class="o">(</span><span class="n">time</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">elems</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">workDelay</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">waitDelay</span><span class="k">:</span> <span class="kt">Long</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+    <span class="nc">Future</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="o">{</span>
+      <span class="c1">// 该方法用于计算最新的限制速率，compute方法由PIDRateEstimator中实现
+</span>      <span class="k">val</span> <span class="n">newRate</span> <span class="k">=</span> <span class="n">rateEstimator</span><span class="o">.</span><span class="n">compute</span><span class="o">(</span><span class="n">time</span><span class="o">,</span> <span class="n">elems</span><span class="o">,</span> <span class="n">workDelay</span><span class="o">,</span> <span class="n">waitDelay</span><span class="o">)</span>
+      <span class="n">newRate</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="n">s</span> <span class="k">=&gt;</span>
+        <span class="n">rateLimit</span><span class="o">.</span><span class="n">set</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="n">toLong</span><span class="o">)</span>
+        <span class="n">publish</span><span class="o">(</span><span class="n">getLatestRate</span><span class="o">())</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    
+  <span class="k">def</span> <span class="n">compute</span><span class="o">(</span>
+      <span class="n">time</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="c1">// in milliseconds
+</span>      <span class="n">numElements</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span>
+      <span class="n">processingDelay</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="c1">// in milliseconds
+</span>      <span class="n">schedulingDelay</span><span class="k">:</span> <span class="kt">Long</span> <span class="c1">// in milliseconds
+</span>    <span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">logTrace</span><span class="o">(</span><span class="n">s</span><span class="s">"\ntime = $time, # records = $numElements, "</span> <span class="o">+</span>
+      <span class="n">s</span><span class="s">"processing time = $processingDelay, scheduling delay = $schedulingDelay"</span><span class="o">)</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">latestTime</span> <span class="o">&amp;&amp;</span> <span class="n">numElements</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">processingDelay</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c1">// in seconds, should be close to batchDuration
+</span>        <span class="k">val</span> <span class="n">delaySinceUpdate</span> <span class="k">=</span> <span class="o">(</span><span class="n">time</span> <span class="o">-</span> <span class="n">latestTime</span><span class="o">).</span><span class="n">toDouble</span> <span class="o">/</span> <span class="mi">1000</span>
+
+        <span class="c1">// in elements/second
+</span>        <span class="k">val</span> <span class="n">processingRate</span> <span class="k">=</span> <span class="n">numElements</span><span class="o">.</span><span class="n">toDouble</span> <span class="o">/</span> <span class="n">processingDelay</span> <span class="o">*</span> <span class="mi">1000</span>
+
+        <span class="c1">// In our system `error` is the difference between the desired rate and the measured rate
+</span>        <span class="c1">// based on the latest batch information. We consider the desired rate to be latest rate,
+</span>        <span class="c1">// which is what this estimator calculated for the previous batch.
+</span>        <span class="c1">// in elements/second
+</span>        <span class="k">val</span> <span class="n">error</span> <span class="k">=</span> <span class="n">latestRate</span> <span class="o">-</span> <span class="n">processingRate</span>
+
+        <span class="c1">// The error integral, based on schedulingDelay as an indicator for accumulated errors.
+</span>        <span class="c1">// A scheduling delay s corresponds to s * processingRate overflowing elements. Those
+</span>        <span class="c1">// are elements that couldn't be processed in previous batches, leading to this delay.
+</span>        <span class="c1">// In the following, we assume the processingRate didn't change too much.
+</span>        <span class="c1">// From the number of overflowing elements we can calculate the rate at which they would be
+</span>        <span class="c1">// processed by dividing it by the batch interval. This rate is our "historical" error,
+</span>        <span class="c1">// or integral part, since if we subtracted this rate from the previous "calculated rate",
+</span>        <span class="c1">// there wouldn't have been any overflowing elements, and the scheduling delay would have
+</span>        <span class="c1">// been zero.
+</span>        <span class="c1">// (in elements/second)
+</span>        <span class="k">val</span> <span class="n">historicalError</span> <span class="k">=</span> <span class="n">schedulingDelay</span><span class="o">.</span><span class="n">toDouble</span> <span class="o">*</span> <span class="n">processingRate</span> <span class="o">/</span> <span class="n">batchIntervalMillis</span>
+
+        <span class="c1">// in elements/(second ^ 2)
+</span>        <span class="k">val</span> <span class="n">dError</span> <span class="k">=</span> <span class="o">(</span><span class="n">error</span> <span class="o">-</span> <span class="n">latestError</span><span class="o">)</span> <span class="o">/</span> <span class="n">delaySinceUpdate</span>
+
+        <span class="k">val</span> <span class="n">newRate</span> <span class="k">=</span> <span class="o">(</span><span class="n">latestRate</span> <span class="o">-</span> <span class="n">proportional</span> <span class="o">*</span> <span class="n">error</span> <span class="o">-</span>
+                                    <span class="n">integral</span> <span class="o">*</span> <span class="n">historicalError</span> <span class="o">-</span>
+                                    <span class="n">derivative</span> <span class="o">*</span> <span class="n">dError</span><span class="o">).</span><span class="n">max</span><span class="o">(</span><span class="n">minRate</span><span class="o">)</span>
+        <span class="n">logTrace</span><span class="o">(</span><span class="n">s</span><span class="s">"""
+            | latestRate = $latestRate, error = $error
+            | latestError = $latestError, historicalError = $historicalError
+            | delaySinceUpdate = $delaySinceUpdate, dError = $dError
+            """</span><span class="o">.</span><span class="n">stripMargin</span><span class="o">)</span>
+
+        <span class="n">latestTime</span> <span class="k">=</span> <span class="n">time</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">firstRun</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">latestRate</span> <span class="k">=</span> <span class="n">processingRate</span>
+          <span class="n">latestError</span> <span class="k">=</span> <span class="mf">0D</span>
+          <span class="n">firstRun</span> <span class="k">=</span> <span class="kc">false</span>
+          <span class="n">logTrace</span><span class="o">(</span><span class="s">"First run, rate estimation skipped"</span><span class="o">)</span>
+          <span class="nc">None</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="n">latestRate</span> <span class="k">=</span> <span class="n">newRate</span>
+          <span class="n">latestError</span> <span class="k">=</span> <span class="n">error</span>
+          <span class="n">logTrace</span><span class="o">(</span><span class="n">s</span><span class="s">"New rate = $newRate"</span><span class="o">)</span>
+          <span class="nc">Some</span><span class="o">(</span><span class="n">newRate</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">logTrace</span><span class="o">(</span><span class="s">"Rate estimation skipped"</span><span class="o">)</span>
+        <span class="nc">None</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>也就是说，每一批任务执行完成后，就会执行相应的方法，更新最新的拉取速率</p>
+</blockquote>
+
+  <!-- 引入share模块 -->
+  
+  <div class="social-share-wrapper">
+    <div class="social-share"></div>
+  </div>
+
+
+<!-- share.js -->
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+</div>
+
+<!-- 底部锚点 -->
+<a id="htmldown" name="htmldown"></a>
+<!-- 引入评论模块 -->
+
+
+
+
+
+<section class="post-footer-item comment">
+  <div id="container"></div>
+</section>
+
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '/2020/08/02/spark_streaming', // 可选。默认为 location.href
+  owner: 'WhisperLoli',
+  repo: 'whisperloli.github.io',
+  oauth: {
+    client_id: 'ac28ee55ac550f1f3a03',
+    client_secret: '333f052bedfbe1e09479893dca85f6c3867cac05',
+  },
+})
+//gitment.render('container')
+</script>
+
+<script src="https://utteranc.es/client.js"
+        repo="WhisperLoli/whisperloli.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+<!-- 引入goto模块 -->
+<div class="bounceInRight animated go">
+  <a title="顶部切换页面" class="gototop" href="#htmlup" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Top
+    </div>
+  </a>
+  <a title="底部有Gitment评论哦" class="gotobottom" href="#htmldown" target="_self">
+    <div class="box" style="font-family:'ffad_matroregular';">
+        Foot
+    </div>
+  </a>
+</div>
+
+<!-- 引入页面底部模块 -->
+<footer id="bottom">
+  <br>
+  <span>Loli ©
+  
+  
+    2018
+    -
+  
+  2020
+  <br>
+  Powered by <a href="https://www.jekyll.com.cn/">Jekyll</a> | <a href="https://github.com/xukimseven/HardCandy-Jekyll">HardCandy-Jekyll</a></span>
+</footer>
+
+
+<!-- 引用wow.js的动画效果 -->
+<script src="/assets/js/wow.js"></script>
+<script>
+    var wow = new WOW({
+        boxClass: 'wow',
+        animateClass: 'animated',
+        // offset: 600,
+        mobile: true,
+        live: true
+    });
+    wow.init();
+</script>
+<!-- 页面刷新回到顶部 -->
+<script>
+    window.onbeforeunload = function(){
+        //刷新后页面自动回到顶部
+        document.documentElement.scrollTop = 0;  //ie下
+        document.body.scrollTop = 0;  //非ie
+    }
+</script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
