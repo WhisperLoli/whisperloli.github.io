@@ -429,63 +429,63 @@ var _hmt = _hmt || [];
   <p>生成job后需要提交JobSet(jobs)</p>
 </blockquote>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  def submitJobSet(jobSet: JobSet) {
-    if (jobSet.jobs.isEmpty) {
-      logInfo("No jobs added for time " + jobSet.time)
-    } else {
-      listenerBus.post(StreamingListenerBatchSubmitted(jobSet.toBatchInfo))
-      jobSets.put(jobSet.time, jobSet)
-      jobSet.jobs.foreach(job =&gt; jobExecutor.execute(new JobHandler(job)))
-      logInfo("Added jobs for time " + jobSet.time)
-    }
-  }
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">submitJobSet</span><span class="o">(</span><span class="n">jobSet</span><span class="k">:</span> <span class="kt">JobSet</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">jobSet</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="s">"No jobs added for time "</span> <span class="o">+</span> <span class="n">jobSet</span><span class="o">.</span><span class="n">time</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">listenerBus</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">StreamingListenerBatchSubmitted</span><span class="o">(</span><span class="n">jobSet</span><span class="o">.</span><span class="n">toBatchInfo</span><span class="o">))</span>
+      <span class="n">jobSets</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">jobSet</span><span class="o">.</span><span class="n">time</span><span class="o">,</span> <span class="n">jobSet</span><span class="o">)</span>
+      <span class="n">jobSet</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">job</span> <span class="k">=&gt;</span> <span class="n">jobExecutor</span><span class="o">.</span><span class="n">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">JobHandler</span><span class="o">(</span><span class="n">job</span><span class="o">)))</span>
+      <span class="n">logInfo</span><span class="o">(</span><span class="s">"Added jobs for time "</span> <span class="o">+</span> <span class="n">jobSet</span><span class="o">.</span><span class="n">time</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
   
-  private class JobHandler(job: Job) extends Runnable with Logging {
-    import JobScheduler._
+  <span class="k">private</span> <span class="k">class</span> <span class="nc">JobHandler</span><span class="o">(</span><span class="n">job</span><span class="k">:</span> <span class="kt">Job</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Runnable</span> <span class="k">with</span> <span class="nc">Logging</span> <span class="o">{</span>
+    <span class="k">import</span> <span class="nn">JobScheduler._</span>
 
-    def run() {
-      val oldProps = ssc.sparkContext.getLocalProperties
-      try {
-        ssc.sparkContext.setLocalProperties(SerializationUtils.clone(ssc.savedProperties.get()))
-        val formattedTime = UIUtils.formatBatchTime(
-          job.time.milliseconds, ssc.graph.batchDuration.milliseconds, showYYYYMMSS = false)
-        val batchUrl = s"/streaming/batch/?id=${job.time.milliseconds}"
-        val batchLinkText = s"[output operation ${job.outputOpId}, batch time ${formattedTime}]"
+    <span class="k">def</span> <span class="n">run</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">oldProps</span> <span class="k">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">getLocalProperties</span>
+      <span class="k">try</span> <span class="o">{</span>
+        <span class="n">ssc</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLocalProperties</span><span class="o">(</span><span class="nc">SerializationUtils</span><span class="o">.</span><span class="n">clone</span><span class="o">(</span><span class="n">ssc</span><span class="o">.</span><span class="n">savedProperties</span><span class="o">.</span><span class="n">get</span><span class="o">()))</span>
+        <span class="k">val</span> <span class="n">formattedTime</span> <span class="k">=</span> <span class="nc">UIUtils</span><span class="o">.</span><span class="n">formatBatchTime</span><span class="o">(</span>
+          <span class="n">job</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">milliseconds</span><span class="o">,</span> <span class="n">ssc</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">batchDuration</span><span class="o">.</span><span class="n">milliseconds</span><span class="o">,</span> <span class="n">showYYYYMMSS</span> <span class="k">=</span> <span class="kc">false</span><span class="o">)</span>
+        <span class="k">val</span> <span class="n">batchUrl</span> <span class="k">=</span> <span class="n">s</span><span class="s">"/streaming/batch/?id=${job.time.milliseconds}"</span>
+        <span class="k">val</span> <span class="n">batchLinkText</span> <span class="k">=</span> <span class="n">s</span><span class="s">"[output operation ${job.outputOpId}, batch time ${formattedTime}]"</span>
 
-        ssc.sc.setJobDescription(
-          s"""Streaming job from &lt;a href="$batchUrl"&gt;$batchLinkText&lt;/a&gt;""")
-        ssc.sc.setLocalProperty(BATCH_TIME_PROPERTY_KEY, job.time.milliseconds.toString)
-        ssc.sc.setLocalProperty(OUTPUT_OP_ID_PROPERTY_KEY, job.outputOpId.toString)
-        // Checkpoint all RDDs marked for checkpointing to ensure their lineages are
-        // truncated periodically. Otherwise, we may run into stack overflows (SPARK-6847).
-        ssc.sparkContext.setLocalProperty(RDD.CHECKPOINT_ALL_MARKED_ANCESTORS, "true")
+        <span class="n">ssc</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">setJobDescription</span><span class="o">(</span>
+          <span class="n">s</span><span class="s">"""Streaming job from &lt;a href="$batchUrl"&gt;$batchLinkText&lt;/a&gt;"""</span><span class="o">)</span>
+        <span class="n">ssc</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">setLocalProperty</span><span class="o">(</span><span class="nc">BATCH_TIME_PROPERTY_KEY</span><span class="o">,</span> <span class="n">job</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">milliseconds</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
+        <span class="n">ssc</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">setLocalProperty</span><span class="o">(</span><span class="nc">OUTPUT_OP_ID_PROPERTY_KEY</span><span class="o">,</span> <span class="n">job</span><span class="o">.</span><span class="n">outputOpId</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
+        <span class="c1">// Checkpoint all RDDs marked for checkpointing to ensure their lineages are
+</span>        <span class="c1">// truncated periodically. Otherwise, we may run into stack overflows (SPARK-6847).
+</span>        <span class="n">ssc</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLocalProperty</span><span class="o">(</span><span class="nc">RDD</span><span class="o">.</span><span class="nc">CHECKPOINT_ALL_MARKED_ANCESTORS</span><span class="o">,</span> <span class="s">"true"</span><span class="o">)</span>
 
-        // We need to assign `eventLoop` to a temp variable. Otherwise, because
-        // `JobScheduler.stop(false)` may set `eventLoop` to null when this method is running, then
-        // it's possible that when `post` is called, `eventLoop` happens to null.
-        var _eventLoop = eventLoop
-        if (_eventLoop != null) {
-          _eventLoop.post(JobStarted(job, clock.getTimeMillis()))
-          // Disable checks for existing output directories in jobs launched by the streaming
-          // scheduler, since we may need to write output to an existing directory during checkpoint
-          // recovery; see SPARK-4835 for more details.
-         // job.run会真正的执行方法，方法在Dstream中定义，封装到Job类中，执行run会触发sparkContext.runJob方法提交rdd执行
-          SparkHadoopWriterUtils.disableOutputSpecValidation.withValue(true) {
-            job.run()
-          }
-          _eventLoop = eventLoop
-          if (_eventLoop != null) {
-            // 发送JobComplete事件
-            _eventLoop.post(JobCompleted(job, clock.getTimeMillis()))
-          }
-        } else {
-          // JobScheduler has been stopped.
-        }
-      } finally {
-        ssc.sparkContext.setLocalProperties(oldProps)
-      }
-    }
-  }
+        <span class="c1">// We need to assign `eventLoop` to a temp variable. Otherwise, because
+</span>        <span class="c1">// `JobScheduler.stop(false)` may set `eventLoop` to null when this method is running, then
+</span>        <span class="c1">// it's possible that when `post` is called, `eventLoop` happens to null.
+</span>        <span class="k">var</span> <span class="nc">_eventLoop</span> <span class="k">=</span> <span class="n">eventLoop</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">_eventLoop</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="nc">_eventLoop</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">JobStarted</span><span class="o">(</span><span class="n">job</span><span class="o">,</span> <span class="n">clock</span><span class="o">.</span><span class="n">getTimeMillis</span><span class="o">()))</span>
+          <span class="c1">// Disable checks for existing output directories in jobs launched by the streaming
+</span>          <span class="c1">// scheduler, since we may need to write output to an existing directory during checkpoint
+</span>          <span class="c1">// recovery; see SPARK-4835 for more details.
+</span>         <span class="c1">// job.run会真正的执行方法，方法在Dstream中定义，封装到Job类中，执行run会触发sparkContext.runJob方法提交rdd执行
+</span>          <span class="nc">SparkHadoopWriterUtils</span><span class="o">.</span><span class="n">disableOutputSpecValidation</span><span class="o">.</span><span class="n">withValue</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="o">()</span>
+          <span class="o">}</span>
+          <span class="nc">_eventLoop</span> <span class="k">=</span> <span class="n">eventLoop</span>
+          <span class="k">if</span> <span class="o">(</span><span class="nc">_eventLoop</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 发送JobComplete事件
+</span>            <span class="nc">_eventLoop</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="nc">JobCompleted</span><span class="o">(</span><span class="n">job</span><span class="o">,</span> <span class="n">clock</span><span class="o">.</span><span class="n">getTimeMillis</span><span class="o">()))</span>
+          <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="c1">// JobScheduler has been stopped.
+</span>        <span class="o">}</span>
+      <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="n">ssc</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">setLocalProperties</span><span class="o">(</span><span class="n">oldProps</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
 </code></pre></div></div>
 <blockquote>
   <p>每批数据处理过程都会如此，用户如果调用DStream的cache/persist方法，但是DStream并没有提供unpersist方法，streaming会自动清理cache的数据，由spark.streaming.unpersist配置，默认值为true</p>
@@ -703,6 +703,138 @@ var _hmt = _hmt || [];
 </code></pre></div></div>
 <blockquote>
   <p>也就是说，每一批任务执行完成后，就会执行相应的方法，更新最新的拉取速率</p>
+</blockquote>
+
+<blockquote>
+  <p>在说说offset管理吧</p>
+</blockquote>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// 第一次启动时调用，consumer是KafkaConsumer
+</span>  <span class="k">override</span> <span class="k">def</span> <span class="n">start</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// consumer是KafkaConsumer
+</span>    <span class="k">val</span> <span class="n">c</span> <span class="k">=</span> <span class="n">consumer</span>
+    <span class="n">paranoidPoll</span><span class="o">(</span><span class="n">c</span><span class="o">)</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">currentOffsets</span> <span class="k">=</span> <span class="n">c</span><span class="o">.</span><span class="n">assignment</span><span class="o">().</span><span class="n">asScala</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">tp</span> <span class="k">=&gt;</span>
+        <span class="c1">// position方法会获取每个TopicPartition在kafka中的offset
+</span>        <span class="n">tp</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span>
+      <span class="o">}.</span><span class="n">toMap</span>
+    <span class="o">}</span>
+
+    <span class="c1">// don't actually want to consume any messages, so pause all partitions
+</span>    <span class="n">c</span><span class="o">.</span><span class="n">pause</span><span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">keySet</span><span class="o">.</span><span class="n">asJava</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**
+   * Returns the latest (highest) available offsets, taking new partitions into account.
+   */</span>
+  <span class="k">protected</span> <span class="k">def</span> <span class="n">latestOffsets</span><span class="o">()</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">Long</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">c</span> <span class="k">=</span> <span class="n">consumer</span>
+    <span class="n">paranoidPoll</span><span class="o">(</span><span class="n">c</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">parts</span> <span class="k">=</span> <span class="n">c</span><span class="o">.</span><span class="n">assignment</span><span class="o">().</span><span class="n">asScala</span>
+
+    <span class="c1">// make sure new partitions are reflected in currentOffsets
+</span>    <span class="k">val</span> <span class="n">newPartitions</span> <span class="k">=</span> <span class="n">parts</span><span class="o">.</span><span class="n">diff</span><span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">keySet</span><span class="o">)</span>
+    <span class="c1">// position for new partitions determined by auto.offset.reset if no commit
+</span>    <span class="n">currentOffsets</span> <span class="k">=</span> <span class="n">currentOffsets</span> <span class="o">++</span> <span class="n">newPartitions</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">tp</span> <span class="k">=&gt;</span> <span class="n">tp</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="o">(</span><span class="n">tp</span><span class="o">)).</span><span class="n">toMap</span>
+    <span class="c1">// don't want to consume messages, so pause
+</span>    <span class="n">c</span><span class="o">.</span><span class="n">pause</span><span class="o">(</span><span class="n">newPartitions</span><span class="o">.</span><span class="n">asJava</span><span class="o">)</span>
+    <span class="c1">// find latest available offsets
+</span>    <span class="n">c</span><span class="o">.</span><span class="n">seekToEnd</span><span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">keySet</span><span class="o">.</span><span class="n">asJava</span><span class="o">)</span>
+    <span class="n">parts</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">tp</span> <span class="k">=&gt;</span> <span class="n">tp</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="o">(</span><span class="n">tp</span><span class="o">)).</span><span class="n">toMap</span>
+  <span class="o">}</span>
+
+  <span class="c1">// limits the maximum number of messages per partition
+</span>  <span class="k">protected</span> <span class="k">def</span> <span class="n">clamp</span><span class="o">(</span>
+    <span class="n">offsets</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">Long</span><span class="o">])</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">Long</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+
+    <span class="n">maxMessagesPerPartition</span><span class="o">(</span><span class="n">offsets</span><span class="o">).</span><span class="n">map</span> <span class="o">{</span> <span class="n">mmp</span> <span class="k">=&gt;</span>
+      <span class="n">mmp</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">tp</span><span class="o">,</span> <span class="n">messages</span><span class="o">)</span> <span class="k">=&gt;</span>
+          <span class="c1">// 最新offset
+</span>          <span class="k">val</span> <span class="n">uo</span> <span class="k">=</span> <span class="n">offsets</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span>
+          <span class="c1">// 获取当前offset + 消费大小与最新offset的小值，做为该批次的until offset
+</span>          <span class="n">tp</span> <span class="o">-&gt;</span> <span class="nc">Math</span><span class="o">.</span><span class="n">min</span><span class="o">(</span><span class="n">currentOffsets</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span> <span class="o">+</span> <span class="n">messages</span><span class="o">,</span> <span class="n">uo</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">offsets</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="c1">// 重写DStream的compute方法，获取RDD信息
+</span>  <span class="k">override</span> <span class="k">def</span> <span class="n">compute</span><span class="o">(</span><span class="n">validTime</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">KafkaRDD</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">untilOffsets</span> <span class="k">=</span> <span class="n">clamp</span><span class="o">(</span><span class="n">latestOffsets</span><span class="o">())</span>
+    <span class="k">val</span> <span class="n">offsetRanges</span> <span class="k">=</span> <span class="n">untilOffsets</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">tp</span><span class="o">,</span> <span class="n">uo</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="k">val</span> <span class="n">fo</span> <span class="k">=</span> <span class="n">currentOffsets</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span>
+      <span class="nc">OffsetRange</span><span class="o">(</span><span class="n">tp</span><span class="o">.</span><span class="n">topic</span><span class="o">,</span> <span class="n">tp</span><span class="o">.</span><span class="n">partition</span><span class="o">,</span> <span class="n">fo</span><span class="o">,</span> <span class="n">uo</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">useConsumerCache</span> <span class="k">=</span> <span class="n">context</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">getBoolean</span><span class="o">(</span><span class="s">"spark.streaming.kafka.consumer.cache.enabled"</span><span class="o">,</span>
+      <span class="kc">true</span><span class="o">)</span>
+    <span class="c1">// 方法底层拉取kafka数据  
+</span>    <span class="k">val</span> <span class="n">rdd</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">KafkaRDD</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">](</span><span class="n">context</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">,</span> <span class="n">executorKafkaParams</span><span class="o">,</span> <span class="n">offsetRanges</span><span class="o">.</span><span class="n">toArray</span><span class="o">,</span>
+      <span class="n">getPreferredHosts</span><span class="o">,</span> <span class="n">useConsumerCache</span><span class="o">)</span>
+
+    <span class="c1">// Report the record number and metadata of this batch interval to InputInfoTracker.
+</span>    <span class="k">val</span> <span class="n">description</span> <span class="k">=</span> <span class="n">offsetRanges</span><span class="o">.</span><span class="n">filter</span> <span class="o">{</span> <span class="n">offsetRange</span> <span class="k">=&gt;</span>
+      <span class="c1">// Don't display empty ranges.
+</span>      <span class="n">offsetRange</span><span class="o">.</span><span class="n">fromOffset</span> <span class="o">!=</span> <span class="n">offsetRange</span><span class="o">.</span><span class="n">untilOffset</span>
+    <span class="o">}.</span><span class="n">map</span> <span class="o">{</span> <span class="n">offsetRange</span> <span class="k">=&gt;</span>
+      <span class="n">s</span><span class="s">"topic: ${offsetRange.topic}\tpartition: ${offsetRange.partition}\t"</span> <span class="o">+</span>
+        <span class="n">s</span><span class="s">"offsets: ${offsetRange.fromOffset} to ${offsetRange.untilOffset}"</span>
+    <span class="o">}.</span><span class="n">mkString</span><span class="o">(</span><span class="s">"\n"</span><span class="o">)</span>
+    <span class="c1">// Copy offsetRanges to immutable.List to prevent from being modified by the user
+</span>    <span class="k">val</span> <span class="n">metadata</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span>
+      <span class="s">"offsets"</span> <span class="o">-&gt;</span> <span class="n">offsetRanges</span><span class="o">.</span><span class="n">toList</span><span class="o">,</span>
+      <span class="nc">StreamInputInfo</span><span class="o">.</span><span class="nc">METADATA_KEY_DESCRIPTION</span> <span class="o">-&gt;</span> <span class="n">description</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">inputInfo</span> <span class="k">=</span> <span class="nc">StreamInputInfo</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">rdd</span><span class="o">.</span><span class="n">count</span><span class="o">,</span> <span class="n">metadata</span><span class="o">)</span>
+    <span class="n">ssc</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">inputInfoTracker</span><span class="o">.</span><span class="n">reportInfo</span><span class="o">(</span><span class="n">validTime</span><span class="o">,</span> <span class="n">inputInfo</span><span class="o">)</span>
+
+	<span class="c1">// 拉取kafka数据成功后，更新spark中当前offset为最新的offset，currentOffsets是spark中管理的offsets
+</span>    <span class="n">currentOffsets</span> <span class="k">=</span> <span class="n">untilOffsets</span>
+    <span class="c1">// 提交offset
+</span>    <span class="n">commitAll</span><span class="o">()</span>
+    <span class="nc">Some</span><span class="o">(</span><span class="n">rdd</span><span class="o">)</span>
+  <span class="o">}</span>
+  
+  <span class="c1">// 存放OffsetRange
+</span>  <span class="k">protected</span> <span class="k">val</span> <span class="n">commitQueue</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ConcurrentLinkedQueue</span><span class="o">[</span><span class="kt">OffsetRange</span><span class="o">]</span>
+  
+  <span class="k">protected</span> <span class="k">def</span> <span class="n">commitAll</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">m</span> <span class="k">=</span> <span class="k">new</span> <span class="n">ju</span><span class="o">.</span><span class="nc">HashMap</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">OffsetAndMetadata</span><span class="o">]()</span>
+    <span class="c1">// offset队列中取数据，每次读完数据后
+</span>    <span class="k">var</span> <span class="n">osr</span> <span class="k">=</span> <span class="n">commitQueue</span><span class="o">.</span><span class="n">poll</span><span class="o">()</span>
+    <span class="k">while</span> <span class="o">(</span><span class="kc">null</span> <span class="o">!=</span> <span class="n">osr</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">tp</span> <span class="k">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">topicPartition</span>
+      <span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span>
+      <span class="c1">// 获取该partition最大的offset
+</span>      <span class="k">val</span> <span class="n">offset</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="kc">null</span> <span class="o">==</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span> <span class="n">osr</span><span class="o">.</span><span class="n">untilOffset</span> <span class="o">}</span> <span class="k">else</span> <span class="o">{</span> <span class="nc">Math</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="n">offset</span><span class="o">,</span> <span class="n">osr</span><span class="o">.</span><span class="n">untilOffset</span><span class="o">)</span> <span class="o">}</span>
+      <span class="n">m</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">tp</span><span class="o">,</span> <span class="k">new</span> <span class="nc">OffsetAndMetadata</span><span class="o">(</span><span class="n">offset</span><span class="o">))</span>
+      <span class="n">osr</span> <span class="k">=</span> <span class="n">commitQueue</span><span class="o">.</span><span class="n">poll</span><span class="o">()</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">m</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// 提交offset到kafka，enable.auto.commit参数用于控制consumer是否拉取数据后直接提交offset到kafka
+</span>      <span class="n">consumer</span><span class="o">.</span><span class="n">commitAsync</span><span class="o">(</span><span class="n">m</span><span class="o">,</span> <span class="n">commitCallback</span><span class="o">.</span><span class="n">get</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+  <span class="cm">/**
+   * Queue up offset ranges for commit to Kafka at a future time.  Threadsafe.
+   * @param offsetRanges The maximum untilOffset for a given partition will be used at commit.
+   */</span>
+  <span class="c1">// 用户调用commit offset接口
+</span>  <span class="k">def</span> <span class="n">commitAsync</span><span class="o">(</span><span class="n">offsetRanges</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">OffsetRange</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">commitAsync</span><span class="o">(</span><span class="n">offsetRanges</span><span class="o">,</span> <span class="kc">null</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**
+   * Queue up offset ranges for commit to Kafka at a future time.  Threadsafe.
+   * @param offsetRanges The maximum untilOffset for a given partition will be used at commit.
+   * @param callback Only the most recently provided callback will be used at commit.
+   */</span>
+  <span class="k">def</span> <span class="n">commitAsync</span><span class="o">(</span><span class="n">offsetRanges</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">OffsetRange</span><span class="o">],</span> <span class="n">callback</span><span class="k">:</span> <span class="kt">OffsetCommitCallback</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">commitCallback</span><span class="o">.</span><span class="n">set</span><span class="o">(</span><span class="n">callback</span><span class="o">)</span>
+    <span class="n">commitQueue</span><span class="o">.</span><span class="n">addAll</span><span class="o">(</span><span class="n">ju</span><span class="o">.</span><span class="nc">Arrays</span><span class="o">.</span><span class="n">asList</span><span class="o">(</span><span class="n">offsetRanges</span><span class="k">:</span> <span class="k">_</span><span class="kt">*</span><span class="o">))</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>所以spark只能保证kafka到spark的exactly once语义，只拉取一次kafka数据，但是如果spark某一批次数据处理失败(比如调用第三方服务失败等等)，导致没有写入第三方没办法保证，抛开这些情况，spark RDD拥有血缘依赖，可以重新生成，也可以使用checkpoint机制存储，不存在数据从kafka拉取后丢失问题</p>
 </blockquote>
 
   <!-- 引入share模块 -->

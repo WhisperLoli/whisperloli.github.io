@@ -268,7 +268,7 @@ subtitle: Spark Streaming详解
 
 > 生成job后需要提交JobSet(jobs)
 
-```
+```scala
   def submitJobSet(jobSet: JobSet) {
     if (jobSet.jobs.isEmpty) {
       logInfo("No jobs added for time " + jobSet.time)
@@ -539,3 +539,132 @@ subtitle: Spark Streaming详解
   }
 ```
 > 也就是说，每一批任务执行完成后，就会执行相应的方法，更新最新的拉取速率
+
+> 在说说offset管理吧
+
+```scala
+  // 第一次启动时调用，consumer是KafkaConsumer
+  override def start(): Unit = {
+    // consumer是KafkaConsumer
+    val c = consumer
+    paranoidPoll(c)
+    if (currentOffsets.isEmpty) {
+      currentOffsets = c.assignment().asScala.map { tp =>
+        // position方法会获取每个TopicPartition在kafka中的offset
+        tp -> c.position(tp)
+      }.toMap
+    }
+
+    // don't actually want to consume any messages, so pause all partitions
+    c.pause(currentOffsets.keySet.asJava)
+  }
+
+  /**
+   * Returns the latest (highest) available offsets, taking new partitions into account.
+   */
+  protected def latestOffsets(): Map[TopicPartition, Long] = {
+    val c = consumer
+    paranoidPoll(c)
+    val parts = c.assignment().asScala
+
+    // make sure new partitions are reflected in currentOffsets
+    val newPartitions = parts.diff(currentOffsets.keySet)
+    // position for new partitions determined by auto.offset.reset if no commit
+    currentOffsets = currentOffsets ++ newPartitions.map(tp => tp -> c.position(tp)).toMap
+    // don't want to consume messages, so pause
+    c.pause(newPartitions.asJava)
+    // find latest available offsets
+    c.seekToEnd(currentOffsets.keySet.asJava)
+    parts.map(tp => tp -> c.position(tp)).toMap
+  }
+
+  // limits the maximum number of messages per partition
+  protected def clamp(
+    offsets: Map[TopicPartition, Long]): Map[TopicPartition, Long] = {
+
+    maxMessagesPerPartition(offsets).map { mmp =>
+      mmp.map { case (tp, messages) =>
+          // 最新offset
+          val uo = offsets(tp)
+          // 获取当前offset + 消费大小与最新offset的小值，做为该批次的until offset
+          tp -> Math.min(currentOffsets(tp) + messages, uo)
+      }
+    }.getOrElse(offsets)
+  }
+
+  // 重写DStream的compute方法，获取RDD信息
+  override def compute(validTime: Time): Option[KafkaRDD[K, V]] = {
+    val untilOffsets = clamp(latestOffsets())
+    val offsetRanges = untilOffsets.map { case (tp, uo) =>
+      val fo = currentOffsets(tp)
+      OffsetRange(tp.topic, tp.partition, fo, uo)
+    }
+    val useConsumerCache = context.conf.getBoolean("spark.streaming.kafka.consumer.cache.enabled",
+      true)
+    // 方法底层拉取kafka数据  
+    val rdd = new KafkaRDD[K, V](context.sparkContext, executorKafkaParams, offsetRanges.toArray,
+      getPreferredHosts, useConsumerCache)
+
+    // Report the record number and metadata of this batch interval to InputInfoTracker.
+    val description = offsetRanges.filter { offsetRange =>
+      // Don't display empty ranges.
+      offsetRange.fromOffset != offsetRange.untilOffset
+    }.map { offsetRange =>
+      s"topic: ${offsetRange.topic}\tpartition: ${offsetRange.partition}\t" +
+        s"offsets: ${offsetRange.fromOffset} to ${offsetRange.untilOffset}"
+    }.mkString("\n")
+    // Copy offsetRanges to immutable.List to prevent from being modified by the user
+    val metadata = Map(
+      "offsets" -> offsetRanges.toList,
+      StreamInputInfo.METADATA_KEY_DESCRIPTION -> description)
+    val inputInfo = StreamInputInfo(id, rdd.count, metadata)
+    ssc.scheduler.inputInfoTracker.reportInfo(validTime, inputInfo)
+
+	// 拉取kafka数据成功后，更新spark中当前offset为最新的offset，currentOffsets是spark中管理的offsets
+    currentOffsets = untilOffsets
+    // 提交offset
+    commitAll()
+    Some(rdd)
+  }
+  
+  // 存放OffsetRange
+  protected val commitQueue = new ConcurrentLinkedQueue[OffsetRange]
+  
+  protected def commitAll(): Unit = {
+    val m = new ju.HashMap[TopicPartition, OffsetAndMetadata]()
+    // offset队列中取数据，每次读完数据后
+    var osr = commitQueue.poll()
+    while (null != osr) {
+      val tp = osr.topicPartition
+      val x = m.get(tp)
+      // 获取该partition最大的offset
+      val offset = if (null == x) { osr.untilOffset } else { Math.max(x.offset, osr.untilOffset) }
+      m.put(tp, new OffsetAndMetadata(offset))
+      osr = commitQueue.poll()
+    }
+    if (!m.isEmpty) {
+      // 提交offset到kafka，enable.auto.commit参数用于控制consumer是否拉取数据后直接提交offset到kafka
+      consumer.commitAsync(m, commitCallback.get)
+    }
+  }
+  
+  /**
+   * Queue up offset ranges for commit to Kafka at a future time.  Threadsafe.
+   * @param offsetRanges The maximum untilOffset for a given partition will be used at commit.
+   */
+  // 用户调用commit offset接口
+  def commitAsync(offsetRanges: Array[OffsetRange]): Unit = {
+    commitAsync(offsetRanges, null)
+  }
+
+  /**
+   * Queue up offset ranges for commit to Kafka at a future time.  Threadsafe.
+   * @param offsetRanges The maximum untilOffset for a given partition will be used at commit.
+   * @param callback Only the most recently provided callback will be used at commit.
+   */
+  def commitAsync(offsetRanges: Array[OffsetRange], callback: OffsetCommitCallback): Unit = {
+    commitCallback.set(callback)
+    commitQueue.addAll(ju.Arrays.asList(offsetRanges: _*))
+```
+
+> 所以spark只能保证kafka到spark的exactly once语义，只拉取一次kafka数据，但是如果spark某一批次数据处理失败(比如调用第三方服务失败等等)，导致没有写入第三方没办法保证，抛开这些情况，spark RDD拥有血缘依赖，可以重新生成，也可以使用checkpoint机制存储，不存在数据从kafka拉取后丢失问题
