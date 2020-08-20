@@ -711,12 +711,12 @@ var _hmt = _hmt || [];
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// 第一次启动时调用，consumer是KafkaConsumer
 </span>  <span class="k">override</span> <span class="k">def</span> <span class="n">start</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="c1">// consumer是KafkaConsumer
+    <span class="c1">// consumer会创建KafkaConsumer
 </span>    <span class="k">val</span> <span class="n">c</span> <span class="k">=</span> <span class="n">consumer</span>
     <span class="n">paranoidPoll</span><span class="o">(</span><span class="n">c</span><span class="o">)</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
       <span class="n">currentOffsets</span> <span class="k">=</span> <span class="n">c</span><span class="o">.</span><span class="n">assignment</span><span class="o">().</span><span class="n">asScala</span><span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">tp</span> <span class="k">=&gt;</span>
-        <span class="c1">// position方法会获取每个TopicPartition在kafka中的offset
+        <span class="c1">// position方法会获取每个TopicPartition在kafka中的offset，consumer中会使用seek方法设置offset,将用户传入的offset设置到kafka
 </span>        <span class="n">tp</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="o">(</span><span class="n">tp</span><span class="o">)</span>
       <span class="o">}.</span><span class="n">toMap</span>
     <span class="o">}</span>
@@ -724,6 +724,62 @@ var _hmt = _hmt || [];
     <span class="c1">// don't actually want to consume any messages, so pause all partitions
 </span>    <span class="n">c</span><span class="o">.</span><span class="n">pause</span><span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">keySet</span><span class="o">.</span><span class="n">asJava</span><span class="o">)</span>
   <span class="o">}</span>
+  
+  <span class="c1">// spark自身管理的offset
+</span>  <span class="k">protected</span> <span class="k">var</span> <span class="n">currentOffsets</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">Long</span><span class="o">]()</span>
+
+  <span class="nd">@transient</span> <span class="k">private</span> <span class="k">var</span> <span class="n">kc</span><span class="k">:</span> <span class="kt">Consumer</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">]</span> <span class="k">=</span> <span class="kc">null</span>
+  <span class="k">def</span> <span class="n">consumer</span><span class="o">()</span><span class="k">:</span> <span class="kt">Consumer</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">]</span> <span class="k">=</span> <span class="k">this</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="kc">null</span> <span class="o">==</span> <span class="n">kc</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="c1">// 内部方法会判断currentOffsets的值，后续操作会使用spark的currentOffsets拉取kafka数据
+</span>      <span class="n">kc</span> <span class="k">=</span> <span class="n">consumerStrategy</span><span class="o">.</span><span class="n">onStart</span><span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">mapValues</span><span class="o">(</span><span class="n">l</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="nc">Long</span><span class="o">(</span><span class="n">l</span><span class="o">)).</span><span class="n">asJava</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="n">kc</span>
+  <span class="o">}</span>
+  
+  <span class="k">private</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Subscribe</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">](</span>
+    <span class="n">topics</span><span class="k">:</span> <span class="kt">ju.Collection</span><span class="o">[</span><span class="kt">jl.String</span><span class="o">],</span>
+    <span class="n">kafkaParams</span><span class="k">:</span> <span class="kt">ju.Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Object</span><span class="o">],</span>
+    <span class="n">offsets</span><span class="k">:</span> <span class="kt">ju.Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">jl.Long</span><span class="o">]</span>
+  <span class="o">)</span> <span class="k">extends</span> <span class="nc">ConsumerStrategy</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">]</span> <span class="k">with</span> <span class="nc">Logging</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">executorKafkaParams</span><span class="k">:</span> <span class="kt">ju.Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Object</span><span class="o">]</span> <span class="k">=</span> <span class="n">kafkaParams</span>
+
+  <span class="k">def</span> <span class="n">onStart</span><span class="o">(</span><span class="n">currentOffsets</span><span class="k">:</span> <span class="kt">ju.Map</span><span class="o">[</span><span class="kt">TopicPartition</span>, <span class="kt">jl.Long</span><span class="o">])</span><span class="k">:</span> <span class="kt">Consumer</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">consumer</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">KafkaConsumer</span><span class="o">[</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">](</span><span class="n">kafkaParams</span><span class="o">)</span>
+    <span class="n">consumer</span><span class="o">.</span><span class="n">subscribe</span><span class="o">(</span><span class="n">topics</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">toSeek</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="c1">// 第一次启动时，currentOffsets为空，使用用户创建directStream传入的offsets
+</span>      <span class="n">offsets</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">currentOffsets</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">toSeek</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// work around KAFKA-3370 when reset is none
+</span>      <span class="c1">// poll will throw if no position, i.e. auto offset reset none and no explicit position
+</span>      <span class="c1">// but cant seek to a position before poll, because poll is what gets subscription partitions
+</span>      <span class="c1">// So, poll, suppress the first exception, then seek
+</span>      <span class="k">val</span> <span class="n">aor</span> <span class="k">=</span> <span class="n">kafkaParams</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">ConsumerConfig</span><span class="o">.</span><span class="nc">AUTO_OFFSET_RESET_CONFIG</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">shouldSuppress</span> <span class="k">=</span>
+        <span class="n">aor</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">aor</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">String</span><span class="o">].</span><span class="n">toUpperCase</span><span class="o">(</span><span class="nc">Locale</span><span class="o">.</span><span class="nc">ROOT</span><span class="o">)</span> <span class="o">==</span> <span class="s">"NONE"</span>
+      <span class="k">try</span> <span class="o">{</span>
+        <span class="n">consumer</span><span class="o">.</span><span class="n">poll</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">x</span><span class="k">:</span> <span class="kt">NoOffsetForPartitionException</span> <span class="kt">if</span> <span class="kt">shouldSuppress</span> <span class="o">=&gt;</span>
+          <span class="n">logWarning</span><span class="o">(</span><span class="s">"Catching NoOffsetForPartitionException since "</span> <span class="o">+</span>
+            <span class="nc">ConsumerConfig</span><span class="o">.</span><span class="nc">AUTO_OFFSET_RESET_CONFIG</span> <span class="o">+</span> <span class="s">" is none.  See KAFKA-3370"</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="n">toSeek</span><span class="o">.</span><span class="n">asScala</span><span class="o">.</span><span class="n">foreach</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">topicPartition</span><span class="o">,</span> <span class="n">offset</span><span class="o">)</span> <span class="k">=&gt;</span>
+      	<span class="c1">// 设置offset
+</span>          <span class="n">consumer</span><span class="o">.</span><span class="n">seek</span><span class="o">(</span><span class="n">topicPartition</span><span class="o">,</span> <span class="n">offset</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="c1">// we've called poll, we must pause or next poll may consume messages and set position
+</span>      <span class="n">consumer</span><span class="o">.</span><span class="n">pause</span><span class="o">(</span><span class="n">consumer</span><span class="o">.</span><span class="n">assignment</span><span class="o">())</span>
+    <span class="o">}</span>
+
+    <span class="n">consumer</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 
   <span class="cm">/**
    * Returns the latest (highest) available offsets, taking new partitions into account.
@@ -835,6 +891,8 @@ var _hmt = _hmt || [];
 
 <blockquote>
   <p>所以spark只能保证kafka到spark的exactly once语义，只拉取一次kafka数据，但是如果spark某一批次数据处理失败(比如调用第三方服务失败等等)，导致没有写入第三方没办法保证，抛开这些情况，spark RDD拥有血缘依赖，可以重新生成，也可以使用checkpoint机制存储，不存在数据从kafka拉取后丢失问题</p>
+
+  <p>因为spark使用的是自身管理的offset拉取数据，所以当每批任务提交后，即使offset没有提交kafka集群/第三方管理，spark也会继续拉取下一批次的数据，不会停留在一直拉取这批数据的阶段，当程序重启时，又会从没有提交的offset拉取</p>
 </blockquote>
 
   <!-- 引入share模块 -->

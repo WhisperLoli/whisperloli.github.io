@@ -545,12 +545,12 @@ subtitle: Spark Streaming详解
 ```scala
   // 第一次启动时调用，consumer是KafkaConsumer
   override def start(): Unit = {
-    // consumer是KafkaConsumer
+    // consumer会创建KafkaConsumer
     val c = consumer
     paranoidPoll(c)
     if (currentOffsets.isEmpty) {
       currentOffsets = c.assignment().asScala.map { tp =>
-        // position方法会获取每个TopicPartition在kafka中的offset
+        // position方法会获取每个TopicPartition在kafka中的offset，consumer中会使用seek方法设置offset,将用户传入的offset设置到kafka
         tp -> c.position(tp)
       }.toMap
     }
@@ -558,6 +558,62 @@ subtitle: Spark Streaming详解
     // don't actually want to consume any messages, so pause all partitions
     c.pause(currentOffsets.keySet.asJava)
   }
+  
+  // spark自身管理的offset
+  protected var currentOffsets = Map[TopicPartition, Long]()
+
+  @transient private var kc: Consumer[K, V] = null
+  def consumer(): Consumer[K, V] = this.synchronized {
+    if (null == kc) {
+    	// 内部方法会判断currentOffsets的值，后续操作会使用spark的currentOffsets拉取kafka数据
+      kc = consumerStrategy.onStart(currentOffsets.mapValues(l => new java.lang.Long(l)).asJava)
+    }
+    kc
+  }
+  
+  private case class Subscribe[K, V](
+    topics: ju.Collection[jl.String],
+    kafkaParams: ju.Map[String, Object],
+    offsets: ju.Map[TopicPartition, jl.Long]
+  ) extends ConsumerStrategy[K, V] with Logging {
+
+  def executorKafkaParams: ju.Map[String, Object] = kafkaParams
+
+  def onStart(currentOffsets: ju.Map[TopicPartition, jl.Long]): Consumer[K, V] = {
+    val consumer = new KafkaConsumer[K, V](kafkaParams)
+    consumer.subscribe(topics)
+    val toSeek = if (currentOffsets.isEmpty) {
+    	// 第一次启动时，currentOffsets为空，使用用户创建directStream传入的offsets
+      offsets
+    } else {
+      currentOffsets
+    }
+    if (!toSeek.isEmpty) {
+      // work around KAFKA-3370 when reset is none
+      // poll will throw if no position, i.e. auto offset reset none and no explicit position
+      // but cant seek to a position before poll, because poll is what gets subscription partitions
+      // So, poll, suppress the first exception, then seek
+      val aor = kafkaParams.get(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG)
+      val shouldSuppress =
+        aor != null && aor.asInstanceOf[String].toUpperCase(Locale.ROOT) == "NONE"
+      try {
+        consumer.poll(0)
+      } catch {
+        case x: NoOffsetForPartitionException if shouldSuppress =>
+          logWarning("Catching NoOffsetForPartitionException since " +
+            ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + " is none.  See KAFKA-3370")
+      }
+      toSeek.asScala.foreach { case (topicPartition, offset) =>
+      	// 设置offset
+          consumer.seek(topicPartition, offset)
+      }
+      // we've called poll, we must pause or next poll may consume messages and set position
+      consumer.pause(consumer.assignment())
+    }
+
+    consumer
+  }
+}
 
   /**
    * Returns the latest (highest) available offsets, taking new partitions into account.
@@ -668,3 +724,5 @@ subtitle: Spark Streaming详解
 ```
 
 > 所以spark只能保证kafka到spark的exactly once语义，只拉取一次kafka数据，但是如果spark某一批次数据处理失败(比如调用第三方服务失败等等)，导致没有写入第三方没办法保证，抛开这些情况，spark RDD拥有血缘依赖，可以重新生成，也可以使用checkpoint机制存储，不存在数据从kafka拉取后丢失问题
+> 
+> 因为spark使用的是自身管理的offset拉取数据，所以当每批任务提交后，即使offset没有提交kafka集群/第三方管理，spark也会继续拉取下一批次的数据，不会停留在一直拉取这批数据的阶段，当程序重启时，又会从没有提交的offset拉取
