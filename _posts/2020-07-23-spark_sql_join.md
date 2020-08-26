@@ -233,4 +233,4 @@ private def buildHashedRelation(iter: Iterator[InternalRow]): HashedRelation = {
 }
 ```
 
-> sort merge join需要先对key进行排序，然后shuffle，将相同的key发到同一个partition中，再在partition内部进行比较，不需要将一个表加载到内存中，所以sort merge join并没有buildIter,streamIter概念
+> sort merge join需要先对key shuffle操作，保证key值相同的记录会被分在相应的分区，分区后对每个分区内的数据进行排序，排序后再对相应的分区内的记录进行连接，不需要将一个表加载到内存中，所以sort merge join并没有buildIter,streamIter概念。两个序列都是有序的，从头遍历，碰到key相同的就输出，如果不同，左边小就继续取左边，反之取右边
