@@ -204,3 +204,5 @@ private[cluster] class ExecutorData(
 > StandaloneSchedulerBackend继承CoarseGrainedSchedulerBackend，在start方法中调用父类start方法后，会创建自己的StandaloneAppClient，做一些通信相关的实现
 > 
 > 基于Mesos也有一套SchedulerBackend，这里就不展开了
+> 
+> executor执行task会创建TaskRunner对象，该类实现了Runnable接口，接着使用线程池提交该对象执行，线程会真正的执行task
