@@ -88,7 +88,7 @@ override def registerShuffle[K, V, C](
  writer | 优点 | 缺点 | 特点 | 对应handle
 ---|---|---|---|---
 BypassMergeSortShuffleWriter | 根据numPartitions数量生成对等的n个文件，避免了两次序列化和反序列化来合并spilled files | numPartitions数量太多会一次打开多个文件，需要更多内存分配给缓冲区 | 直接写磁盘，没有sort/spill阶段，最后会merge文件 | BypassMergeSortShuffleHandle
-SortShuffleWriter | 可以map端聚合 | 无 | 需要经历sort/spill/merge，使用ExternalSorter | BaseShuffleHandle
+SortShuffleWriter | 可以map端聚合 | 无 | 需要经历sort/spill/merge，使用ExternalSorter，写内存缓冲区有2种结构，哈希表和数组，如果需要map端聚合则用哈希表 | BaseShuffleHandle
 UnsafeShuffleWriter | 操作序列化的数据，效率高 | serializer需要支持relocation才行，numPartitions大小也有限制 | 写入内存buffer中，经历sort/spill/merge，使用ShuffleExternalSorter | SerializedShuffleHandle
  
 
