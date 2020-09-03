@@ -792,6 +792,7 @@ var _hmt = _hmt || [];
     <span class="c1">// make sure new partitions are reflected in currentOffsets
 </span>    <span class="k">val</span> <span class="n">newPartitions</span> <span class="k">=</span> <span class="n">parts</span><span class="o">.</span><span class="n">diff</span><span class="o">(</span><span class="n">currentOffsets</span><span class="o">.</span><span class="n">keySet</span><span class="o">)</span>
     <span class="c1">// position for new partitions determined by auto.offset.reset if no commit
+</span>    <span class="c1">// 每次拉取数据前都会获取新增加的topic分区，即streaming可以动态识别kafka增加分区
 </span>    <span class="n">currentOffsets</span> <span class="k">=</span> <span class="n">currentOffsets</span> <span class="o">++</span> <span class="n">newPartitions</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">tp</span> <span class="k">=&gt;</span> <span class="n">tp</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="o">(</span><span class="n">tp</span><span class="o">)).</span><span class="n">toMap</span>
     <span class="c1">// don't want to consume messages, so pause
 </span>    <span class="n">c</span><span class="o">.</span><span class="n">pause</span><span class="o">(</span><span class="n">newPartitions</span><span class="o">.</span><span class="n">asJava</span><span class="o">)</span>

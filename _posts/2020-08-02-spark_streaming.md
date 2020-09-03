@@ -626,6 +626,7 @@ subtitle: Spark Streaming详解
     // make sure new partitions are reflected in currentOffsets
     val newPartitions = parts.diff(currentOffsets.keySet)
     // position for new partitions determined by auto.offset.reset if no commit
+    // 每次拉取数据前都会获取新增加的topic分区，即streaming可以动态识别kafka增加分区
     currentOffsets = currentOffsets ++ newPartitions.map(tp => tp -> c.position(tp)).toMap
     // don't want to consume messages, so pause
     c.pause(newPartitions.asJava)
