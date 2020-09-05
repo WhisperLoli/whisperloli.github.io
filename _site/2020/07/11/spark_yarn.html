@@ -680,7 +680,8 @@ var _hmt = _hmt || [];
     <span class="k">val</span> <span class="n">args</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ClientArguments</span><span class="o">(</span><span class="n">argsArrayBuf</span><span class="o">.</span><span class="n">toArray</span><span class="o">)</span>
     <span class="n">totalExpectedExecutors</span> <span class="k">=</span> <span class="nc">SchedulerBackendUtils</span><span class="o">.</span><span class="n">getInitialTargetExecutorNumber</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
     <span class="n">client</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Client</span><span class="o">(</span><span class="n">args</span><span class="o">,</span> <span class="n">conf</span><span class="o">)</span>
-    <span class="n">bindToYarn</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="n">submitApplication</span><span class="o">(),</span> <span class="nc">None</span><span class="o">)</span>
+    <span class="c1">// 提交到yarn中
+</span>    <span class="n">bindToYarn</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="n">submitApplication</span><span class="o">(),</span> <span class="nc">None</span><span class="o">)</span>
 
     <span class="c1">// SPARK-8687: Ensure all necessary properties have already been set before
 </span>    <span class="c1">// we initialize our driver scheduler backend, which serves these properties
