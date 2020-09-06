@@ -86,7 +86,7 @@ case object Cross extends InnerLike {
   }
 ```
 
-> 上一章中讲了broadcast join会严格要求join顺序，但是很多都是对于outer join，所以即使开启了cbo reorder优化，如果要使用broadcast join还是需要严格按照要求设置小表所在的位置。
+> 上一章中讲了broadcast join会严格要求join顺序，但是inner join 左右表都可以build，reoder仅支持InnerLike join，所以同时使用join reorder和broadcast join无需注意表顺序，reorder会自动调整。
 > 
 > 当然，CBO优化还有其他的地方，比如两个表Join，A表过滤前1亿数据，过滤后10W数据，B表1000万数据，默认会使用B表左右build side，开启CBO优化后，会使用A表作为build side，如果A表足够小，满足broadcast join，则会采用broadcast join
 > 
