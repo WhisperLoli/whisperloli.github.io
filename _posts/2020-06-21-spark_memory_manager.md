@@ -63,5 +63,6 @@ internal data across the cluster. There exists one MemoryManager per JVM.
 
 > execution memory用于shuffle等计算，storage memory用于缓存数据
 
+> yarn模式中有一个内存叫overheadmemory，这个内存也是堆外内存，当前2.3.3版本并不属于off-heap memory，是单独开辟的一块堆外内存，executor memory也不包含用户设置的off-heap memory
  
 
