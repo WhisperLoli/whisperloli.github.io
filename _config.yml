@@ -27,7 +27,7 @@ portraits: 'https://avatars0.githubusercontent.com/u/31977300?s=400&u=bbb0053293
 SNS: true
 SNS-icon: #['Facebook', 'weibo', 'qq', 'github', 'Dribbble', 'Twitter', 'instagram', 'weixin', 'Codepen']
   mail: 'mailto:ahhunengjun@163.com'
-  weixin: 'assets/wechat.jpeg' # 你的微信二维码存放的地址
+  weixin: 'assets/wechat1.jpeg' # 你的微信二维码存放的地址
  #  qq: '' # 你的qq二维码存放的地址 or http://wpa.qq.com/msgrd?v=3&uin='你的QQ号'&site=qq&menu=yes
   github: 'https://github.com/WhisperLoli'
  # Codepen: ''
